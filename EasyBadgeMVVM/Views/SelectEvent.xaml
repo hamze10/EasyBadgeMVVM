@@ -13,17 +13,19 @@
             VerticalAlignment="Center"
             Height="600" Width="600">
             <materialDesign:DialogHost.DialogContent>
-                <ScrollViewer VerticalScrollBarVisibility="Visible" Width="370" Height="700">
+                <ScrollViewer VerticalScrollBarVisibility="Visible" Width="400" Height="700">
                     <StackPanel
                      Margin="30">
                         <TextBox
                         HorizontalAlignment="Stretch"
                         Name="AddEventName"
-                        materialDesign:HintAssist.Hint="Name"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                        materialDesign:HintAssist.Hint="Name of event"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Margin="20" />
                         <Calendar
                         Name="AddEventDate"
-                        materialDesign:HintAssist.Hint="Date" />
+                        materialDesign:HintAssist.Hint="Date"
+                        Margin="20" />
                         <materialDesign:Clock
                         Name="AddEventTime"
                         DisplayAutomation="CycleWithSeconds"

@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using MessageBox = System.Windows.MessageBox;
 
 namespace EasyBadgeMVVM
 {
@@ -41,8 +42,11 @@ namespace EasyBadgeMVVM
 
         private readonly string[] EXTENSIONS = new string[] { ".csv" };
 
+        private int _idEvent;
+
         public MainWindow(int idEvent)
         {
+            this._idEvent = idEvent;
             this._userEventVM = new UserEventVM(idEvent);
             this.DataContext = this._userEventVM;
             InitializeComponent();
@@ -66,12 +70,13 @@ namespace EasyBadgeMVVM
         private void ShowUserInfo(object sender, RoutedEventArgs e)
         {
             UserEventDTO dto = this._userEventVM.SelectedUserEvent;
-            System.Windows.MessageBox.Show(dto.Barcode + "," + dto.LastName + "," + dto.FirstName + "," + dto.Company + "," + dto.PrintBadge);
+            UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto));
+            userWindow.Show();
         }
 
         private void NewUserInfo(object sender, RoutedEventArgs e)
         {
-            UserWindow userWindow = new UserWindow();
+            UserWindow userWindow = new UserWindow(true, this._userEventVM.GetAllFieldsOfEvent(this._idEvent));
             userWindow.Show();
         }
 
@@ -82,7 +87,8 @@ namespace EasyBadgeMVVM
                 if (this.DataGridUsers.Items.Count == 1)
                 {
                     UserEventDTO dto = (UserEventDTO) this.DataGridUsers.Items.GetItemAt(0);
-                    System.Windows.MessageBox.Show(dto.Barcode + "," + dto.LastName + "," + dto.FirstName + "," + dto.Company + "," + dto.PrintBadge);
+                    UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto));
+                    userWindow.Show();
                 }
             }
 

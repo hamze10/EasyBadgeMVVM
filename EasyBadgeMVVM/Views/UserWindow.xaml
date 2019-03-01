@@ -7,18 +7,21 @@
         mc:Ignorable="d"
         Title="Add a new user" Height="730" Width="1400"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+    <ScrollViewer>
+        <Grid Name="UserWindowGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="90" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90" />
+            </Grid.RowDefinitions>
 
-        <Grid Background="#0a3d62" Grid.ColumnSpan="2">
-            <Label Content="USER INFORMATIONS" Canvas.Left="487" Height="70" Width="407" FontSize="40" Canvas.Top="10" Foreground="White" />
+            <Grid Background="#0a3d62" Grid.ColumnSpan="3">
+                <Label Content="USER INFORMATIONS" Canvas.Left="487" Height="70" Width="407" FontSize="40" Canvas.Top="10" Foreground="White" />
+            </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
+
 </Window>

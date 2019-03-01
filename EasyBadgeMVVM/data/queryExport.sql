@@ -16,18 +16,19 @@ WHERE u.ID_User = fu.UserID_User AND f.ID_Field = fu.FieldID_Field AND e.ID_Even
 
 SELECT u.ID_User, u.Barcode, f.Name, fu.Value 
 FROM FieldUserSet fu, UserSet u, FieldSet f 
-WHERE fu.UserID_User = u.ID_User AND f.ID_Field = fu.FieldID_Field
+WHERE fu.UserID_User = u.ID_User AND f.ID_Field = fu.FieldID_Field;
 
-SELECT * FROM FieldSet
+SELECT * FROM FieldSet;
 
-SELECT * FROM EventSet
+SELECT * FROM EventSet;
 
-SELECT * FROM FieldUserSet
+SELECT * FROM FieldUserSet;
 
-SELECT * FROM UserSet
+SELECT * FROM UserSet;
 
 SELECT * 
 FROM UserEventSet ue, FieldUserSet fu, FieldSet f
 WHERE ue.FieldUserID_FieldUser1 = fu.ID_FieldUser 
 	AND fu.ID_FieldUser = f.ID_Field AND 
-	(f.Name = 'LastName' OR f.Name = 'FirstName') AND (fu.Value = 'Mccoy' OR fu.Value = 'Abbott')
+	(f.Name = 'LastName' OR f.Name = 'FirstName') AND (fu.Value = 'Mccoy' OR fu.Value = 'Abbott');
+

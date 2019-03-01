@@ -97,6 +97,17 @@ namespace EasyBadgeMVVM.ViewModels
             return this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(predicate).FirstOrDefault();
         }
 
+        public List<UserEvent> GetUserEventByDTO(UserEventDTO dto)
+        {
+            return this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue => ue.User.Barcode.Equals(dto.Barcode)).ToList();
+        }
+
+        public List<UserEvent> GetAllFieldsOfEvent(int idEvent)
+        {
+            return this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue => ue.EventID_Event == idEvent)
+                .GroupBy(ue1 => ue1.FieldUser.Field.Name).Select(g => g.FirstOrDefault()).ToList();
+        }
+
 
         /*********************************************************************************************************************************************************************/
         /*********** INSERT *************/

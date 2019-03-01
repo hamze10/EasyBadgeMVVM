@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EasyBadgeMVVM.Models;
+
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace EasyBadgeMVVM.ViewModels
@@ -11,6 +14,8 @@ namespace EasyBadgeMVVM.ViewModels
         void LoadFromImport(string content);
         ObservableCollection<ExportDataDTO> GetExportData();
         void SetDeleteButton(bool value);
+        List<UserEvent> GetUserEventByDTO(UserEventDTO dto);
+        List<UserEvent> GetAllFieldsOfEvent(int idEvent);
     }
 
     public class UserEventDTO

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EasyBadgeMVVM.Models;
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -230,6 +232,16 @@ namespace EasyBadgeMVVM.ViewModels
         {
             //TODO Faire query (voir query dossier data)
             return null;
+        }
+
+        public List<UserEvent> GetUserEventByDTO(UserEventDTO dto)
+        {
+            return this._dbEntities.GetUserEventByDTO(dto);
+        }
+
+        public List<UserEvent> GetAllFieldsOfEvent(int idEvent)
+        {
+            return this._dbEntities.GetAllFieldsOfEvent(idEvent);
         }
     }
 }
