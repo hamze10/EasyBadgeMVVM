@@ -1,0 +1,696 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EasyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BadgeEventSet">
+          <Key>
+            <PropertyRef Name="BadgeID_Badge" />
+            <PropertyRef Name="EventID_Event" />
+          </Key>
+          <Property Name="BadgeID_Badge" Type="int" Nullable="false" />
+          <Property Name="EventID_Event" Type="int" Nullable="false" />
+          <Property Name="TypeBadge" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BadgeSet">
+          <Key>
+            <PropertyRef Name="ID_Badge" />
+          </Key>
+          <Property Name="ID_Badge" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dimension_X" Type="float" Nullable="false" />
+          <Property Name="Dimension_Y" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventSet">
+          <Key>
+            <PropertyRef Name="ID_Event" />
+          </Key>
+          <Property Name="ID_Event" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DateOfEvent" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FieldSet">
+          <Key>
+            <PropertyRef Name="ID_Field" />
+          </Key>
+          <Property Name="ID_Field" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FieldUserSet">
+          <Key>
+            <PropertyRef Name="ID_FieldUser" />
+          </Key>
+          <Property Name="ID_FieldUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AdditionnalInformation" Type="nvarchar(max)" />
+          <Property Name="UserID_User" Type="int" Nullable="false" />
+          <Property Name="FieldID_Field" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PositionSet">
+          <Key>
+            <PropertyRef Name="BadgeEventBadgeID_Badge" />
+            <PropertyRef Name="BadgeEventEventID_Event" />
+            <PropertyRef Name="FieldID_Field" />
+          </Key>
+          <Property Name="BadgeEventBadgeID_Badge" Type="int" Nullable="false" />
+          <Property Name="BadgeEventEventID_Event" Type="int" Nullable="false" />
+          <Property Name="FieldID_Field" Type="int" Nullable="false" />
+          <Property Name="Position_X" Type="float" Nullable="false" />
+          <Property Name="Position_Y" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PrintBadgeSet">
+          <Key>
+            <PropertyRef Name="UserID_User" />
+            <PropertyRef Name="EventID_Event" />
+          </Key>
+          <Property Name="UserID_User" Type="int" Nullable="false" />
+          <Property Name="EventID_Event" Type="int" Nullable="false" />
+          <Property Name="PrintDate" Type="datetime" Nullable="false" />
+          <Property Name="PrintBy" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="UserEventSet">
+          <Key>
+            <PropertyRef Name="UserID_User" />
+            <PropertyRef Name="EventID_Event" />
+            <PropertyRef Name="FieldUserID_FieldUser1" />
+          </Key>
+          <Property Name="UserID_User" Type="int" Nullable="false" />
+          <Property Name="EventID_Event" Type="int" Nullable="false" />
+          <Property Name="FieldUserID_FieldUser1" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserSet">
+          <Key>
+            <PropertyRef Name="ID_User" />
+          </Key>
+          <Property Name="ID_User" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="Barcode" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BadgeBadgeEvent">
+          <End Role="BadgeSet" Type="Self.BadgeSet" Multiplicity="1" />
+          <End Role="BadgeEventSet" Type="Self.BadgeEventSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BadgeSet">
+              <PropertyRef Name="ID_Badge" />
+            </Principal>
+            <Dependent Role="BadgeEventSet">
+              <PropertyRef Name="BadgeID_Badge" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BadgeEventPosition">
+          <End Role="BadgeEventSet" Type="Self.BadgeEventSet" Multiplicity="1" />
+          <End Role="PositionSet" Type="Self.PositionSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BadgeEventSet">
+              <PropertyRef Name="BadgeID_Badge" />
+              <PropertyRef Name="EventID_Event" />
+            </Principal>
+            <Dependent Role="PositionSet">
+              <PropertyRef Name="BadgeEventBadgeID_Badge" />
+              <PropertyRef Name="BadgeEventEventID_Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventBadgeEvent">
+          <End Role="EventSet" Type="Self.EventSet" Multiplicity="1" />
+          <End Role="BadgeEventSet" Type="Self.BadgeEventSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventSet">
+              <PropertyRef Name="ID_Event" />
+            </Principal>
+            <Dependent Role="BadgeEventSet">
+              <PropertyRef Name="EventID_Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventPrintBadge">
+          <End Role="EventSet" Type="Self.EventSet" Multiplicity="1" />
+          <End Role="PrintBadgeSet" Type="Self.PrintBadgeSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventSet">
+              <PropertyRef Name="ID_Event" />
+            </Principal>
+            <Dependent Role="PrintBadgeSet">
+              <PropertyRef Name="EventID_Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventUserEvent">
+          <End Role="EventSet" Type="Self.EventSet" Multiplicity="1" />
+          <End Role="UserEventSet" Type="Self.UserEventSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventSet">
+              <PropertyRef Name="ID_Event" />
+            </Principal>
+            <Dependent Role="UserEventSet">
+              <PropertyRef Name="EventID_Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldFieldUser">
+          <End Role="FieldSet" Type="Self.FieldSet" Multiplicity="1" />
+          <End Role="FieldUserSet" Type="Self.FieldUserSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FieldSet">
+              <PropertyRef Name="ID_Field" />
+            </Principal>
+            <Dependent Role="FieldUserSet">
+              <PropertyRef Name="FieldID_Field" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldPosition">
+          <End Role="FieldSet" Type="Self.FieldSet" Multiplicity="1" />
+          <End Role="PositionSet" Type="Self.PositionSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FieldSet">
+              <PropertyRef Name="ID_Field" />
+            </Principal>
+            <Dependent Role="PositionSet">
+              <PropertyRef Name="FieldID_Field" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FieldUserUserEvent">
+          <End Role="FieldUserSet" Type="Self.FieldUserSet" Multiplicity="1" />
+          <End Role="UserEventSet" Type="Self.UserEventSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FieldUserSet">
+              <PropertyRef Name="ID_FieldUser" />
+            </Principal>
+            <Dependent Role="UserEventSet">
+              <PropertyRef Name="FieldUserID_FieldUser1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserFieldUser">
+          <End Role="UserSet" Type="Self.UserSet" Multiplicity="1" />
+          <End Role="FieldUserSet" Type="Self.FieldUserSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSet">
+              <PropertyRef Name="ID_User" />
+            </Principal>
+            <Dependent Role="FieldUserSet">
+              <PropertyRef Name="UserID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPrintBadge">
+          <End Role="UserSet" Type="Self.UserSet" Multiplicity="1" />
+          <End Role="PrintBadgeSet" Type="Self.PrintBadgeSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSet">
+              <PropertyRef Name="ID_User" />
+            </Principal>
+            <Dependent Role="PrintBadgeSet">
+              <PropertyRef Name="UserID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserUserEvent">
+          <End Role="UserSet" Type="Self.UserSet" Multiplicity="1" />
+          <End Role="UserEventSet" Type="Self.UserEventSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSet">
+              <PropertyRef Name="ID_User" />
+            </Principal>
+            <Dependent Role="UserEventSet">
+              <PropertyRef Name="UserID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EasyModelStoreContainer">
+          <EntitySet Name="BadgeEventSet" EntityType="Self.BadgeEventSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BadgeSet" EntityType="Self.BadgeSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventSet" EntityType="Self.EventSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FieldSet" EntityType="Self.FieldSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FieldUserSet" EntityType="Self.FieldUserSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PositionSet" EntityType="Self.PositionSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PrintBadgeSet" EntityType="Self.PrintBadgeSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserEventSet" EntityType="Self.UserEventSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserSet" EntityType="Self.UserSet" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BadgeBadgeEvent" Association="Self.FK_BadgeBadgeEvent">
+            <End Role="BadgeSet" EntitySet="BadgeSet" />
+            <End Role="BadgeEventSet" EntitySet="BadgeEventSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BadgeEventPosition" Association="Self.FK_BadgeEventPosition">
+            <End Role="BadgeEventSet" EntitySet="BadgeEventSet" />
+            <End Role="PositionSet" EntitySet="PositionSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventBadgeEvent" Association="Self.FK_EventBadgeEvent">
+            <End Role="EventSet" EntitySet="EventSet" />
+            <End Role="BadgeEventSet" EntitySet="BadgeEventSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventPrintBadge" Association="Self.FK_EventPrintBadge">
+            <End Role="EventSet" EntitySet="EventSet" />
+            <End Role="PrintBadgeSet" EntitySet="PrintBadgeSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventUserEvent" Association="Self.FK_EventUserEvent">
+            <End Role="EventSet" EntitySet="EventSet" />
+            <End Role="UserEventSet" EntitySet="UserEventSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldFieldUser" Association="Self.FK_FieldFieldUser">
+            <End Role="FieldSet" EntitySet="FieldSet" />
+            <End Role="FieldUserSet" EntitySet="FieldUserSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldPosition" Association="Self.FK_FieldPosition">
+            <End Role="FieldSet" EntitySet="FieldSet" />
+            <End Role="PositionSet" EntitySet="PositionSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FieldUserUserEvent" Association="Self.FK_FieldUserUserEvent">
+            <End Role="FieldUserSet" EntitySet="FieldUserSet" />
+            <End Role="UserEventSet" EntitySet="UserEventSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserFieldUser" Association="Self.FK_UserFieldUser">
+            <End Role="UserSet" EntitySet="UserSet" />
+            <End Role="FieldUserSet" EntitySet="FieldUserSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPrintBadge" Association="Self.FK_UserPrintBadge">
+            <End Role="UserSet" EntitySet="UserSet" />
+            <End Role="PrintBadgeSet" EntitySet="PrintBadgeSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserUserEvent" Association="Self.FK_UserUserEvent">
+            <End Role="UserSet" EntitySet="UserSet" />
+            <End Role="UserEventSet" EntitySet="UserEventSet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="EasyModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="EasyModelContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserSet" EntityType="EasyModel.User" />
+          <EntitySet Name="EventSet" EntityType="EasyModel.Event" />
+          <EntitySet Name="FieldSet" EntityType="EasyModel.Field" />
+          <EntitySet Name="FieldUserSet" EntityType="EasyModel.FieldUser" />
+          <EntitySet Name="UserEventSet" EntityType="EasyModel.UserEvent" />
+          <EntitySet Name="PrintBadgeSet" EntityType="EasyModel.PrintBadge" />
+          <EntitySet Name="BadgeSet" EntityType="EasyModel.Badge" />
+          <EntitySet Name="BadgeEventSet" EntityType="EasyModel.BadgeEvent" />
+          <EntitySet Name="PositionSet" EntityType="EasyModel.Position" />
+          <AssociationSet Name="UserFieldUser" Association="EasyModel.UserFieldUser">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="FieldUser" EntitySet="FieldUserSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserUserEvent" Association="EasyModel.UserUserEvent">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="UserEvent" EntitySet="UserEventSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserPrintBadge" Association="EasyModel.UserPrintBadge">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="PrintBadge" EntitySet="PrintBadgeSet" />
+          </AssociationSet>
+          <AssociationSet Name="EventUserEvent" Association="EasyModel.EventUserEvent">
+            <End Role="Event" EntitySet="EventSet" />
+            <End Role="UserEvent" EntitySet="UserEventSet" />
+          </AssociationSet>
+          <AssociationSet Name="EventPrintBadge" Association="EasyModel.EventPrintBadge">
+            <End Role="Event" EntitySet="EventSet" />
+            <End Role="PrintBadge" EntitySet="PrintBadgeSet" />
+          </AssociationSet>
+          <AssociationSet Name="EventBadgeEvent" Association="EasyModel.EventBadgeEvent">
+            <End Role="Event" EntitySet="EventSet" />
+            <End Role="BadgeEvent" EntitySet="BadgeEventSet" />
+          </AssociationSet>
+          <AssociationSet Name="FieldFieldUser" Association="EasyModel.FieldFieldUser">
+            <End Role="Field" EntitySet="FieldSet" />
+            <End Role="FieldUser" EntitySet="FieldUserSet" />
+          </AssociationSet>
+          <AssociationSet Name="FieldPosition" Association="EasyModel.FieldPosition">
+            <End Role="Field" EntitySet="FieldSet" />
+            <End Role="Position" EntitySet="PositionSet" />
+          </AssociationSet>
+          <AssociationSet Name="BadgeBadgeEvent" Association="EasyModel.BadgeBadgeEvent">
+            <End Role="Badge" EntitySet="BadgeSet" />
+            <End Role="BadgeEvent" EntitySet="BadgeEventSet" />
+          </AssociationSet>
+          <AssociationSet Name="BadgeEventPosition" Association="EasyModel.BadgeEventPosition">
+            <End Role="BadgeEvent" EntitySet="BadgeEventSet" />
+            <End Role="Position" EntitySet="PositionSet" />
+          </AssociationSet>
+          <AssociationSet Name="FieldUserUserEvent" Association="EasyModel.FieldUserUserEvent">
+            <End Role="FieldUser" EntitySet="FieldUserSet" />
+            <End Role="UserEvent" EntitySet="UserEventSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID_User" />
+          </Key>
+          <Property Name="ID_User" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="Barcode" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="FieldUsers" Relationship="EasyModel.UserFieldUser" FromRole="User" ToRole="FieldUser" />
+          <NavigationProperty Name="UserEvents" Relationship="EasyModel.UserUserEvent" FromRole="User" ToRole="UserEvent" />
+          <NavigationProperty Name="PrintBadges" Relationship="EasyModel.UserPrintBadge" FromRole="User" ToRole="PrintBadge" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="ID_Event" />
+          </Key>
+          <Property Name="ID_Event" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="DateOfEvent" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="UserEvents" Relationship="EasyModel.EventUserEvent" FromRole="Event" ToRole="UserEvent" />
+          <NavigationProperty Name="PrintBadges" Relationship="EasyModel.EventPrintBadge" FromRole="Event" ToRole="PrintBadge" />
+          <NavigationProperty Name="BadgeEvents" Relationship="EasyModel.EventBadgeEvent" FromRole="Event" ToRole="BadgeEvent" />
+        </EntityType>
+        <EntityType Name="Field">
+          <Key>
+            <PropertyRef Name="ID_Field" />
+          </Key>
+          <Property Name="ID_Field" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="FieldUsers" Relationship="EasyModel.FieldFieldUser" FromRole="Field" ToRole="FieldUser" />
+          <NavigationProperty Name="Positions" Relationship="EasyModel.FieldPosition" FromRole="Field" ToRole="Position" />
+        </EntityType>
+        <EntityType Name="FieldUser">
+          <Key>
+            <PropertyRef Name="ID_FieldUser" />
+          </Key>
+          <Property Name="ID_FieldUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="AdditionnalInformation" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="UserID_User" Type="Int32" Nullable="false" />
+          <Property Name="FieldID_Field" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="EasyModel.UserFieldUser" FromRole="FieldUser" ToRole="User" />
+          <NavigationProperty Name="Field" Relationship="EasyModel.FieldFieldUser" FromRole="FieldUser" ToRole="Field" />
+          <NavigationProperty Name="UserEvents" Relationship="EasyModel.FieldUserUserEvent" FromRole="FieldUser" ToRole="UserEvent" />
+        </EntityType>
+        <EntityType Name="UserEvent">
+          <Key>
+            <PropertyRef Name="UserID_User" />
+            <PropertyRef Name="EventID_Event" />
+            <PropertyRef Name="FieldUserID_FieldUser1" />
+          </Key>
+          <Property Name="UserID_User" Type="Int32" Nullable="false" />
+          <Property Name="EventID_Event" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="EasyModel.UserUserEvent" FromRole="UserEvent" ToRole="User" />
+          <NavigationProperty Name="Event" Relationship="EasyModel.EventUserEvent" FromRole="UserEvent" ToRole="Event" />
+          <NavigationProperty Name="FieldUser" Relationship="EasyModel.FieldUserUserEvent" FromRole="UserEvent" ToRole="FieldUser" />
+          <Property Name="FieldUserID_FieldUser1" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PrintBadge">
+          <Key>
+            <PropertyRef Name="UserID_User" />
+            <PropertyRef Name="EventID_Event" />
+          </Key>
+          <Property Name="UserID_User" Type="Int32" Nullable="false" />
+          <Property Name="EventID_Event" Type="Int32" Nullable="false" />
+          <Property Name="PrintDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PrintBy" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Comment" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="User" Relationship="EasyModel.UserPrintBadge" FromRole="PrintBadge" ToRole="User" />
+          <NavigationProperty Name="Event" Relationship="EasyModel.EventPrintBadge" FromRole="PrintBadge" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="Badge">
+          <Key>
+            <PropertyRef Name="ID_Badge" />
+          </Key>
+          <Property Name="ID_Badge" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dimension_X" Type="Double" Nullable="false" />
+          <Property Name="Dimension_Y" Type="Double" Nullable="false" />
+          <NavigationProperty Name="BadgeEvents" Relationship="EasyModel.BadgeBadgeEvent" FromRole="Badge" ToRole="BadgeEvent" />
+        </EntityType>
+        <EntityType Name="BadgeEvent">
+          <Key>
+            <PropertyRef Name="BadgeID_Badge" />
+            <PropertyRef Name="EventID_Event" />
+          </Key>
+          <Property Name="BadgeID_Badge" Type="Int32" Nullable="false" />
+          <Property Name="EventID_Event" Type="Int32" Nullable="false" />
+          <Property Name="TypeBadge" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Event" Relationship="EasyModel.EventBadgeEvent" FromRole="BadgeEvent" ToRole="Event" />
+          <NavigationProperty Name="Badge" Relationship="EasyModel.BadgeBadgeEvent" FromRole="BadgeEvent" ToRole="Badge" />
+          <NavigationProperty Name="Positions" Relationship="EasyModel.BadgeEventPosition" FromRole="BadgeEvent" ToRole="Position" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="BadgeEventBadgeID_Badge" />
+            <PropertyRef Name="BadgeEventEventID_Event" />
+            <PropertyRef Name="FieldID_Field" />
+          </Key>
+          <Property Name="BadgeEventBadgeID_Badge" Type="Int32" Nullable="false" />
+          <Property Name="BadgeEventEventID_Event" Type="Int32" Nullable="false" />
+          <Property Name="FieldID_Field" Type="Int32" Nullable="false" />
+          <Property Name="Position_X" Type="Double" Nullable="false" />
+          <Property Name="Position_Y" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Field" Relationship="EasyModel.FieldPosition" FromRole="Position" ToRole="Field" />
+          <NavigationProperty Name="BadgeEvent" Relationship="EasyModel.BadgeEventPosition" FromRole="Position" ToRole="BadgeEvent" />
+        </EntityType>
+        <Association Name="UserFieldUser">
+          <End Type="EasyModel.User" Role="User" Multiplicity="1" />
+          <End Type="EasyModel.FieldUser" Role="FieldUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID_User" />
+            </Principal>
+            <Dependent Role="FieldUser">
+              <PropertyRef Name="UserID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserUserEvent">
+          <End Type="EasyModel.User" Role="User" Multiplicity="1" />
+          <End Type="EasyModel.UserEvent" Role="UserEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID_User" />
+            </Principal>
+            <Dependent Role="UserEvent">
+              <PropertyRef Name="UserID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserPrintBadge">
+          <End Type="EasyModel.User" Role="User" Multiplicity="1" />
+          <End Type="EasyModel.PrintBadge" Role="PrintBadge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID_User" />
+            </Principal>
+            <Dependent Role="PrintBadge">
+              <PropertyRef Name="UserID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventUserEvent">
+          <End Type="EasyModel.Event" Role="Event" Multiplicity="1" />
+          <End Type="EasyModel.UserEvent" Role="UserEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="ID_Event" />
+            </Principal>
+            <Dependent Role="UserEvent">
+              <PropertyRef Name="EventID_Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventPrintBadge">
+          <End Type="EasyModel.Event" Role="Event" Multiplicity="1" />
+          <End Type="EasyModel.PrintBadge" Role="PrintBadge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="ID_Event" />
+            </Principal>
+            <Dependent Role="PrintBadge">
+              <PropertyRef Name="EventID_Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventBadgeEvent">
+          <End Type="EasyModel.Event" Role="Event" Multiplicity="1" />
+          <End Type="EasyModel.BadgeEvent" Role="BadgeEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="ID_Event" />
+            </Principal>
+            <Dependent Role="BadgeEvent">
+              <PropertyRef Name="EventID_Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FieldFieldUser">
+          <End Type="EasyModel.Field" Role="Field" Multiplicity="1" />
+          <End Type="EasyModel.FieldUser" Role="FieldUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Field">
+              <PropertyRef Name="ID_Field" />
+            </Principal>
+            <Dependent Role="FieldUser">
+              <PropertyRef Name="FieldID_Field" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FieldPosition">
+          <End Type="EasyModel.Field" Role="Field" Multiplicity="1" />
+          <End Type="EasyModel.Position" Role="Position" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Field">
+              <PropertyRef Name="ID_Field" />
+            </Principal>
+            <Dependent Role="Position">
+              <PropertyRef Name="FieldID_Field" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BadgeBadgeEvent">
+          <End Type="EasyModel.Badge" Role="Badge" Multiplicity="1" />
+          <End Type="EasyModel.BadgeEvent" Role="BadgeEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Badge">
+              <PropertyRef Name="ID_Badge" />
+            </Principal>
+            <Dependent Role="BadgeEvent">
+              <PropertyRef Name="BadgeID_Badge" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BadgeEventPosition">
+          <End Type="EasyModel.BadgeEvent" Role="BadgeEvent" Multiplicity="1" />
+          <End Type="EasyModel.Position" Role="Position" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BadgeEvent">
+              <PropertyRef Name="BadgeID_Badge" />
+              <PropertyRef Name="EventID_Event" />
+            </Principal>
+            <Dependent Role="Position">
+              <PropertyRef Name="BadgeEventBadgeID_Badge" />
+              <PropertyRef Name="BadgeEventEventID_Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FieldUserUserEvent">
+          <End Type="EasyModel.FieldUser" Role="FieldUser" Multiplicity="1" />
+          <End Type="EasyModel.UserEvent" Role="UserEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FieldUser">
+              <PropertyRef Name="ID_FieldUser" />
+            </Principal>
+            <Dependent Role="UserEvent">
+              <PropertyRef Name="FieldUserID_FieldUser1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EasyModelStoreContainer" CdmEntityContainer="EasyModelContext">
+    <EntitySetMapping Name="UserSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyModel.User)">
+        <MappingFragment StoreEntitySet="UserSet">
+          <ScalarProperty Name="ID_User" ColumnName="ID_User" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyModel.Event)">
+        <MappingFragment StoreEntitySet="EventSet">
+          <ScalarProperty Name="ID_Event" ColumnName="ID_Event" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DateOfEvent" ColumnName="DateOfEvent" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FieldSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyModel.Field)">
+        <MappingFragment StoreEntitySet="FieldSet">
+          <ScalarProperty Name="ID_Field" ColumnName="ID_Field" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FieldUserSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyModel.FieldUser)">
+        <MappingFragment StoreEntitySet="FieldUserSet">
+          <ScalarProperty Name="ID_FieldUser" ColumnName="ID_FieldUser" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="AdditionnalInformation" ColumnName="AdditionnalInformation" />
+          <ScalarProperty Name="UserID_User" ColumnName="UserID_User" />
+          <ScalarProperty Name="FieldID_Field" ColumnName="FieldID_Field" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserEventSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyModel.UserEvent)">
+        <MappingFragment StoreEntitySet="UserEventSet">
+          <ScalarProperty Name="UserID_User" ColumnName="UserID_User" />
+          <ScalarProperty Name="EventID_Event" ColumnName="EventID_Event" />
+          <ScalarProperty Name="FieldUserID_FieldUser1" ColumnName="FieldUserID_FieldUser1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PrintBadgeSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyModel.PrintBadge)">
+        <MappingFragment StoreEntitySet="PrintBadgeSet">
+          <ScalarProperty Name="UserID_User" ColumnName="UserID_User" />
+          <ScalarProperty Name="EventID_Event" ColumnName="EventID_Event" />
+          <ScalarProperty Name="PrintDate" ColumnName="PrintDate" />
+          <ScalarProperty Name="PrintBy" ColumnName="PrintBy" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BadgeSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyModel.Badge)">
+        <MappingFragment StoreEntitySet="BadgeSet">
+          <ScalarProperty Name="ID_Badge" ColumnName="ID_Badge" />
+          <ScalarProperty Name="Dimension_X" ColumnName="Dimension_X" />
+          <ScalarProperty Name="Dimension_Y" ColumnName="Dimension_Y" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BadgeEventSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyModel.BadgeEvent)">
+        <MappingFragment StoreEntitySet="BadgeEventSet">
+          <ScalarProperty Name="BadgeID_Badge" ColumnName="BadgeID_Badge" />
+          <ScalarProperty Name="EventID_Event" ColumnName="EventID_Event" />
+          <ScalarProperty Name="TypeBadge" ColumnName="TypeBadge" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PositionSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EasyModel.Position)">
+        <MappingFragment StoreEntitySet="PositionSet">
+          <ScalarProperty Name="BadgeEventBadgeID_Badge" ColumnName="BadgeEventBadgeID_Badge" />
+          <ScalarProperty Name="BadgeEventEventID_Event" ColumnName="BadgeEventEventID_Event" />
+          <ScalarProperty Name="FieldID_Field" ColumnName="FieldID_Field" />
+          <ScalarProperty Name="Position_X" ColumnName="Position_X" />
+          <ScalarProperty Name="Position_Y" ColumnName="Position_Y" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,124 @@
+﻿<Window x:Class="EasyBadgeMVVM.Views.SelectEvent"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyBadgeMVVM"
+        mc:Ignorable="d"
+        Title="Select your event" Height="660" Width="640"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <Grid>
+        <materialDesign:DialogHost
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Height="600" Width="600">
+            <materialDesign:DialogHost.DialogContent>
+                <ScrollViewer VerticalScrollBarVisibility="Visible" Width="370" Height="700">
+                    <StackPanel
+                     Margin="30">
+                        <TextBox
+                        HorizontalAlignment="Stretch"
+                        Name="AddEventName"
+                        materialDesign:HintAssist.Hint="Name"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                        <Calendar
+                        Name="AddEventDate"
+                        materialDesign:HintAssist.Hint="Date" />
+                        <materialDesign:Clock
+                        Name="AddEventTime"
+                        DisplayAutomation="CycleWithSeconds"
+                        Is24Hours="True" />
+                        <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                            <Button
+                              Style="{StaticResource MaterialDesignFlatButton}"
+                              Command="materialDesign:DialogHost.CloseDialogCommand"
+                              IsDefault="True"
+                              Margin="0 8 8 0"
+                              Click="AddNewEvent"
+                              ToolTip="Add new event">
+                                ACCEPT
+                            </Button>
+                            <Button
+                              Style="{StaticResource MaterialDesignFlatButton}"
+                              Command="materialDesign:DialogHost.CloseDialogCommand"
+                              IsCancel="True"
+                              Margin="0 8 8 0">
+                                CANCEL
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </materialDesign:DialogHost.DialogContent>
+            <Border
+                BorderThickness="1"
+                BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                MinWidth="256"
+                MinHeight="256"
+                ClipToBounds="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ComboBox materialDesign:HintAssist.Hint="Select your event" Height="Auto" Width="Auto" Margin="10" 
+                              ItemsSource="{Binding ListOfEvents}"
+                              SelectedValuePath="ID_Event"
+                              SelectedValue="{Binding SelectedEvent}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Name}" />
+                                    <Run Text=" - " />
+                                    <Run Text="{Binding DateOfEvent}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Width="100"
+                        Click="EventConfirm"
+                        ToolTip="Confirm" Margin="10,303,488,197"
+                        Background="#30336b" Height="Auto">
+                        OK
+                    </Button>
+                    <materialDesign:ColorZone
+                        Mode="PrimaryMid"
+                        Background="#30336b"
+                        Grid.Row="1"
+                        Effect="{DynamicResource MaterialDesignShadowDepth5}" Height="55" Margin="0,10,0,0">
+                        <TextBlock Margin="10,10,22,10" FontSize="25">
+                            OneTec Group
+                        </TextBlock>
+                    </materialDesign:ColorZone>
+                    <Image Source="../../data/clickhere2.png" Width="Auto" Height="Auto" Margin="452,421,-4,16" RenderTransformOrigin="0.631,0.43" >
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="-20.428"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Button
+                        Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                        Grid.Row="0"
+                        Margin="0,0,27,36"
+                        Background="#f6e58d"
+                        BorderBrush="#f6e58d" Grid.RowSpan="2">
+                        <materialDesign:PackIcon
+                          Kind="Plus"
+                          Height="22"
+                          Width="22" />
+                    </Button>
+                </Grid>
+            </Border>
+        </materialDesign:DialogHost>
+    </Grid>
+</Window>

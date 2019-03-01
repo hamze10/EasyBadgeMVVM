@@ -1,0 +1,169 @@
+﻿<Window x:Class="EasyBadgeMVVM.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyBadgeMVVM"
+        mc:Ignorable="d"
+        Title="EasyBADGE" Height="{x:Static SystemParameters.PrimaryScreenHeight}" Width="{x:Static SystemParameters.PrimaryScreenWidth}"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <Grid Background="#dfe6e9">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <!-- MENU -->
+        <Grid Grid.Column="0" Grid.ColumnSpan="2">
+            <materialDesign:ColorZone Mode="Dark" Padding="16" Width="Auto" Background="#0a3d62">
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal" materialDesign:RippleAssist.IsCentered="True">
+                        <ToggleButton Name="ToggleButtonMenu" Click="ToggleClick" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" Height="Auto" Width="75" />
+                        <materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4" CornerRadius="2" Panel.ZIndex="1" Margin="50,0,0,0" materialDesign:ShadowAssist.ShadowDepth="Depth1" 
+                                                  Height="Auto" Width="744">
+                            <Grid Margin="0,0,0,-8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="69*" />
+                                    <ColumnDefinition Width="295*"/>
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button Style="{DynamicResource MaterialDesignToolButton}" Margin="0,10,75,19" Height="Auto" Grid.ColumnSpan="2">
+                                    <materialDesign:PackIcon Kind="Magnify" Opacity=".56" Height="Auto" Width="Auto" RenderTransformOrigin="0.475,0.188" />
+                                </Button>
+                                <TextBox Margin="63,5,0,14" materialDesign:HintAssist.Hint="Search by lastname, firstname, company and/or barcode"
+                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0" MinWidth="200" VerticalAlignment="Center" PreviewKeyDown="EnterSearch"
+                                         VerticalContentAlignment="Center" FontSize="24" Grid.ColumnSpan="3" Height="49" Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </materialDesign:ColorZone>
+                    </StackPanel>
+                </DockPanel>
+            </materialDesign:ColorZone>
+        </Grid>
+
+        <!-- DATAGRID WITH LIST OF USERS -->
+        <Grid Name="GridDataGrid" Background="#ffffff" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0,31,26,24" Height="Auto" Width="Auto" >
+            <StackPanel>
+                <DataGrid Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Name="DataGridUsers" 
+                          SelectedItem="{Binding SelectedUserEvent}" ItemsSource="{Binding MainFields, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" IsReadOnly="True" 
+                      Height="840" Width="Auto" MouseDoubleClick="ShowUserInfo" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+                    <DataGrid.Columns>
+                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="BARCODE" Binding="{Binding Barcode}" />
+                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="LAST NAME" Binding="{Binding LastName}" />
+                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="FIRST NAME" Binding="{Binding FirstName}" />
+                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="COMPANY" Binding="{Binding Company}" />
+                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="PRINT BADGE" Binding="{Binding PrintBadge}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding NbrUser, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" />
+            </StackPanel>
+        </Grid>
+
+        <!-- LOADING -->
+        <Grid Name="GridLoading" Background="White" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Visibility="Hidden" Margin="0,31,26,24">
+            <ProgressBar
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Name="ProgressLoading"
+                IsIndeterminate="true"
+                Value="0"
+                Width="300"
+                Height="300"
+                />
+        </Grid>
+
+        <!-- OPTIONS LIST -->
+        <Grid Name="GridOptionsList" Background="White" Grid.Row="1" Margin="10,31,22,24" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid Width="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="320" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="0" />
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="0" />
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="0" />
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="0" />
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="0" />
+                    <RowDefinition Height="80" />
+                </Grid.RowDefinitions>
+
+                <Grid Background="#ffa502" Margin="0,0,124,31">
+                    <Button Click="NewUserInfo" Background="#ffa502" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230" 
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-5,-3,-27,-19">
+                        <StackPanel Orientation="Horizontal" Width="Auto">
+                            <materialDesign:PackIcon Kind="AccountEdit" Height="Auto" Width="52" Foreground="Black" />
+                            <Label Content="NEW" Height="53" Width="138" FontSize="30" Foreground="Black" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <Grid Background="#6ab04c" Grid.Row="2" Margin="0,0,124,31">
+                    <Button Click="ImportUsers" Background="#6ab04c" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-4,-3,-30,-22">
+                        <StackPanel Orientation="Horizontal" Width="Auto">
+                            <materialDesign:PackIcon Kind="Upload" Height="Auto" Width="52" Foreground="Black" />
+                            <Label Content="IMPORT" Height="53" Width="139" FontSize="30" Foreground="Black" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <Grid Background="#e74c3c" Grid.Row="4" Margin="0,0,124,31">
+                    <Button Click="ExportUsers" Background="#e74c3c" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-2,-2,-32,-20">
+                        <StackPanel Orientation="Horizontal" Width="Auto">
+                            <materialDesign:PackIcon Kind="Download" Height="Auto" Width="52" Foreground="Black" />
+                            <Label Content="EXPORT" Height="53" Width="146" FontSize="30" Foreground="Black" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <Grid Background="#70a1ff" Grid.Row="6" Margin="0,0,124,31">
+                    <Button Background="#70a1ff" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-3,-3,-27,-20">
+                        <StackPanel Orientation="Horizontal" Width="Auto">
+                            <materialDesign:PackIcon Kind="ChartPie" Height="Auto" Width="52" Foreground="Black" />
+                            <Label Content="STATS" Height="53" Width="142" FontSize="30" Foreground="Black" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <Grid Background="#0a3d62" Grid.Row="8" Margin="0,0,124,31">
+                    <Button Click="SyncUsers" Background="#0a3d62" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-4,-4,-31,-25">
+                        <StackPanel Orientation="Horizontal" Width="Auto">
+                            <materialDesign:PackIcon Kind="Sync" Height="Auto" Width="52" Foreground="Black" />
+                            <Label Content="SYNC" Height="53" Width="140" FontSize="30" Foreground="Black" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <Grid Background="#F8EFBA" Grid.Row="9" Margin="0,0,124,31">
+                    <Button Background="#F8EFBA" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-3,2,-31,-77">
+                        <StackPanel Orientation="Horizontal" Width="Auto">
+                            <materialDesign:PackIcon Kind="Settings" Height="Auto" Width="52" Foreground="Black" />
+                            <Label Content="SETTINGS" Height="53" Width="148" FontSize="30" Foreground="Black" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <!-- SNACKBAR (NOTIFICATION) -->
+        <Grid Grid.Column="1" Grid.Row="2">
+            <materialDesign:Snackbar
+              HorizontalAlignment="Stretch"
+              MessageQueue="{materialDesign:MessageQueue}"
+              Name="SnackbarOne" Background="#0a3d62" Width="754" />
+        </Grid>
+
+    </Grid>
+</Window>
