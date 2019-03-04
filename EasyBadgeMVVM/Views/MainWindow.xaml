@@ -48,20 +48,23 @@
 
         <!-- DATAGRID WITH LIST OF USERS -->
         <Grid Name="GridDataGrid" Background="#ffffff" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0,31,26,24" Height="Auto" Width="Auto" >
-            <StackPanel>
-                <DataGrid Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Name="DataGridUsers" 
+            <ScrollViewer>
+                <StackPanel>
+                    <DataGrid Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Name="DataGridUsers" 
                           SelectedItem="{Binding SelectedUserEvent}" ItemsSource="{Binding MainFields, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" IsReadOnly="True" 
                       Height="840" Width="Auto" MouseDoubleClick="ShowUserInfo" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
-                    <DataGrid.Columns>
-                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="BARCODE" Binding="{Binding Barcode}" />
-                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="LAST NAME" Binding="{Binding LastName}" />
-                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="FIRST NAME" Binding="{Binding FirstName}" />
-                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="COMPANY" Binding="{Binding Company}" />
-                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="PRINT BADGE" Binding="{Binding PrintBadge}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding NbrUser, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" />
-            </StackPanel>
+                        <DataGrid.Columns>
+                            <materialDesign:MaterialDataGridTextColumn Width="*" Header="BARCODE" Binding="{Binding Barcode}" />
+                            <materialDesign:MaterialDataGridTextColumn Width="*" Header="LAST NAME" Binding="{Binding LastName}" />
+                            <materialDesign:MaterialDataGridTextColumn Width="*" Header="FIRST NAME" Binding="{Binding FirstName}" />
+                            <materialDesign:MaterialDataGridTextColumn Width="*" Header="COMPANY" Binding="{Binding Company}" />
+                            <materialDesign:MaterialDataGridTextColumn Width="*" Header="PRINT BADGE" Binding="{Binding PrintBadge}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding NbrUser, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" />
+                </StackPanel>
+            </ScrollViewer>
+
         </Grid>
 
         <!-- LOADING -->

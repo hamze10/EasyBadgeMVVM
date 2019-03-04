@@ -20,5 +20,12 @@ namespace EasyBadgeMVVM.DataAccess
         {
             return this._dbContext.Set<Field>().Where(f => f.Name.ToLower().Equals(name.ToLower())).SingleOrDefault();
         }
+
+        public Field CheckSimilarField(string name)
+        {
+            return this._dbContext.Set<Field>().Where(
+                f => f.Name.ToLower().Contains(name.ToLower())
+            ).SingleOrDefault();
+        }
     }
 }

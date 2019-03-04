@@ -19,7 +19,7 @@
             </Grid.RowDefinitions>
 
             <Grid Background="#0a3d62" Grid.ColumnSpan="3">
-                <Label Content="USER INFORMATIONS" Canvas.Left="487" Height="70" Width="407" FontSize="40" Canvas.Top="10" Foreground="White" />
+                <Label Content="USER INFORMATIONS" Canvas.Left="487" Height="70" Width="407" FontSize="40" Foreground="White" />
             </Grid>
         </Grid>
     </ScrollViewer>

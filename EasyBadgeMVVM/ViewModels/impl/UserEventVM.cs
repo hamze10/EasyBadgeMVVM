@@ -170,18 +170,21 @@ namespace EasyBadgeMVVM.ViewModels
                     int k = 0;
                     foreach(string field in s.Split(','))
                     {
-                        if (field.ToLower().Equals("firstname"))
+                        char[] charsToReplace = new char[] { '_', '.', '-', '#', ':' };
+                        string nameTrim = charsToReplace.Aggregate(field.ToLower(), (c1, c2) => c1.Replace(c2, ' ')).Replace(" ", string.Empty).ToLower();
+
+                        if (nameTrim.Equals("firstname"))
                         {
                             indexOfFirstName = k;
                         }
 
-                        if (field.ToLower().Equals("lastname"))
+                        if (nameTrim.Equals("lastname"))
                         {
                             indexOfLastName = k;
                         }
 
-                        allFields.Add(field);
-                        this._dbEntities.InsertNewField(field);
+                        allFields.Add(nameTrim);
+                        this._dbEntities.InsertNewField(nameTrim, field);
                         k++;
                     }
                 }
@@ -201,7 +204,7 @@ namespace EasyBadgeMVVM.ViewModels
                     if (exists == true) continue;
 
                     int j = 0;
-                    foreach(string data in s.Split(','))
+                    foreach (string data in s.Split(','))
                     {
                         this._dbEntities.InsertNewUser(j, allFields.ElementAt(j), data);
                         j++;
@@ -220,6 +223,7 @@ namespace EasyBadgeMVVM.ViewModels
             //Save Changes in DB
             this._dbEntities.SaveAllChanges();
             this._mainFields = this._dbEntities.GetAllUsers();
+            this._allUsers = this._mainFields;
             this.NbrUser = this._mainFields.Count;
             OnPropertyChanged("MainFields");
             OnPropertyChanged("NbrUser");

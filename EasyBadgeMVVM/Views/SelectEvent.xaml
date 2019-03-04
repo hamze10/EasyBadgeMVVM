@@ -95,7 +95,7 @@
                             OneTec Group
                         </TextBlock>
                     </materialDesign:ColorZone>
-                    <Image Source="../../data/clickhere2.png" Width="Auto" Height="Auto" Margin="452,421,-4,16" RenderTransformOrigin="0.631,0.43" >
+                    <Image Source="pack://application:,,,/asset/images/clickhere2.png" Width="Auto" Height="Auto" Margin="452,421,-4,16" RenderTransformOrigin="0.631,0.43" >
                         <Image.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>

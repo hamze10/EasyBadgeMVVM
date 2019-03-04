@@ -96,6 +96,8 @@
     <Compile Include="DataAccess\impl\UserRepository.cs" />
     <Compile Include="ViewModels\impl\DbEntities.cs" />
     <Compile Include="ViewModels\impl\EventVM.cs" />
+    <Compile Include="ViewModels\impl\FieldVM.cs" />
+    <Compile Include="ViewModels\interfaces\IFieldVM.cs" />
     <Compile Include="ViewModels\interfaces\IUserVM.cs" />
     <Compile Include="ViewModels\impl\UserVM.cs" />
     <Compile Include="ViewModels\interfaces\IDbEntities.cs" />
@@ -104,12 +106,19 @@
     <Compile Include="ViewModels\interfaces\IEventVM.cs" />
     <Compile Include="ViewModels\interfaces\IUserEventVM.cs" />
     <Compile Include="ViewModels\impl\UserEventVM.cs" />
+    <Compile Include="Views\FieldMatching.xaml.cs">
+      <DependentUpon>FieldMatching.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserWindow.xaml.cs">
       <DependentUpon>UserWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectEvent.xaml.cs">
       <DependentUpon>SelectEvent.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\FieldMatching.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -207,12 +216,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="data\clickhere.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="data\clickhere2.png">
+    <Folder Include="data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="asset\images\clickhere2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Content Include="Models\EasyModel.Context.tt">

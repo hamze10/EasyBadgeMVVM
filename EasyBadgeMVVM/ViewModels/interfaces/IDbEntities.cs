@@ -15,7 +15,7 @@ namespace EasyBadgeMVVM.ViewModels
     public interface IDbEntities
     {
         ObservableCollection<UserEventDTO> GetAllUsers();
-        void InsertNewField(string field);
+        void InsertNewField(string field, string oldfieldname);
         void InsertNewUser(int index, string field, string data);
         void SetIdEvent(int idEvent);
         void SaveAllChanges();

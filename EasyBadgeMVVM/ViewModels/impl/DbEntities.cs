@@ -1,12 +1,13 @@
 ﻿using EasyBadgeMVVM.DataAccess;
 using EasyBadgeMVVM.Models;
+using EasyBadgeMVVM.Views;
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
-
+using System.Windows;
 
 namespace EasyBadgeMVVM.ViewModels
 {
@@ -40,27 +41,28 @@ namespace EasyBadgeMVVM.ViewModels
 
         public ObservableCollection<UserEventDTO> GetAllUsers()
         {
-            IList<UserEvent> lst = this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(us => us.User.Active == true && us.EventID_Event == this._idEvent).ToList();
+            IList<UserEvent> lst = this._repostitoryFactory.GetUserEventRepository(this._dbContext)
+                .SearchFor(us => us.User.Active == true && us.EventID_Event == this._idEvent).ToList();
             ObservableCollection<UserEventDTO> localCollection = new ObservableCollection<UserEventDTO>();
 
             UserEventDTO dto = new UserEventDTO();
             foreach (UserEvent ue in lst)
             {
-                switch (ue.FieldUser.Field.Name)
+                switch (ue.FieldUser.Field.Name.ToLower())
                 {
-                    case "LastName":
+                    case "lastname":
                         if (AddIfNecessary(localCollection, dto, dto.LastName)) dto = new UserEventDTO();
                         dto.LastName = ue.FieldUser.Value;
                         break;
-                    case "FirstName":
+                    case "firstname":
                         if (AddIfNecessary(localCollection, dto, dto.FirstName)) dto = new UserEventDTO();
                         dto.FirstName = ue.FieldUser.Value;
                         break;
-                    case "Company":
+                    case "company":
                         if (AddIfNecessary(localCollection, dto, dto.Company)) dto = new UserEventDTO();
                         dto.Company = ue.FieldUser.Value;
                         break;
-                    case "PrintBadge":
+                    case "printbadge":
                         if (AddIfNecessary(localCollection, dto, dto.PrintBadge)) dto = new UserEventDTO();
                         dto.PrintBadge = DateTime.Parse(ue.FieldUser.Value);
                         break;
@@ -113,10 +115,30 @@ namespace EasyBadgeMVVM.ViewModels
         /*********** INSERT *************/
         /*********************************************************************************************************************************************************************/
 
-        public void InsertNewField(string field)
+        public void InsertNewField(string field, string oldfieldname)
         {
+            //BEFORE CHECK IF THE FIELD IS NOT IN THE DB
+            Field similar = this._repostitoryFactory.GetFieldRepository(this._dbContext).CheckSimilarField(field);
             Field f = new Field();
-            f.Name = field.Trim();
+            f.Name = similar == null ? field : similar.Name;
+
+            Application.Current.Dispatcher.Invoke((Action)delegate {
+                FieldMatching fieldMatching = new FieldMatching();
+                fieldMatching.FieldImported = oldfieldname;
+                fieldMatching.FieldInDb = similar.Name;
+                fieldMatching.CreateMessages();
+                Nullable<Boolean> waiting =  fieldMatching.ShowDialog();
+                if (waiting == true)
+                {
+                    Console.WriteLine("CLICKED : YES");
+                }
+                else
+                {
+                    Console.WriteLine("CLICKED : NO");
+                }
+                
+            });
+
             InsertInFieldTable(f);
         }
 
@@ -161,9 +183,10 @@ namespace EasyBadgeMVVM.ViewModels
             }
 
             //INSERT IN FIELDUSER TABLE
-            Field fff = this._myUsers[FIELD].Cast<Field>().Where(f2 => f2.Name.Equals(field)).FirstOrDefault();
-            Field field2 = fff ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault()
-;
+            Field fff = this._myUsers[FIELD].Cast<Field>().Where(f2 => f2.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
+            Field field2 = fff ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
+
+            Console.WriteLine("FFF IS NULL ? : {0} | FIELD2 IS NULL ? : {1}", fff == null, field2 == null);
 
             FieldUser fieldUser = new FieldUser();
             fieldUser.Field = field2;
