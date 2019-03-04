@@ -121,23 +121,26 @@ namespace EasyBadgeMVVM.ViewModels
             Field similar = this._repostitoryFactory.GetFieldRepository(this._dbContext).CheckSimilarField(field);
             Field f = new Field();
             f.Name = similar == null ? field : similar.Name;
+            if (similar != null)
+            {
+                Application.Current.Dispatcher.Invoke((Action)delegate {
+                    FieldMatching fieldMatching = new FieldMatching();
+                    fieldMatching.FieldImported = oldfieldname;
+                    fieldMatching.FieldInDb = similar.Name;
+                    fieldMatching.CreateMessages();
+                    Nullable<Boolean> waiting = fieldMatching.ShowDialog();
+                    if (waiting == true)
+                    {
+                        Console.WriteLine("CLICKED : YES");
+                    }
+                    else
+                    {
+                        Console.WriteLine("CLICKED : NO");
+                    }
 
-            Application.Current.Dispatcher.Invoke((Action)delegate {
-                FieldMatching fieldMatching = new FieldMatching();
-                fieldMatching.FieldImported = oldfieldname;
-                fieldMatching.FieldInDb = similar.Name;
-                fieldMatching.CreateMessages();
-                Nullable<Boolean> waiting =  fieldMatching.ShowDialog();
-                if (waiting == true)
-                {
-                    Console.WriteLine("CLICKED : YES");
-                }
-                else
-                {
-                    Console.WriteLine("CLICKED : NO");
-                }
-                
-            });
+                });
+            }
+
 
             InsertInFieldTable(f);
         }
