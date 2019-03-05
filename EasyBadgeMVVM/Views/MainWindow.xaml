@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:EasyBadgeMVVM"
         mc:Ignorable="d"
         Title="EasyBADGE" Height="{x:Static SystemParameters.PrimaryScreenHeight}" Width="{x:Static SystemParameters.PrimaryScreenWidth}"
+        WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Grid Background="#dfe6e9">
         <Grid.ColumnDefinitions>

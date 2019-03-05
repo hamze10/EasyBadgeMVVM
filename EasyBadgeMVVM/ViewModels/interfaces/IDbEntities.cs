@@ -26,8 +26,9 @@ namespace EasyBadgeMVVM.ViewModels
         /// </summary>
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
+        /// <param name="company"></param>
         /// <returns>true if existe, otherwhise false</returns>
-        bool CheckIfAlreadyExists(string lastName, string firstName);
+        bool CheckIfAlreadyExists(string lastName, string firstName, string company);
 
         void Clear();
         ObservableCollection<Event> GetEvents();

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,6 +38,8 @@ namespace EasyBadgeMVVM.Views
         {
             Event selected = this._eventVm.GetEventById(this._eventVm.SelectedEvent);
             if (selected == null) return;
+
+            this.ProgressLoadingEvent.Visibility = Visibility.Visible;
             ShowMainWindow(selected.ID_Event);
         }
 
@@ -57,6 +60,8 @@ namespace EasyBadgeMVVM.Views
             ev.DateOfEvent = date;
             ev.Name = name;
             Event inserted = this._eventVm.InsertEvent(ev);
+
+            this.ProgressLoadingEvent.Visibility = Visibility.Visible;
             ShowMainWindow(inserted.ID_Event);
         }
 

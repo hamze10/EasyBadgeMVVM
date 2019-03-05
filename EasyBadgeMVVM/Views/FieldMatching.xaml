@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyBadgeMVVM.Views"
         mc:Ignorable="d"
-        Title="FieldMatching" Height="450" Width="800"
+        Title="FieldMatching" Height="450" Width="800" WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <ScrollViewer>
         <Grid Name="FieldMatchingGrid">
@@ -27,8 +27,8 @@
             <Grid Grid.Row="1" Grid.Column="1">
                 <TextBox IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" 
                          VerticalAlignment="Center" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,74,0,171" Width="478" Height="86"/>
-                <Button Content="Yes" Click="FieldMatchingClick" Tag="yes" Height="Auto" Margin="42,171,358,132" />
-                <Button Content="No" Click="FieldMatchingClick" Tag="no" Height="Auto" Margin="358,171,42,132" />
+                <Button Content="Yes" Click="FieldMatchingClick" Tag="yes" Height="30" Width="70" Margin="42,171,358,132" />
+                <Button Content="No" Click="FieldMatchingClick" Tag="no" Height="30" Width="70" Margin="358,171,42,132" />
             </Grid>
         </Grid>
     </ScrollViewer>

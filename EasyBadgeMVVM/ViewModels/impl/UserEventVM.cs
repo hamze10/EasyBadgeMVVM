@@ -159,6 +159,7 @@ namespace EasyBadgeMVVM.ViewModels
 
             int indexOfLastName = -1;
             int indexOfFirstName = -1;
+            int indexOfCompany = -1;
 
             foreach(string s in splitted)
             {
@@ -183,6 +184,11 @@ namespace EasyBadgeMVVM.ViewModels
                             indexOfLastName = k;
                         }
 
+                        if (nameTrim.Equals("company"))
+                        {
+                            indexOfCompany = k;
+                        }
+
                         allFields.Add(nameTrim);
                         this._dbEntities.InsertNewField(nameTrim, field);
                         k++;
@@ -192,13 +198,11 @@ namespace EasyBadgeMVVM.ViewModels
                 //Data
                 else
                 {
-                    //TODO UPDATE FIELDS AND FIX EXISTINGS USERS WHEN +2000 ROWS
-
                     bool exists = false;
-                    if (indexOfLastName != -1 && indexOfFirstName != -1)
+                    if (indexOfLastName != -1 && indexOfFirstName != -1 && indexOfCompany != -1)
                     {
                         string[] datas = s.Split(',');
-                        exists = this._dbEntities.CheckIfAlreadyExists(datas[indexOfLastName], datas[indexOfFirstName]);
+                        exists = this._dbEntities.CheckIfAlreadyExists(datas[indexOfLastName], datas[indexOfFirstName], datas[indexOfCompany]);
                     }
 
                     if (exists == true) continue;

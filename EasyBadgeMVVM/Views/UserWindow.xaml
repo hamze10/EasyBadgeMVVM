@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyBadgeMVVM.Views"
         mc:Ignorable="d"
-        Title="Add a new user" Height="730" Width="1400"
+        Title="Add a new user" Height="730" Width="1400" WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <ScrollViewer>
         <Grid Name="UserWindowGrid">

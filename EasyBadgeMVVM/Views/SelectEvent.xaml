@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:EasyBadgeMVVM"
         mc:Ignorable="d"
         Title="Select your event" Height="660" Width="640"
+        WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Grid>
         <materialDesign:DialogHost
@@ -119,6 +120,15 @@
                           Height="22"
                           Width="22" />
                     </Button>
+                    <ProgressBar
+                        Style="{StaticResource MaterialDesignCircularProgressBar}"
+                        Name="ProgressLoadingEvent"
+                        IsIndeterminate="true"
+                        Value="0"
+                        Width="100"
+                        Height="100"
+                        Visibility="Hidden" Margin="244,303,254,130"
+                        />
                 </Grid>
             </Border>
         </materialDesign:DialogHost>

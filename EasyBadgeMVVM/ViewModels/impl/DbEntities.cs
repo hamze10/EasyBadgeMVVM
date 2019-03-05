@@ -115,9 +115,83 @@ namespace EasyBadgeMVVM.ViewModels
         /*********** INSERT *************/
         /*********************************************************************************************************************************************************************/
 
+        //A CORRIGER CAR L'UNICITE N'EST PAS TOP TOP (nom, prenom, company) + dans SEARCH le i < 3 est du harcodage
+        public bool CheckIfAlreadyExists(string lastName, string firstName, string company)
+        {
+            IEnumerable<UserEvent> testInDb = null;
+            IEnumerable<UserEvent> testInDico = null;
+            if (this._myUsers.ContainsKey(USEREVENT))
+            {
+                testInDico = this._myUsers[USEREVENT].Cast<UserEvent>().Where(ue => ue.EventID_Event == this._idEvent);
+            }
+
+            testInDb = this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue1 => ue1.EventID_Event == this._idEvent);
+
+
+            bool exists = Search(testInDb, lastName, firstName, company);
+            if (exists) return true;
+
+            if (testInDico != null)
+            {
+                exists = Search(testInDico, lastName, firstName, company);
+                if (exists) return true;
+            }
+
+            return false;
+        }
+
+        private bool Search(IEnumerable<UserEvent> list, string lastName, string firstName, string company)
+        {
+            IEnumerable<IGrouping<int, UserEvent>> myGrouping = list.GroupBy(u => u.UserID_User);
+            foreach (IGrouping<int, UserEvent> uu in myGrouping)
+            {
+                int i = 0;
+                foreach (UserEvent uv in uu)
+                {
+                    switch (uv.FieldUser.Field.Name)
+                    {
+                        case "lastname":
+                            if (uv.FieldUser.Value.ToLower().Equals(lastName.ToLower()))
+                            {
+                                if (i < 3) i++;
+                            }
+                            else
+                            {
+                                if (i < 3) i = 0;
+                            }
+                            break;
+                        case "firstname":
+                            if (uv.FieldUser.Value.ToLower().Equals(firstName.ToLower()))
+                            {
+                                if (i < 3) i++;
+                            }
+                            else
+                            {
+                                if (i < 3) i = 0;
+                            }
+                            break;
+                        case "company":
+                            if (uv.FieldUser.Value.ToLower().Equals(company.ToLower()))
+                            {
+                                if (i < 3) i++;
+                            }
+                            else
+                            {
+                                if (i < 3) i = 0;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (i == 3) return true;
+                }
+            }
+            return false;
+        }
+
         public void InsertNewField(string field, string oldfieldname)
         {
-            //BEFORE CHECK IF THE FIELD IS NOT IN THE DB
             Field similar = this._repostitoryFactory.GetFieldRepository(this._dbContext).CheckSimilarField(field);
             Field f = new Field();
             f.Name = similar == null ? field : similar.Name;
@@ -189,8 +263,6 @@ namespace EasyBadgeMVVM.ViewModels
             Field fff = this._myUsers[FIELD].Cast<Field>().Where(f2 => f2.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
             Field field2 = fff ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
 
-            Console.WriteLine("FFF IS NULL ? : {0} | FIELD2 IS NULL ? : {1}", fff == null, field2 == null);
-
             FieldUser fieldUser = new FieldUser();
             fieldUser.Field = field2;
             fieldUser.User = user;
@@ -207,62 +279,6 @@ namespace EasyBadgeMVVM.ViewModels
 
             InsertInUserEventTable(userEvent);
         }
-
-
-        public bool CheckIfAlreadyExists(string lastName, string firstName)
-        {
-            IEnumerable<UserEvent> test;
-            if (this._myUsers.ContainsKey(USEREVENT))
-            {
-                test = this._myUsers[USEREVENT].Cast<UserEvent>().Where(ue =>
-                                                 ue.EventID_Event == this._idEvent &&
-                                                 (ue.FieldUser.Field.Name.ToLower().Equals("lastname") || ue.FieldUser.Field.Name.ToLower().Equals("firstname")) &&
-                                                 (ue.FieldUser.Value.Equals(lastName) || ue.FieldUser.Value.Equals(firstName)));
-            }
-            else
-            {
-                test = this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue1 =>
-                ue1.EventID_Event == this._idEvent &&
-                (ue1.FieldUser.Field.Name.ToLower().Equals("lastname") || ue1.FieldUser.Field.Name.ToLower().Equals("firstname")) &&
-                (ue1.FieldUser.Value.Equals(lastName) || ue1.FieldUser.Value.Equals(firstName)));
-            }
-
-            int i = 0;
-
-            foreach (UserEvent ue in test)
-            {
-                switch (ue.FieldUser.Field.Name.ToLower())
-                {
-                    case "lastname":
-                        if (ue.FieldUser.Value.ToLower().Equals(lastName.ToLower()))
-                        {
-                            if (i != 2) i++;
-                        }
-                        else
-                        {
-                            if (i == 1) i = 0;
-                        }
-                        break;
-                    case "firstname":
-                        if (ue.FieldUser.Value.ToLower().Equals(firstName.ToLower()))
-                        {
-                            if (i != 2) i++;
-                        }
-                        else
-                        {
-                            if (i == 1) i = 0;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                if (i == 2) return true;
-            }
-
-            return false;
-        }
-
 
         private bool InsertInUserTable(User user)
         {
