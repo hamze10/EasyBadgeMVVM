@@ -94,6 +94,7 @@
     <Compile Include="DataAccess\interfaces\IUserRepository.cs" />
     <Compile Include="DataAccess\impl\UserEventRepository.cs" />
     <Compile Include="DataAccess\impl\UserRepository.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="ViewModels\impl\DbEntities.cs" />
     <Compile Include="ViewModels\impl\EventVM.cs" />
     <Compile Include="ViewModels\impl\FieldVM.cs" />
@@ -223,6 +224,8 @@
     <Resource Include="asset\images\clickhere2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="asset\images\addyourevent.png" />
+    <Resource Include="asset\images\addyourevent2.png" />
     <Content Include="Models\EasyModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EasyModel.Context.cs</LastGenOutput>

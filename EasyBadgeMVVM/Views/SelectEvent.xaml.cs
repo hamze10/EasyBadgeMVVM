@@ -38,8 +38,6 @@ namespace EasyBadgeMVVM.Views
         {
             Event selected = this._eventVm.GetEventById(this._eventVm.SelectedEvent);
             if (selected == null) return;
-
-            this.ProgressLoadingEvent.Visibility = Visibility.Visible;
             ShowMainWindow(selected.ID_Event);
         }
 
@@ -60,8 +58,11 @@ namespace EasyBadgeMVVM.Views
             ev.DateOfEvent = date;
             ev.Name = name;
             Event inserted = this._eventVm.InsertEvent(ev);
-
-            this.ProgressLoadingEvent.Visibility = Visibility.Visible;
+            if (inserted == null)
+            {
+                MessageBox.Show("Name already exists, please choose another one");
+                return;
+            }
             ShowMainWindow(inserted.ID_Event);
         }
 

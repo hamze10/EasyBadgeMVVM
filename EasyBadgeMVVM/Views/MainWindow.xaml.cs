@@ -50,7 +50,6 @@ namespace EasyBadgeMVVM
             this._userEventVM = new UserEventVM(idEvent);
             this.DataContext = this._userEventVM;
             InitializeComponent();
-
             this.ToggleButtonMenu.IsChecked = true;
 
             this.bgw.DoWork += myBgw_doWorker;

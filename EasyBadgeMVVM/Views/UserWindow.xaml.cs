@@ -21,6 +21,7 @@ using System.Windows.Input;
 using SolidColorBrush = System.Windows.Media.SolidColorBrush;
 using Label = System.Windows.Controls.Label;
 using TextBox = System.Windows.Controls.TextBox;
+using Button = System.Windows.Controls.Button;
 
 namespace EasyBadgeMVVM.Views
 {
@@ -36,7 +37,7 @@ namespace EasyBadgeMVVM.Views
         private const int FONTSIZELABEL = 16;
         private const double GRIDLENGTHHEIGHT = 60;
 
-        private SolidColorBrush[] brushes = new SolidColorBrush[2] { System.Windows.Media.Brushes.White, System.Windows.Media.Brushes.LightGray};
+        private SolidColorBrush[] brushes = new SolidColorBrush[2] { System.Windows.Media.Brushes.White, System.Windows.Media.Brushes.WhiteSmoke};
 
         public UserWindow(bool isNew, List<UserEvent> list)
         {
@@ -84,8 +85,11 @@ namespace EasyBadgeMVVM.Views
                 label2.VerticalAlignment = VerticalAlignment.Center;
                 grid2.Children.Add(label2);
 
+
+
                 this.UserWindowGrid.Children.Add(grid);
                 this.UserWindowGrid.Children.Add(grid2);
+                
             }
         }
 

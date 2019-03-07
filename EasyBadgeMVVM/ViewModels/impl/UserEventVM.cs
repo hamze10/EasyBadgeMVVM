@@ -19,12 +19,16 @@ namespace EasyBadgeMVVM.ViewModels
 
         private int _idEvent;
         private IDbEntities _dbEntities;
+        public string EventTitle { get; set; }
 
         public UserEventVM(int idEvent)
         {
             this._idEvent = idEvent;
             this._dbEntities = new DbEntities();
             this._dbEntities.SetIdEvent(idEvent);
+
+            Event thisEvent = this._dbEntities.GetEventById(idEvent);
+            this.EventTitle = thisEvent.Name + " - " + thisEvent.DateOfEvent.ToString();
         }
 
         public int IdEvent
@@ -171,8 +175,9 @@ namespace EasyBadgeMVVM.ViewModels
                     int k = 0;
                     foreach(string field in s.Split(','))
                     {
-                        char[] charsToReplace = new char[] { '_', '.', '-', '#', ':' };
-                        string nameTrim = charsToReplace.Aggregate(field.ToLower(), (c1, c2) => c1.Replace(c2, ' ')).Replace(" ", string.Empty).ToLower();
+                        bool fieldTrimUsed = true;
+
+                        string nameTrim = Util.TrimWord(field.ToLower());
 
                         if (nameTrim.Equals("firstname"))
                         {
@@ -189,8 +194,8 @@ namespace EasyBadgeMVVM.ViewModels
                             indexOfCompany = k;
                         }
 
-                        allFields.Add(nameTrim);
-                        this._dbEntities.InsertNewField(nameTrim, field);
+                        fieldTrimUsed = this._dbEntities.InsertNewField(nameTrim,field);
+                        allFields.Add(fieldTrimUsed == true ? nameTrim : field);
                         k++;
                     }
                 }

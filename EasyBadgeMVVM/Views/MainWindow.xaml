@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyBadgeMVVM"
         mc:Ignorable="d"
-        Title="EasyBADGE" Height="{x:Static SystemParameters.PrimaryScreenHeight}" Width="{x:Static SystemParameters.PrimaryScreenWidth}"
+        Title="{Binding EventTitle}" Height="{x:Static SystemParameters.PrimaryScreenHeight}" Width="{x:Static SystemParameters.PrimaryScreenWidth}"
         WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Grid Background="#dfe6e9">
@@ -26,7 +26,7 @@
                     <StackPanel Orientation="Horizontal" materialDesign:RippleAssist.IsCentered="True">
                         <ToggleButton Name="ToggleButtonMenu" Click="ToggleClick" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" Height="Auto" Width="75" />
                         <materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4" CornerRadius="2" Panel.ZIndex="1" Margin="50,0,0,0" materialDesign:ShadowAssist.ShadowDepth="Depth1" 
-                                                  Height="Auto" Width="744">
+                                                  Height="Auto" Width="706">
                             <Grid Margin="0,0,0,-8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -37,7 +37,7 @@
                                 <Button Style="{DynamicResource MaterialDesignToolButton}" Margin="0,10,75,19" Height="Auto" Grid.ColumnSpan="2">
                                     <materialDesign:PackIcon Kind="Magnify" Opacity=".56" Height="Auto" Width="Auto" RenderTransformOrigin="0.475,0.188" />
                                 </Button>
-                                <TextBox Margin="63,5,0,14" materialDesign:HintAssist.Hint="Search by lastname, firstname, company and/or barcode"
+                                <TextBox Margin="63,5,21,14" materialDesign:HintAssist.Hint="Search by lastname, firstname, company and/or barcode"
                                          materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0" MinWidth="200" VerticalAlignment="Center" PreviewKeyDown="EnterSearch"
                                          VerticalContentAlignment="Center" FontSize="24" Grid.ColumnSpan="3" Height="49" Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>

@@ -48,7 +48,9 @@ namespace EasyBadgeMVVM.ViewModels
             UserEventDTO dto = new UserEventDTO();
             foreach (UserEvent ue in lst)
             {
-                switch (ue.FieldUser.Field.Name.ToLower())
+                string nameTrim = Util.TrimWord(ue.FieldUser.Field.Name.ToLower());
+
+                switch (nameTrim)
                 {
                     case "lastname":
                         if (AddIfNecessary(localCollection, dto, dto.LastName)) dto = new UserEventDTO();
@@ -115,7 +117,7 @@ namespace EasyBadgeMVVM.ViewModels
         /*********** INSERT *************/
         /*********************************************************************************************************************************************************************/
 
-        //A CORRIGER CAR L'UNICITE N'EST PAS TOP TOP (nom, prenom, company) + dans SEARCH le i < 3 est du harcodage
+        //A CORRIGER CAR L'UNICITE N'EST PAS TOP TOP (nom, prenom, company) + dans SEARCHIFUNIQUE le i < 3 est du harcodage
         public bool CheckIfAlreadyExists(string lastName, string firstName, string company)
         {
             IEnumerable<UserEvent> testInDb = null;
@@ -128,19 +130,19 @@ namespace EasyBadgeMVVM.ViewModels
             testInDb = this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue1 => ue1.EventID_Event == this._idEvent);
 
 
-            bool exists = Search(testInDb, lastName, firstName, company);
+            bool exists = SearchIfUnique(testInDb, lastName, firstName, company);
             if (exists) return true;
 
             if (testInDico != null)
             {
-                exists = Search(testInDico, lastName, firstName, company);
+                exists = SearchIfUnique(testInDico, lastName, firstName, company);
                 if (exists) return true;
             }
 
             return false;
         }
 
-        private bool Search(IEnumerable<UserEvent> list, string lastName, string firstName, string company)
+        private bool SearchIfUnique(IEnumerable<UserEvent> list, string lastName, string firstName, string company)
         {
             IEnumerable<IGrouping<int, UserEvent>> myGrouping = list.GroupBy(u => u.UserID_User);
             foreach (IGrouping<int, UserEvent> uu in myGrouping)
@@ -148,7 +150,9 @@ namespace EasyBadgeMVVM.ViewModels
                 int i = 0;
                 foreach (UserEvent uv in uu)
                 {
-                    switch (uv.FieldUser.Field.Name)
+                    string nameTrim = Util.TrimWord(uv.FieldUser.Field.Name);
+
+                    switch (nameTrim)
                     {
                         case "lastname":
                             if (uv.FieldUser.Value.ToLower().Equals(lastName.ToLower()))
@@ -190,12 +194,18 @@ namespace EasyBadgeMVVM.ViewModels
             return false;
         }
 
-        public void InsertNewField(string field, string oldfieldname)
+        //Field == oldfieldname with trim
+        //return false if similar field name is not used
+        public bool InsertNewField(string field,string oldfieldname)
         {
-            Field similar = this._repostitoryFactory.GetFieldRepository(this._dbContext).CheckSimilarField(field);
+            Field similar = this._repostitoryFactory.GetFieldRepository(this._dbContext).CheckSimilarField(oldfieldname);
+            if (similar == null)
+            {
+                similar = this._repostitoryFactory.GetFieldRepository(this._dbContext).CheckSimilarField(field);
+            }
             Field f = new Field();
-            f.Name = similar == null ? field : similar.Name;
-            if (similar != null)
+            f.Name = oldfieldname;
+            if (similar != null && !similar.Name.Equals(oldfieldname))
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate {
                     FieldMatching fieldMatching = new FieldMatching();
@@ -205,18 +215,12 @@ namespace EasyBadgeMVVM.ViewModels
                     Nullable<Boolean> waiting = fieldMatching.ShowDialog();
                     if (waiting == true)
                     {
-                        Console.WriteLine("CLICKED : YES");
+                        f.Name = similar.Name;
                     }
-                    else
-                    {
-                        Console.WriteLine("CLICKED : NO");
-                    }
-
                 });
             }
-
-
             InsertInFieldTable(f);
+            return similar != null && f.Name.Equals(similar.Name);
         }
 
         public void InsertNewUser(int index, string field, string data)

@@ -79,7 +79,7 @@ namespace EasyBadgeMVVM.Views
             this.FieldMatchingGrid.Children.Add(grid);
         }
 
-        /* SEND RESPONSE OF KEEPING OR NOT THE FIELD */
+        //SEND RESPONSE OF KEEPING OR NOT THE FIELD
         private void FieldMatchingClick(object sender, RoutedEventArgs e)
         {
             this.DialogResult = (sender as Button).Tag.Equals("yes") ? true : false;
