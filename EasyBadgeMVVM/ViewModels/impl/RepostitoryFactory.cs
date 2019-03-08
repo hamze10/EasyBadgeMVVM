@@ -32,5 +32,10 @@ namespace EasyBadgeMVVM.ViewModels
         {
             return new UserEventRepository(model);
         }
+
+        public PrintBadgeRepository GetPrintBadgeRepository(EasyModelContext model)
+        {
+            return new PrintBadgeRepository(model);
+        }
     }
 }

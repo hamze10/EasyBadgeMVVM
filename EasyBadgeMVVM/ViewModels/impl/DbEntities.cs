@@ -43,6 +43,7 @@ namespace EasyBadgeMVVM.ViewModels
         {
             IList<UserEvent> lst = this._repostitoryFactory.GetUserEventRepository(this._dbContext)
                 .SearchFor(us => us.User.Active == true && us.EventID_Event == this._idEvent).ToList();
+            IList<PrintBadge> prtB = this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext).SearchFor(p => p.EventID_Event == this._idEvent).ToList();
             ObservableCollection<UserEventDTO> localCollection = new ObservableCollection<UserEventDTO>();
 
             UserEventDTO dto = new UserEventDTO();
@@ -64,13 +65,13 @@ namespace EasyBadgeMVVM.ViewModels
                         if (AddIfNecessary(localCollection, dto, dto.Company)) dto = new UserEventDTO();
                         dto.Company = ue.FieldUser.Value;
                         break;
-                    case "printbadge":
-                        if (AddIfNecessary(localCollection, dto, dto.PrintBadge)) dto = new UserEventDTO();
-                        dto.PrintBadge = DateTime.Parse(ue.FieldUser.Value);
-                        break;
                     default:
                         break;
                 }
+                dto.PrintBadge = prtB.Where(pr => pr.UserID_User == ue.UserID_User).SingleOrDefault() == null
+                        ? new DateTime()
+                        : prtB.Where(pr => pr.UserID_User == ue.UserID_User).SingleOrDefault().PrintDate;
+
                 dto.Barcode = ue.FieldUser.User.Barcode;
             }
             return localCollection;

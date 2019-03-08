@@ -178,24 +178,25 @@ namespace EasyBadgeMVVM.ViewModels
                         bool fieldTrimUsed = true;
 
                         string nameTrim = Util.TrimWord(field.ToLower());
+                        string translated = Util.TranslateField(nameTrim) ?? nameTrim;
 
-                        if (nameTrim.Equals("firstname"))
+                        if (translated.Equals("firstname"))
                         {
                             indexOfFirstName = k;
                         }
 
-                        if (nameTrim.Equals("lastname"))
+                        if (translated.Equals("lastname"))
                         {
                             indexOfLastName = k;
                         }
 
-                        if (nameTrim.Equals("company"))
+                        if (translated.Equals("company"))
                         {
                             indexOfCompany = k;
                         }
 
-                        fieldTrimUsed = this._dbEntities.InsertNewField(nameTrim,field);
-                        allFields.Add(fieldTrimUsed == true ? nameTrim : field);
+                        fieldTrimUsed = this._dbEntities.InsertNewField(translated, field);
+                        allFields.Add(fieldTrimUsed == true ? translated : field);
                         k++;
                     }
                 }

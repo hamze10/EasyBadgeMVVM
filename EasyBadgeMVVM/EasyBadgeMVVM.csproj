@@ -86,9 +86,11 @@
     <Compile Include="DataAccess\impl\EventRepository.cs" />
     <Compile Include="DataAccess\impl\FieldRepository.cs" />
     <Compile Include="DataAccess\impl\FieldUserRepository.cs" />
+    <Compile Include="DataAccess\impl\PrintBadgeRepository.cs" />
     <Compile Include="DataAccess\interfaces\IEventRepository.cs" />
     <Compile Include="DataAccess\interfaces\IFieldRepository.cs" />
     <Compile Include="DataAccess\interfaces\IFieldUserRepository.cs" />
+    <Compile Include="DataAccess\interfaces\IPrintBadgeRepository.cs" />
     <Compile Include="DataAccess\interfaces\IRepository.cs" />
     <Compile Include="DataAccess\interfaces\IUserEventRepository.cs" />
     <Compile Include="DataAccess\interfaces\IUserRepository.cs" />

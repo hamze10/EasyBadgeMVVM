@@ -10,10 +10,9 @@ namespace EasyBadgeMVVM.DataAccess
 {
     public class FieldRepository : BaseRepository<Field>, IFieldRepository
     {
-
         public FieldRepository(EasyModelContext dbContext) : base(dbContext)
         {
-
+            
         }
 
         public Field GetFieldByName(string name)
@@ -23,7 +22,6 @@ namespace EasyBadgeMVVM.DataAccess
 
         public Field CheckSimilarField(string name)
         {
-            //POSSIBILITE MULTILINGUE ex : PROFIL -> PROFILE -> PROFIEL
             Field f1 = this._dbContext.Set<Field>().Where(f => f.Name.Equals(name)).SingleOrDefault();
             return f1 ?? this._dbContext.Set<Field>().Where(f => f.Name.ToLower().Contains(name.ToLower())).SingleOrDefault();
         }
