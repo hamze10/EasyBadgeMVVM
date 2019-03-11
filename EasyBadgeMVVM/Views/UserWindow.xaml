@@ -10,6 +10,7 @@
     <ScrollViewer>
         <Grid Name="UserWindowGrid">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -18,7 +19,7 @@
                 <RowDefinition Height="90" />
             </Grid.RowDefinitions>
 
-            <Grid Background="#0a3d62" Grid.ColumnSpan="3">
+            <Grid Name="TitleBar" Background="#0a3d62" Grid.ColumnSpan="3">
                 <Label Content="USER INFORMATIONS" Canvas.Left="487" Height="70" Width="407" FontSize="40" Foreground="White" />
             </Grid>
         </Grid>

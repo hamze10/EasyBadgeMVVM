@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -63,6 +64,7 @@ namespace EasyBadgeMVVM.Views
                 MessageBox.Show("Name already exists, please choose another one");
                 return;
             }
+
             ShowMainWindow(inserted.ID_Event);
         }
 
