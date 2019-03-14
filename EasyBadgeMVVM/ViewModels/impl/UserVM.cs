@@ -17,10 +17,10 @@ namespace EasyBadgeMVVM.ViewModels.impl
         private int _idEvent;
         private IDbEntities _dbEntities;
 
-        public UserVM(/* int idEvent */)
+        public UserVM(int idEvent)
         {
             this._dbEntities = new DbEntities();
-            this._idEvent = 1;
+            this._idEvent = idEvent;
         }
 
         public int IdEvent

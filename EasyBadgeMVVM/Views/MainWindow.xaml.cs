@@ -69,13 +69,14 @@ namespace EasyBadgeMVVM
         private void ShowUserInfo(object sender, RoutedEventArgs e)
         {
             UserEventDTO dto = this._userEventVM.SelectedUserEvent;
-            UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto));
+            if (dto == null || dto.Barcode.Equals(string.Empty)) return;
+            UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto), this._idEvent);
             userWindow.ShowDialog();
         }
 
         private void NewUserInfo(object sender, RoutedEventArgs e)
         {
-            UserWindow userWindow = new UserWindow(true, this._userEventVM.GetAllFieldsOfEvent(this._idEvent));
+            UserWindow userWindow = new UserWindow(true, this._userEventVM.GetAllFieldsOfEvent(this._idEvent), this._idEvent);
             userWindow.ShowDialog();
         }
 
@@ -86,7 +87,7 @@ namespace EasyBadgeMVVM
                 if (this.DataGridUsers.Items.Count == 1)
                 {
                     UserEventDTO dto = (UserEventDTO) this.DataGridUsers.Items.GetItemAt(0);
-                    UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto));
+                    UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto), this._idEvent);
                     userWindow.ShowDialog();
                 }
             }

@@ -33,6 +33,7 @@ namespace EasyBadgeMVVM.Views
         private UserVM _userVM;
         private List<UserEvent> _CurrentUser;
         private bool _isNew;
+        private int _idEvent;
 
         private const int FONTSIZELABEL = 16;
         private const double GRIDLENGTHHEIGHT = 60;
@@ -44,10 +45,11 @@ namespace EasyBadgeMVVM.Views
 
         private SolidColorBrush[] brushes = new SolidColorBrush[2] { System.Windows.Media.Brushes.White, System.Windows.Media.Brushes.WhiteSmoke};
 
-        public UserWindow(bool isNew, List<UserEvent> list)
+        public UserWindow(bool isNew, List<UserEvent> list, int idEvent)
         {
             this._isNew = isNew;
-            this._userVM = new UserVM();
+            this._idEvent = idEvent;
+            this._userVM = new UserVM(idEvent);
             this._CurrentUser = list;
             this.DataContext = this._userVM;
             InitializeComponent();

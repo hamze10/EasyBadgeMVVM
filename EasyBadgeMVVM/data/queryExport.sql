@@ -26,6 +26,10 @@ SELECT * FROM FieldUserSet;
 
 SELECT * FROM UserSet;
 
+SELECT * FROM PrintBadgeSet;
+
+INSERT INTO PrintBadgeSet VALUES (12147,2,'2019-08-13 14:30:11.253', 'Hamza4', null);
+
 SELECT * 
 FROM UserEventSet ue, FieldUserSet fu, FieldSet f
 WHERE ue.FieldUserID_FieldUser1 = fu.ID_FieldUser 
