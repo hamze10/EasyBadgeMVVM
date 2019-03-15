@@ -244,7 +244,7 @@ namespace EasyBadgeMVVM.ViewModels
 
         public ObservableCollection<ExportDataDTO> GetExportData()
         {
-            //TODO Faire query (voir query dossier data)
+            //TODO Faire query
             return null;
         }
 

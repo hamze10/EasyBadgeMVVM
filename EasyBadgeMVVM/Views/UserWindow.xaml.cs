@@ -159,7 +159,6 @@ namespace EasyBadgeMVVM.Views
             grid.Children.Add(button);
 
             this.UserWindowGrid.Children.Add(grid);
-
         }
 
         private void Add_New(object sender, RoutedEventArgs e)

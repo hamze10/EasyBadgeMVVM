@@ -29,7 +29,7 @@ namespace EasyBadgeMVVM.ViewModels
 
         private IDbEntities _dbEntities;
         private ObservableCollection<Event> _listOfEvents;
-        public int _selectedEvent;
+        private int _selectedEvent;
 
         public EventVM()
         {
