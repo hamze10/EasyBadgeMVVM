@@ -7,24 +7,23 @@
       <Diagram DiagramId="e3c056ef01d24ebba0d31acb112451f5" Name="Diagram1" ZoomLevel="97" >
         <EntityTypeShape EntityType="EasyModel.User" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="EasyModel.Event" Width="1.5" PointX="9.625" PointY="1.25" />
-        <EntityTypeShape EntityType="EasyModel.Field" Width="1.5" PointX="3.375" PointY="8.125" />
-        <EntityTypeShape EntityType="EasyModel.FieldUser" Width="1.5" PointX="0.75" PointY="4.75" />
-        <EntityTypeShape EntityType="EasyModel.UserEvent" Width="1.5" PointX="5" PointY="3.75" />
+        <EntityTypeShape EntityType="EasyModel.Field" Width="1.5" PointX="4.625" PointY="8.125" />
+        <EntityTypeShape EntityType="EasyModel.EventFieldUser" Width="1.5" PointX="2.125" PointY="4.75" />
         <EntityTypeShape EntityType="EasyModel.PrintBadge" Width="1.5" PointX="5.625" PointY="0.5" />
         <EntityTypeShape EntityType="EasyModel.Badge" Width="1.5" PointX="7.875" PointY="5.5" />
         <EntityTypeShape EntityType="EasyModel.BadgeEvent" Width="1.5" PointX="12.25" PointY="4" />
         <EntityTypeShape EntityType="EasyModel.Position" Width="1.5" PointX="9.5" PointY="7.625" />
         <AssociationConnector Association="EasyModel.UserFieldUser" />
-        <AssociationConnector Association="EasyModel.UserUserEvent" />
         <AssociationConnector Association="EasyModel.UserPrintBadge" />
-        <AssociationConnector Association="EasyModel.EventUserEvent" />
         <AssociationConnector Association="EasyModel.EventPrintBadge" />
         <AssociationConnector Association="EasyModel.EventBadgeEvent" />
-        <AssociationConnector Association="EasyModel.FieldFieldUser" />
         <AssociationConnector Association="EasyModel.FieldPosition" />
         <AssociationConnector Association="EasyModel.BadgeBadgeEvent" />
         <AssociationConnector Association="EasyModel.BadgeEventPosition" />
-        <AssociationConnector Association="EasyModel.FieldUserUserEvent" />
+        <EntityTypeShape EntityType="EasyModel.EventField" Width="1.5" PointX="5.75" PointY="3.875" />
+        <AssociationConnector Association="EasyModel.FieldEventField" />
+        <AssociationConnector Association="EasyModel.EventEventField" />
+        <AssociationConnector Association="EasyModel.EventFieldFieldUser" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

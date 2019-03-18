@@ -12,14 +12,15 @@ namespace EasyBadgeMVVM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class UserEvent
+    public partial class EventFieldUser
     {
         public int UserID_User { get; set; }
-        public int EventID_Event { get; set; }
-        public int FieldUserID_FieldUser1 { get; set; }
+        public int EventFieldFieldID_Field { get; set; }
+        public int EventFieldEventID_Event { get; set; }
+        public string Value { get; set; }
+        public string AdditionnalInformation { get; set; }
     
         public virtual User User { get; set; }
-        public virtual Event Event { get; set; }
-        public virtual FieldUser FieldUser { get; set; }
+        public virtual EventField EventField { get; set; }
     }
 }

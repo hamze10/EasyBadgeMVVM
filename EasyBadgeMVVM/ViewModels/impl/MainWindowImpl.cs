@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EasyBadgeMVVM.ViewModels
 {
-    public class UserEventVM : INotifyPropertyChanged, IUserEventVM
+    public class MainWindowImpl : INotifyPropertyChanged, IUserEventVM
     {
 
         /*********************************************************************************************************************************************************************/
@@ -21,7 +21,7 @@ namespace EasyBadgeMVVM.ViewModels
         private IDbEntities _dbEntities;
         public string EventTitle { get; set; }
 
-        public UserEventVM(int idEvent)
+        public MainWindowImpl(int idEvent)
         {
             this._idEvent = idEvent;
             this._dbEntities = new DbEntities();
@@ -83,7 +83,8 @@ namespace EasyBadgeMVVM.ViewModels
             {
                 if (this._mainFields == null)
                 {
-                    this._mainFields = this._dbEntities.GetAllUsers();
+                    //this._mainFields = this._dbEntities.GetAllUsers();
+                    this._mainFields = new ObservableCollection<UserEventDTO>();
                     this._allUsers = this._mainFields;
                     NbrUser = this._mainFields.Count;
                 }
@@ -117,7 +118,8 @@ namespace EasyBadgeMVVM.ViewModels
 
             if (toSearch.Length == 0 || toSearch.Trim() == "")
             {
-                this._mainFields = this._dbEntities.GetAllUsers();
+                //this._mainFields = this._dbEntities.GetAllUsers();
+                this._mainFields = new ObservableCollection<UserEventDTO>();
                 this.NbrUser = this._mainFields.Count;
                 return;
             }
@@ -172,6 +174,9 @@ namespace EasyBadgeMVVM.ViewModels
                 //Fields
                 if (i == 0)
                 {
+                    //1 Recupérer tous les champs dans la DB
+                    //2 Ouvrir fenetre FieldMatching(list field_import, list field_db) 
+
                     int k = 0;
                     foreach(string field in s.Split(','))
                     {
@@ -248,7 +253,7 @@ namespace EasyBadgeMVVM.ViewModels
             return null;
         }
 
-        public List<UserEvent> GetUserEventByDTO(UserEventDTO dto)
+        /*public List<UserEvent> GetUserEventByDTO(UserEventDTO dto)
         {
             return this._dbEntities.GetUserEventByDTO(dto);
         }
@@ -256,6 +261,6 @@ namespace EasyBadgeMVVM.ViewModels
         public List<UserEvent> GetAllFieldsOfEvent(int idEvent)
         {
             return this._dbEntities.GetAllFieldsOfEvent(idEvent);
-        }
+        }*/
     }
 }

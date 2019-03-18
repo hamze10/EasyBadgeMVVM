@@ -1,0 +1,9 @@
+IMPORT/UPDATE
+
+1) Ecran EVENT : 2 possibilités -> choisir son event ou créer son event
+2) Une fois son EVENT crée, l'écran MAINWINDOWS s'affiche.
+3) Ecran MAINWINDOWS : Si DATA -> voir point 4, SINON -> voir point 5
+4) UPDATE : TODO
+5) IMPORT : import d'un fichier .csv -> 
+				Lui montrer tous les champs de son fichier et les champs déjà dans la DB pour lui demander 
+				si un des champs correspond à ses champs et lui demander de choisir quel(s) champ(s) veut-il afficher.

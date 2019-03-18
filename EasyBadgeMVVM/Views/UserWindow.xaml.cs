@@ -31,7 +31,7 @@ namespace EasyBadgeMVVM.Views
     public partial class UserWindow : Window
     {
         private UserVM _userVM;
-        private List<UserEvent> _CurrentUser;
+        private List<User> _CurrentUser;
         private bool _isNew;
         private int _idEvent;
 
@@ -45,7 +45,7 @@ namespace EasyBadgeMVVM.Views
 
         private SolidColorBrush[] brushes = new SolidColorBrush[2] { System.Windows.Media.Brushes.White, System.Windows.Media.Brushes.WhiteSmoke};
 
-        public UserWindow(bool isNew, List<UserEvent> list, int idEvent)
+        public UserWindow(bool isNew, List<User> list, int idEvent)
         {
             this._isNew = isNew;
             this._idEvent = idEvent;
@@ -76,7 +76,7 @@ namespace EasyBadgeMVVM.Views
 
                 Label label2 = new Label();
                 label2.Name = SHOWNAME + i;
-                label2.Content = this._CurrentUser[(i - 1)].FieldUser.Value;
+                //label2.Content = this._CurrentUser[(i - 1)].FieldUser.Value;
                 label2.FontSize = FONTSIZELABEL;
                 label2.VerticalAlignment = VerticalAlignment.Center;
                 grid2.Children.Add(label2);
@@ -127,7 +127,7 @@ namespace EasyBadgeMVVM.Views
 
             Label label = new Label();
             label.Name = LABELFIELDNAME + i;
-            label.Content = this._CurrentUser[(i - 1)].FieldUser.Field.Name + " : ";
+            //label.Content = this._CurrentUser[(i - 1)].FieldUser.Field.Name + " : ";
             label.FontSize = FONTSIZELABEL;
             label.VerticalAlignment = VerticalAlignment.Center;
             grid.Children.Add(label);

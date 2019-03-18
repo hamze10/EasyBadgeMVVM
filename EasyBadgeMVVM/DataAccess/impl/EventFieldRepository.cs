@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace EasyBadgeMVVM.DataAccess
 {
-    public class UserEventRepository : BaseRepository<UserEvent>, IUserEventRepository
+    public class EventFieldRepository : BaseRepository<EventField>, IEventFieldRepository
     {
-        public UserEventRepository(EasyModelContext dbContext) : base(dbContext)
+        public EventFieldRepository(EasyModelContext dbContext) : base(dbContext)
         {
 
         }
-
     }
 }

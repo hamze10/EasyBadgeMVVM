@@ -24,18 +24,20 @@ namespace EasyBadgeMVVM.ViewModels
         {
             return new EventRepository(model);
         }
-        public FieldUserRepository GetFieldUserRepository(EasyModelContext model)
-        {
-            return new FieldUserRepository(model);
-        }
-        public UserEventRepository GetUserEventRepository(EasyModelContext model)
-        {
-            return new UserEventRepository(model);
-        }
 
         public PrintBadgeRepository GetPrintBadgeRepository(EasyModelContext model)
         {
             return new PrintBadgeRepository(model);
+        }
+
+        public EventFieldRepository GetEventFieldRepository(EasyModelContext model)
+        {
+            return new EventFieldRepository(model);
+        }
+
+        public EventFieldUserRepository GetEventFieldUserRepository(EasyModelContext model)
+        {
+            return new EventFieldUserRepository(model);
         }
     }
 }

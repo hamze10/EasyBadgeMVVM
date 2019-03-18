@@ -25,7 +25,7 @@ namespace EasyBadgeMVVM
     public partial class MainWindow : Window
     {
 
-        private UserEventVM _userEventVM;
+        private MainWindowImpl _mainWindowImpl;
         private BackgroundWorker bgw = new BackgroundWorker();
 
         private bool toggleState = false; //false no click, true click
@@ -47,8 +47,8 @@ namespace EasyBadgeMVVM
         public MainWindow(int idEvent)
         {
             this._idEvent = idEvent;
-            this._userEventVM = new UserEventVM(idEvent);
-            this.DataContext = this._userEventVM;
+            this._mainWindowImpl = new MainWindowImpl(idEvent);
+            this.DataContext = this._mainWindowImpl;
             InitializeComponent();
             this.ToggleButtonMenu.IsChecked = true;
 
@@ -68,16 +68,16 @@ namespace EasyBadgeMVVM
 
         private void ShowUserInfo(object sender, RoutedEventArgs e)
         {
-            UserEventDTO dto = this._userEventVM.SelectedUserEvent;
+            UserEventDTO dto = this._mainWindowImpl.SelectedUserEvent;
             if (dto == null || dto.Barcode.Equals(string.Empty)) return;
-            UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto), this._idEvent);
-            userWindow.ShowDialog();
+            /*UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto), this._idEvent);
+            userWindow.ShowDialog();*/
         }
 
         private void NewUserInfo(object sender, RoutedEventArgs e)
         {
-            UserWindow userWindow = new UserWindow(true, this._userEventVM.GetAllFieldsOfEvent(this._idEvent), this._idEvent);
-            userWindow.ShowDialog();
+            /*UserWindow userWindow = new UserWindow(true, this._userEventVM.GetAllFieldsOfEvent(this._idEvent), this._idEvent);
+            userWindow.ShowDialog();*/
         }
 
         private void EnterSearch(object sender, System.Windows.Input.KeyEventArgs e)
@@ -87,14 +87,14 @@ namespace EasyBadgeMVVM
                 if (this.DataGridUsers.Items.Count == 1)
                 {
                     UserEventDTO dto = (UserEventDTO) this.DataGridUsers.Items.GetItemAt(0);
-                    UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto), this._idEvent);
-                    userWindow.ShowDialog();
+                    /*UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto), this._idEvent);
+                    userWindow.ShowDialog();*/
                 }
             }
 
             if (e.Key == Key.Back || e.Key == Key.Delete)
             {
-                this._userEventVM.SetDeleteButton(true);
+                this._mainWindowImpl.SetDeleteButton(true);
             }
 
         }
@@ -156,7 +156,7 @@ namespace EasyBadgeMVVM
                 return;
             }
 
-            ObservableCollection<UserEventDTO> data = this._userEventVM.MainFields;
+            ObservableCollection<UserEventDTO> data = this._mainWindowImpl.MainFields;
             DateTime now = DateTime.Now;
             string nameFile = filePath + '\\' + "users" + now.ToString("ddMMyyyy") + "-" + now.ToString("HHmmsstt") + ".csv";
 
@@ -211,7 +211,7 @@ namespace EasyBadgeMVVM
             switch (arguments[0])
             {
                 case WORKER_IMPORT:
-                    this._userEventVM.LoadFromImport(arguments[1]);
+                    this._mainWindowImpl.LoadFromImport(arguments[1]);
                     e.Result = MESSAGE_IMPORT + arguments[2];
                     break;
                 case WORKER_EXPORT:

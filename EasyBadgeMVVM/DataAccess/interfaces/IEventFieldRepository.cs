@@ -2,7 +2,7 @@
 
 namespace EasyBadgeMVVM.DataAccess
 {
-    public interface IUserEventRepository
+    public interface IEventFieldRepository
     {
     }
 }

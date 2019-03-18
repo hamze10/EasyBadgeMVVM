@@ -12,23 +12,22 @@ namespace EasyBadgeMVVM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class FieldUser
+    public partial class EventField
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FieldUser()
+        public EventField()
         {
-            this.UserEvents = new HashSet<UserEvent>();
+            this.FieldUsers = new HashSet<EventFieldUser>();
         }
     
-        public int ID_FieldUser { get; set; }
-        public string Value { get; set; }
-        public string AdditionnalInformation { get; set; }
-        public int UserID_User { get; set; }
         public int FieldID_Field { get; set; }
+        public int EventID_Event { get; set; }
+        public bool Visibility { get; set; }
+        public bool Unique { get; set; }
     
-        public virtual User User { get; set; }
         public virtual Field Field { get; set; }
+        public virtual Event Event { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserEvent> UserEvents { get; set; }
+        public virtual ICollection<EventFieldUser> FieldUsers { get; set; }
     }
 }

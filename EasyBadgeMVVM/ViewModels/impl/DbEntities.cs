@@ -41,7 +41,7 @@ namespace EasyBadgeMVVM.ViewModels
 
         public ObservableCollection<UserEventDTO> GetAllUsers()
         {
-            IList<UserEvent> lst = this._repostitoryFactory.GetUserEventRepository(this._dbContext)
+            /*IList<UserEvent> lst = this._repostitoryFactory.GetUserEventRepository(this._dbContext)
                 .SearchFor(us => us.User.Active == true && us.EventID_Event == this._idEvent).ToList();
             IList<PrintBadge> prtB = this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext).SearchFor(p => p.EventID_Event == this._idEvent).ToList();
             ObservableCollection<UserEventDTO> localCollection = new ObservableCollection<UserEventDTO>();
@@ -74,7 +74,8 @@ namespace EasyBadgeMVVM.ViewModels
 
                 dto.Barcode = ue.FieldUser.User.Barcode;
             }
-            return localCollection;
+            return localCollection;*/
+            return null;
         }
 
         private bool AddIfNecessary(ObservableCollection<UserEventDTO> coll, UserEventDTO dto, Object obj)
@@ -102,7 +103,7 @@ namespace EasyBadgeMVVM.ViewModels
             return this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(predicate).FirstOrDefault();
         }
 
-        public List<UserEvent> GetUserEventByDTO(UserEventDTO dto)
+        /*public List<UserEvent> GetUserEventByDTO(UserEventDTO dto)
         {
             return this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue => ue.User.Barcode.Equals(dto.Barcode)).ToList();
         }
@@ -111,7 +112,7 @@ namespace EasyBadgeMVVM.ViewModels
         {
             return this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue => ue.EventID_Event == idEvent)
                 .GroupBy(ue1 => ue1.FieldUser.Field.Name).Select(g => g.FirstOrDefault()).ToList();
-        }
+        }*/
 
 
         /*********************************************************************************************************************************************************************/
@@ -121,7 +122,7 @@ namespace EasyBadgeMVVM.ViewModels
         //A CORRIGER CAR L'UNICITE N'EST PAS TOP TOP (nom, prenom, company) + dans SEARCHIFUNIQUE le i < 3 est du harcodage
         public bool CheckIfAlreadyExists(string lastName, string firstName, string company)
         {
-            IEnumerable<UserEvent> testInDb = null;
+            /*IEnumerable<UserEvent> testInDb = null;
             IEnumerable<UserEvent> testInDico = null;
             if (this._myUsers.ContainsKey(USEREVENT))
             {
@@ -138,12 +139,12 @@ namespace EasyBadgeMVVM.ViewModels
             {
                 exists = SearchIfUnique(testInDico, lastName, firstName, company);
                 if (exists) return true;
-            }
+            }*/
 
             return false;
         }
 
-        private bool SearchIfUnique(IEnumerable<UserEvent> list, string lastName, string firstName, string company)
+        /*private bool SearchIfUnique(IEnumerable<UserEvent> list, string lastName, string firstName, string company)
         {
             IEnumerable<IGrouping<int, UserEvent>> myGrouping = list.GroupBy(u => u.UserID_User);
             foreach (IGrouping<int, UserEvent> uu in myGrouping)
@@ -193,7 +194,7 @@ namespace EasyBadgeMVVM.ViewModels
                 }
             }
             return false;
-        }
+        }*/
 
         //Field == oldfieldname with trim
         //return false if similar field name is not used
@@ -227,7 +228,7 @@ namespace EasyBadgeMVVM.ViewModels
         public void InsertNewUser(int index, string field, string data)
         {
             //INSERT IN USER TABLE
-            User user = new User();
+            /*User user = new User();
             if (index == 0)
             {
                 user.Active = true;
@@ -282,7 +283,7 @@ namespace EasyBadgeMVVM.ViewModels
             userEvent.User = user;
             userEvent.FieldUser = fieldUser;
 
-            InsertInUserEventTable(userEvent);
+            InsertInUserEventTable(userEvent);*/
         }
 
         private bool InsertInUserTable(User user)
@@ -320,7 +321,7 @@ namespace EasyBadgeMVVM.ViewModels
                 this._repostitoryFactory.GetFieldRepository(this._dbContext));
         }
 
-        private bool InsertInFieldUserTable(FieldUser fieldUser)
+        /*private bool InsertInFieldUserTable(FieldUser fieldUser)
         {
             return CheckBeforeInsert(
                 FIELDUSER, 
@@ -333,7 +334,7 @@ namespace EasyBadgeMVVM.ViewModels
         private void InsertInUserEventTable(UserEvent userEvent)
         {
             this._repostitoryFactory.GetUserEventRepository(this._dbContext).Insert(userEvent);
-        }
+        }*/
 
         private bool CheckBeforeInsert<T>(string key, Func<T, bool> predicate, Expression<Func<T, bool>> expression, T fieldToInsert, IRepository<T> baseRepository)
         {
@@ -364,8 +365,6 @@ namespace EasyBadgeMVVM.ViewModels
             this._repostitoryFactory.GetFieldRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetUserRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();
-            this._repostitoryFactory.GetFieldUserRepository(this._dbContext).SaveChanges();
-            this._repostitoryFactory.GetUserEventRepository(this._dbContext).SaveChanges();
         }
 
         public void Clear()

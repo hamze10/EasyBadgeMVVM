@@ -19,7 +19,7 @@ namespace EasyBadgeMVVM.ViewModels
         void InsertNewUser(int index, string field, string data);
         void SetIdEvent(int idEvent);
         void SaveAllChanges();
-        List<UserEvent> GetAllFieldsOfEvent(int idEvent);
+        //List<UserEvent> GetAllFieldsOfEvent(int idEvent);
 
         /// <summary>
         /// Check if the user with the last name and first name in parameter exists
@@ -35,6 +35,6 @@ namespace EasyBadgeMVVM.ViewModels
         Event GetEventById(int idEvent);
         Event SearchFor(Expression<Func<Event, bool>> predicate);
         bool InsertInEventTable(Event ev);
-        List<UserEvent> GetUserEventByDTO(UserEventDTO dto);
+        //List<UserEvent> GetUserEventByDTO(UserEventDTO dto);
     }
 }

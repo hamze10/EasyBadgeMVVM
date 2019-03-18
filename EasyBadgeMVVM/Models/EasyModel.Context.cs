@@ -28,11 +28,11 @@ namespace EasyBadgeMVVM.Models
         public virtual DbSet<User> UserSet { get; set; }
         public virtual DbSet<Event> EventSet { get; set; }
         public virtual DbSet<Field> FieldSet { get; set; }
-        public virtual DbSet<FieldUser> FieldUserSet { get; set; }
-        public virtual DbSet<UserEvent> UserEventSet { get; set; }
+        public virtual DbSet<EventFieldUser> EventFieldUserSet { get; set; }
         public virtual DbSet<PrintBadge> PrintBadgeSet { get; set; }
         public virtual DbSet<Badge> BadgeSet { get; set; }
         public virtual DbSet<BadgeEvent> BadgeEventSet { get; set; }
         public virtual DbSet<Position> PositionSet { get; set; }
+        public virtual DbSet<EventField> EventFieldSet { get; set; }
     }
 }

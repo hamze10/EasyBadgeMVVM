@@ -83,19 +83,25 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataAccess\impl\BaseRepository.cs" />
+    <Compile Include="DataAccess\impl\EventFieldRepository.cs" />
+    <Compile Include="DataAccess\impl\EventFieldUserRepository.cs" />
     <Compile Include="DataAccess\impl\EventRepository.cs" />
     <Compile Include="DataAccess\impl\FieldRepository.cs" />
-    <Compile Include="DataAccess\impl\FieldUserRepository.cs" />
     <Compile Include="DataAccess\impl\PrintBadgeRepository.cs" />
+    <Compile Include="DataAccess\interfaces\IEventFieldRepository.cs" />
+    <Compile Include="DataAccess\interfaces\IEventFieldUserRepository.cs" />
     <Compile Include="DataAccess\interfaces\IEventRepository.cs" />
     <Compile Include="DataAccess\interfaces\IFieldRepository.cs" />
-    <Compile Include="DataAccess\interfaces\IFieldUserRepository.cs" />
     <Compile Include="DataAccess\interfaces\IPrintBadgeRepository.cs" />
     <Compile Include="DataAccess\interfaces\IRepository.cs" />
-    <Compile Include="DataAccess\interfaces\IUserEventRepository.cs" />
     <Compile Include="DataAccess\interfaces\IUserRepository.cs" />
-    <Compile Include="DataAccess\impl\UserEventRepository.cs" />
     <Compile Include="DataAccess\impl\UserRepository.cs" />
+    <Compile Include="Models\EventField.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EventFieldUser.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Util.cs" />
     <Compile Include="ViewModels\impl\DbEntities.cs" />
     <Compile Include="ViewModels\impl\EventVM.cs" />
@@ -107,8 +113,8 @@
     <Compile Include="ViewModels\interfaces\IRepostitoryFactory.cs" />
     <Compile Include="ViewModels\impl\RepostitoryFactory.cs" />
     <Compile Include="ViewModels\interfaces\IEventVM.cs" />
-    <Compile Include="ViewModels\interfaces\IUserEventVM.cs" />
-    <Compile Include="ViewModels\impl\UserEventVM.cs" />
+    <Compile Include="ViewModels\interfaces\IMainWindow.cs" />
+    <Compile Include="ViewModels\impl\MainWindowImpl.cs" />
     <Compile Include="Views\FieldMatching.xaml.cs">
       <DependentUpon>FieldMatching.xaml</DependentUpon>
     </Compile>
@@ -171,9 +177,6 @@
     <Compile Include="Models\Field.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\FieldUser.cs">
-      <DependentUpon>EasyModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Position.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
@@ -181,9 +184,6 @@
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
-      <DependentUpon>EasyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserEvent.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">

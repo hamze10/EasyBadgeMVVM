@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 02/19/2019 10:44:46
+-- Date Created: 03/18/2019 14:28:46
 -- Generated from EDMX file: C:\Users\onetec\Documents\EasyBadgeMVVM\EasyBadgeMVVM\EasyBadgeMVVM\Models\EasyModel.edmx
 -- --------------------------------------------------
 
@@ -20,23 +20,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_UserFieldUser]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[FieldUserSet] DROP CONSTRAINT [FK_UserFieldUser];
 GO
-IF OBJECT_ID(N'[dbo].[FK_UserUserEvent]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserEventSet] DROP CONSTRAINT [FK_UserUserEvent];
-GO
 IF OBJECT_ID(N'[dbo].[FK_UserPrintBadge]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PrintBadgeSet] DROP CONSTRAINT [FK_UserPrintBadge];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EventUserEvent]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserEventSet] DROP CONSTRAINT [FK_EventUserEvent];
 GO
 IF OBJECT_ID(N'[dbo].[FK_EventPrintBadge]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PrintBadgeSet] DROP CONSTRAINT [FK_EventPrintBadge];
 GO
 IF OBJECT_ID(N'[dbo].[FK_EventBadgeEvent]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[BadgeEventSet] DROP CONSTRAINT [FK_EventBadgeEvent];
-GO
-IF OBJECT_ID(N'[dbo].[FK_FieldFieldUser]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FieldUserSet] DROP CONSTRAINT [FK_FieldFieldUser];
 GO
 IF OBJECT_ID(N'[dbo].[FK_FieldPosition]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PositionSet] DROP CONSTRAINT [FK_FieldPosition];
@@ -47,8 +38,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_BadgeEventPosition]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PositionSet] DROP CONSTRAINT [FK_BadgeEventPosition];
 GO
-IF OBJECT_ID(N'[dbo].[FK_FieldUserUserEvent]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserEventSet] DROP CONSTRAINT [FK_FieldUserUserEvent];
+IF OBJECT_ID(N'[dbo].[FK_FieldEventField]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventFieldSet] DROP CONSTRAINT [FK_FieldEventField];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventEventField]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventFieldSet] DROP CONSTRAINT [FK_EventEventField];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventFieldFieldUser]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FieldUserSet] DROP CONSTRAINT [FK_EventFieldFieldUser];
 GO
 
 -- --------------------------------------------------
@@ -67,9 +64,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FieldUserSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[FieldUserSet];
 GO
-IF OBJECT_ID(N'[dbo].[UserEventSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserEventSet];
-GO
 IF OBJECT_ID(N'[dbo].[PrintBadgeSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PrintBadgeSet];
 GO
@@ -81,6 +75,9 @@ IF OBJECT_ID(N'[dbo].[BadgeEventSet]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[PositionSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PositionSet];
+GO
+IF OBJECT_ID(N'[dbo].[EventFieldSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventFieldSet];
 GO
 
 -- --------------------------------------------------
@@ -111,21 +108,13 @@ CREATE TABLE [dbo].[FieldSet] (
 );
 GO
 
--- Creating table 'FieldUserSet'
-CREATE TABLE [dbo].[FieldUserSet] (
-    [ID_FieldUser] int IDENTITY(1,1) NOT NULL,
+-- Creating table 'EventFieldUserSet'
+CREATE TABLE [dbo].[EventFieldUserSet] (
+    [UserID_User] int  NOT NULL,
+    [EventFieldFieldID_Field] int  NOT NULL,
+    [EventFieldEventID_Event] int  NOT NULL,
     [Value] nvarchar(max)  NOT NULL,
-    [AdditionnalInformation] nvarchar(max)  NULL,
-    [UserID_User] int  NOT NULL,
-    [FieldID_Field] int  NOT NULL
-);
-GO
-
--- Creating table 'UserEventSet'
-CREATE TABLE [dbo].[UserEventSet] (
-    [UserID_User] int  NOT NULL,
-    [EventID_Event] int  NOT NULL,
-    [FieldUserID_FieldUser1] int  NOT NULL
+    [AdditionnalInformation] nvarchar(max)  NULL
 );
 GO
 
@@ -165,6 +154,15 @@ CREATE TABLE [dbo].[PositionSet] (
 );
 GO
 
+-- Creating table 'EventFieldSet'
+CREATE TABLE [dbo].[EventFieldSet] (
+    [FieldID_Field] int  NOT NULL,
+    [EventID_Event] int  NOT NULL,
+    [Visibility] bit  NOT NULL,
+    [Unique] bit  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -187,16 +185,10 @@ ADD CONSTRAINT [PK_FieldSet]
     PRIMARY KEY CLUSTERED ([ID_Field] ASC);
 GO
 
--- Creating primary key on [ID_FieldUser] in table 'FieldUserSet'
-ALTER TABLE [dbo].[FieldUserSet]
-ADD CONSTRAINT [PK_FieldUserSet]
-    PRIMARY KEY CLUSTERED ([ID_FieldUser] ASC);
-GO
-
--- Creating primary key on [UserID_User], [EventID_Event], [FieldUserID_FieldUser1] in table 'UserEventSet'
-ALTER TABLE [dbo].[UserEventSet]
-ADD CONSTRAINT [PK_UserEventSet]
-    PRIMARY KEY CLUSTERED ([UserID_User], [EventID_Event], [FieldUserID_FieldUser1] ASC);
+-- Creating primary key on [UserID_User], [EventFieldFieldID_Field], [EventFieldEventID_Event] in table 'EventFieldUserSet'
+ALTER TABLE [dbo].[EventFieldUserSet]
+ADD CONSTRAINT [PK_EventFieldUserSet]
+    PRIMARY KEY CLUSTERED ([UserID_User], [EventFieldFieldID_Field], [EventFieldEventID_Event] ASC);
 GO
 
 -- Creating primary key on [UserID_User], [EventID_Event] in table 'PrintBadgeSet'
@@ -223,28 +215,19 @@ ADD CONSTRAINT [PK_PositionSet]
     PRIMARY KEY CLUSTERED ([BadgeEventBadgeID_Badge], [BadgeEventEventID_Event], [FieldID_Field] ASC);
 GO
 
+-- Creating primary key on [FieldID_Field], [EventID_Event] in table 'EventFieldSet'
+ALTER TABLE [dbo].[EventFieldSet]
+ADD CONSTRAINT [PK_EventFieldSet]
+    PRIMARY KEY CLUSTERED ([FieldID_Field], [EventID_Event] ASC);
+GO
+
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [UserID_User] in table 'FieldUserSet'
-ALTER TABLE [dbo].[FieldUserSet]
+-- Creating foreign key on [UserID_User] in table 'EventFieldUserSet'
+ALTER TABLE [dbo].[EventFieldUserSet]
 ADD CONSTRAINT [FK_UserFieldUser]
-    FOREIGN KEY ([UserID_User])
-    REFERENCES [dbo].[UserSet]
-        ([ID_User])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_UserFieldUser'
-CREATE INDEX [IX_FK_UserFieldUser]
-ON [dbo].[FieldUserSet]
-    ([UserID_User]);
-GO
-
--- Creating foreign key on [UserID_User] in table 'UserEventSet'
-ALTER TABLE [dbo].[UserEventSet]
-ADD CONSTRAINT [FK_UserUserEvent]
     FOREIGN KEY ([UserID_User])
     REFERENCES [dbo].[UserSet]
         ([ID_User])
@@ -258,21 +241,6 @@ ADD CONSTRAINT [FK_UserPrintBadge]
     REFERENCES [dbo].[UserSet]
         ([ID_User])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [EventID_Event] in table 'UserEventSet'
-ALTER TABLE [dbo].[UserEventSet]
-ADD CONSTRAINT [FK_EventUserEvent]
-    FOREIGN KEY ([EventID_Event])
-    REFERENCES [dbo].[EventSet]
-        ([ID_Event])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EventUserEvent'
-CREATE INDEX [IX_FK_EventUserEvent]
-ON [dbo].[UserEventSet]
-    ([EventID_Event]);
 GO
 
 -- Creating foreign key on [EventID_Event] in table 'PrintBadgeSet'
@@ -303,21 +271,6 @@ GO
 CREATE INDEX [IX_FK_EventBadgeEvent]
 ON [dbo].[BadgeEventSet]
     ([EventID_Event]);
-GO
-
--- Creating foreign key on [FieldID_Field] in table 'FieldUserSet'
-ALTER TABLE [dbo].[FieldUserSet]
-ADD CONSTRAINT [FK_FieldFieldUser]
-    FOREIGN KEY ([FieldID_Field])
-    REFERENCES [dbo].[FieldSet]
-        ([ID_Field])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_FieldFieldUser'
-CREATE INDEX [IX_FK_FieldFieldUser]
-ON [dbo].[FieldUserSet]
-    ([FieldID_Field]);
 GO
 
 -- Creating foreign key on [FieldID_Field] in table 'PositionSet'
@@ -353,19 +306,43 @@ ADD CONSTRAINT [FK_BadgeEventPosition]
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [FieldUserID_FieldUser1] in table 'UserEventSet'
-ALTER TABLE [dbo].[UserEventSet]
-ADD CONSTRAINT [FK_FieldUserUserEvent]
-    FOREIGN KEY ([FieldUserID_FieldUser1])
-    REFERENCES [dbo].[FieldUserSet]
-        ([ID_FieldUser])
+-- Creating foreign key on [FieldID_Field] in table 'EventFieldSet'
+ALTER TABLE [dbo].[EventFieldSet]
+ADD CONSTRAINT [FK_FieldEventField]
+    FOREIGN KEY ([FieldID_Field])
+    REFERENCES [dbo].[FieldSet]
+        ([ID_Field])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_FieldUserUserEvent'
-CREATE INDEX [IX_FK_FieldUserUserEvent]
-ON [dbo].[UserEventSet]
-    ([FieldUserID_FieldUser1]);
+-- Creating foreign key on [EventID_Event] in table 'EventFieldSet'
+ALTER TABLE [dbo].[EventFieldSet]
+ADD CONSTRAINT [FK_EventEventField]
+    FOREIGN KEY ([EventID_Event])
+    REFERENCES [dbo].[EventSet]
+        ([ID_Event])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EventEventField'
+CREATE INDEX [IX_FK_EventEventField]
+ON [dbo].[EventFieldSet]
+    ([EventID_Event]);
+GO
+
+-- Creating foreign key on [EventFieldFieldID_Field], [EventFieldEventID_Event] in table 'EventFieldUserSet'
+ALTER TABLE [dbo].[EventFieldUserSet]
+ADD CONSTRAINT [FK_EventFieldFieldUser]
+    FOREIGN KEY ([EventFieldFieldID_Field], [EventFieldEventID_Event])
+    REFERENCES [dbo].[EventFieldSet]
+        ([FieldID_Field], [EventID_Event])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EventFieldFieldUser'
+CREATE INDEX [IX_FK_EventFieldFieldUser]
+ON [dbo].[EventFieldUserSet]
+    ([EventFieldFieldID_Field], [EventFieldEventID_Event]);
 GO
 
 -- --------------------------------------------------
