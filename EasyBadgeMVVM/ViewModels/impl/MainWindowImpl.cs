@@ -1,4 +1,5 @@
 ﻿using EasyBadgeMVVM.Models;
+using EasyBadgeMVVM.Views;
 
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EasyBadgeMVVM.ViewModels
 {
@@ -163,10 +165,6 @@ namespace EasyBadgeMVVM.ViewModels
             int i = 0;
             List<string> allFields = new List<string>();
 
-            int indexOfLastName = -1;
-            int indexOfFirstName = -1;
-            int indexOfCompany = -1;
-
             foreach(string s in splitted)
             {
                 if (s.Equals(string.Empty)) continue;
@@ -176,38 +174,54 @@ namespace EasyBadgeMVVM.ViewModels
                 {
                     //1 Recupérer tous les champs dans la DB
                     //2 Ouvrir fenetre FieldMatching(list field_import, list field_db) 
+                    ObservableCollection<Field> fieldsDB = this._dbEntities.GetAllFields();
+                    ObservableCollection<Field> fieldsImport = new ObservableCollection<Field>();
 
-                    int k = 0;
-                    foreach(string field in s.Split(','))
+
+                    foreach(string field2 in s.Split(','))
                     {
-                        bool fieldTrimUsed = true;
-
-                        string nameTrim = Util.TrimWord(field.ToLower());
-                        string translated = Util.TranslateField(nameTrim) ?? nameTrim;
-
-                        if (translated.Equals("firstname"))
+                        Field f = new Field();
+                        f.Name = field2;
+                        if (fieldsDB.Count == 0)
                         {
-                            indexOfFirstName = k;
+                            this._dbEntities.InsertNewField(field2);
                         }
-
-                        if (translated.Equals("lastname"))
+                        else
                         {
-                            indexOfLastName = k;
+                            fieldsImport.Add(f);
                         }
-
-                        if (translated.Equals("company"))
-                        {
-                            indexOfCompany = k;
-                        }
-
-                        fieldTrimUsed = this._dbEntities.InsertNewField(translated, field);
-                        allFields.Add(fieldTrimUsed == true ? translated : field);
-                        k++;
+                        
                     }
+
+                    if (fieldsDB.Count == 0) continue;
+
+                    Application.Current.Dispatcher.Invoke((Action)delegate {
+                        FieldMatching fm = new FieldMatching(fieldsDB, fieldsImport);
+                        fm.CreateMessages();
+                        Nullable<Boolean> waiting = fm.ShowDialog();
+                        if (waiting == true)
+                        {
+                            //DO CHANGEMENTS
+                            Dictionary<string, string> myDico = fm.FieldsAccepted;
+                            foreach(KeyValuePair<string, string> kk in myDico)
+                            {
+                                if (kk.Key.Equals(kk.Value))
+                                {
+                                    //INSERT IN TABLE FIELD
+                                    this._dbEntities.InsertNewField(kk.Value);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //DO NOTHING
+                        }
+                    });
+
                 }
 
                 //Data
-                else
+                /*else
                 {
                     bool exists = false;
                     if (indexOfLastName != -1 && indexOfFirstName != -1 && indexOfCompany != -1)
@@ -230,13 +244,13 @@ namespace EasyBadgeMVVM.ViewModels
                 if (i != 0 && i% nbrForInsertion == 0)
                 {
                     this._dbEntities.SaveAllChanges();
-                }
+                }*/
 
                 i++;
             }
 
             //Save Changes in DB
-            this._dbEntities.SaveAllChanges();
+            /*this._dbEntities.SaveAllChanges();
             this._mainFields = this._dbEntities.GetAllUsers();
             this._allUsers = this._mainFields;
             this.NbrUser = this._mainFields.Count;
@@ -244,7 +258,7 @@ namespace EasyBadgeMVVM.ViewModels
             OnPropertyChanged("NbrUser");
 
             //Clear
-            this._dbEntities.Clear();
+            this._dbEntities.Clear();*/
         }
 
         public ObservableCollection<ExportDataDTO> GetExportData()

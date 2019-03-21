@@ -15,7 +15,7 @@ namespace EasyBadgeMVVM.ViewModels
     public interface IDbEntities
     {
         ObservableCollection<UserEventDTO> GetAllUsers();
-        bool InsertNewField(string field, string oldfieldname);
+        void InsertNewField(string field);
         void InsertNewUser(int index, string field, string data);
         void SetIdEvent(int idEvent);
         void SaveAllChanges();
@@ -36,5 +36,6 @@ namespace EasyBadgeMVVM.ViewModels
         Event SearchFor(Expression<Func<Event, bool>> predicate);
         bool InsertInEventTable(Event ev);
         //List<UserEvent> GetUserEventByDTO(UserEventDTO dto);
+        ObservableCollection<Field> GetAllFields();
     }
 }

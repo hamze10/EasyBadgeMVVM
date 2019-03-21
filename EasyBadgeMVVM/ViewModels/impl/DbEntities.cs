@@ -198,31 +198,11 @@ namespace EasyBadgeMVVM.ViewModels
 
         //Field == oldfieldname with trim
         //return false if similar field name is not used
-        public bool InsertNewField(string field,string oldfieldname)
+        public void InsertNewField(string field)
         {
-            Field similar = this._repostitoryFactory.GetFieldRepository(this._dbContext).CheckSimilarField(oldfieldname);
-            if (similar == null)
-            {
-                similar = this._repostitoryFactory.GetFieldRepository(this._dbContext).CheckSimilarField(field);
-            }
             Field f = new Field();
-            f.Name = oldfieldname;
-            if (similar != null && !similar.Name.Equals(oldfieldname))
-            {
-                Application.Current.Dispatcher.Invoke((Action)delegate {
-                    FieldMatching fieldMatching = new FieldMatching();
-                    fieldMatching.FieldImported = oldfieldname;
-                    fieldMatching.FieldInDb = similar.Name;
-                    fieldMatching.CreateMessages();
-                    Nullable<Boolean> waiting = fieldMatching.ShowDialog();
-                    if (waiting == true)
-                    {
-                        f.Name = similar.Name;
-                    }
-                });
-            }
+            f.Name = field;
             InsertInFieldTable(f);
-            return similar != null && f.Name.Equals(similar.Name);
         }
 
         public void InsertNewUser(int index, string field, string data)
@@ -354,6 +334,11 @@ namespace EasyBadgeMVVM.ViewModels
             this._myUsers[key].Add(fieldToInsert);
             baseRepository.Insert(fieldToInsert);
             return true;
+        }
+
+        public ObservableCollection<Field> GetAllFields()
+        {
+            return new ObservableCollection<Field>(this._repostitoryFactory.GetFieldRepository(this._dbContext).GetAll());
         }
 
         /*********************************************************************************************************************************************************************/
