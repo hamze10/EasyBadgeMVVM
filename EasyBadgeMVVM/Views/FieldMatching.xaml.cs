@@ -29,7 +29,7 @@ namespace EasyBadgeMVVM.Views
         private ObservableCollection<Field> _fieldsImported;
         private ObservableCollection<Field> _fieldsInDb;
         public Dictionary<string, string> FieldsAccepted { get; set; }
-        public HashSet<string> FieldsUnique { get; set; }
+        public HashSet<string> FieldsToShow { get; set; }
 
         public FieldMatching(ObservableCollection<Field> fieldsDB, ObservableCollection<Field> fieldsImport)
         {
@@ -37,7 +37,7 @@ namespace EasyBadgeMVVM.Views
             this._fieldsInDb = fieldsDB;
             this._fieldsImported = fieldsImport;
             this.FieldsAccepted = new Dictionary<string, string>();
-            this.FieldsUnique = new HashSet<string>();
+            this.FieldsToShow = new HashSet<string>();
             InitializeComponent();
         }
 
@@ -89,7 +89,6 @@ namespace EasyBadgeMVVM.Views
                 grid3.SetValue(Grid.RowProperty, i);
                 grid3.SetValue(Grid.ColumnProperty, 2);
 
-                //TODO RETRIEVE SELECTED VALUE
                 ComboBox comboBox = new ComboBox();
                 comboBox.DisplayMemberPath = "Name";
                 comboBox.ItemsSource = this._fieldsInDb;
@@ -127,7 +126,6 @@ namespace EasyBadgeMVVM.Views
             this.FieldMatchingGrid.Children.Add(grid4);
         }
 
-        //SEND RESPONSE OF KEEPING OR NOT THE FIELD
         private void FieldMatchingClick(object sender, RoutedEventArgs e)
         {
             for(int i = 1; i <= this._fieldsImported.Count; i++)
@@ -140,15 +138,10 @@ namespace EasyBadgeMVVM.Views
                 }
 
                 string labelChoice = ((Label)this.FindName("labelField" + i)).Content.ToString();
+                this.FieldsAccepted.Add(labelChoice, choice.Equals(string.Empty) ? labelChoice : choice);
 
                 bool isCheck = ((CheckBox)this.FindName("checkboxField" + i)).IsChecked.Value;
-
-                if (isCheck)
-                {
-                    this.FieldsUnique.Add(choice.Equals(string.Empty) ? labelChoice : choice);
-                }
-
-                this.FieldsAccepted.Add(labelChoice, choice.Equals(string.Empty) ? labelChoice : choice);
+                if (isCheck) this.FieldsToShow.Add(choice.Equals(string.Empty) ? labelChoice : choice);
             }
             this.DialogResult = true;
         }

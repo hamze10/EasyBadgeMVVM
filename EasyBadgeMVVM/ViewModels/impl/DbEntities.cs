@@ -23,6 +23,7 @@ namespace EasyBadgeMVVM.ViewModels
         private int _idEvent;
         private IRepostitoryFactory _repostitoryFactory = new RepostitoryFactory();
         private IDictionary<string, List<object>> _myUsers;
+        public HashSet<string> FieldsToShow { get; set; }
 
         public DbEntities()
         {
@@ -300,21 +301,6 @@ namespace EasyBadgeMVVM.ViewModels
                 field,
                 this._repostitoryFactory.GetFieldRepository(this._dbContext));
         }
-
-        /*private bool InsertInFieldUserTable(FieldUser fieldUser)
-        {
-            return CheckBeforeInsert(
-                FIELDUSER, 
-                fu => fu.UserID_User == fieldUser.UserID_User && fu.FieldID_Field == fieldUser.FieldID_Field,
-                fu => fu.UserID_User == fieldUser.UserID_User && fu.FieldID_Field == fieldUser.FieldID_Field, 
-                fieldUser, 
-                this._repostitoryFactory.GetFieldUserRepository(this._dbContext));
-        }
-
-        private void InsertInUserEventTable(UserEvent userEvent)
-        {
-            this._repostitoryFactory.GetUserEventRepository(this._dbContext).Insert(userEvent);
-        }*/
 
         private bool CheckBeforeInsert<T>(string key, Func<T, bool> predicate, Expression<Func<T, bool>> expression, T fieldToInsert, IRepository<T> baseRepository)
         {

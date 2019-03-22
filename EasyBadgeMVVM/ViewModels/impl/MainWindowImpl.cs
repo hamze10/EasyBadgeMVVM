@@ -22,13 +22,14 @@ namespace EasyBadgeMVVM.ViewModels
         private int _idEvent;
         private IDbEntities _dbEntities;
         public string EventTitle { get; set; }
+        private HashSet<string> _fieldsToShow;
 
         public MainWindowImpl(int idEvent)
         {
             this._idEvent = idEvent;
             this._dbEntities = new DbEntities();
             this._dbEntities.SetIdEvent(idEvent);
-
+            this._fieldsToShow = new HashSet<string>();
             Event thisEvent = this._dbEntities.GetEventById(idEvent);
             this.EventTitle = thisEvent.Name + " - " + thisEvent.DateOfEvent.ToString();
         }
@@ -193,42 +194,40 @@ namespace EasyBadgeMVVM.ViewModels
                         
                     }
 
-                    if (fieldsDB.Count == 0) continue;
-
-                    Application.Current.Dispatcher.Invoke((Action)delegate {
-                        FieldMatching fm = new FieldMatching(fieldsDB, fieldsImport);
-                        fm.CreateMessages();
-                        Nullable<Boolean> waiting = fm.ShowDialog();
-                        if (waiting == true)
-                        {
-                            //DO CHANGEMENTS
-                            Dictionary<string, string> myDico = fm.FieldsAccepted;
-                            foreach(KeyValuePair<string, string> kk in myDico)
+                    if (fieldsDB.Count > 0)
+                    {
+                        Application.Current.Dispatcher.Invoke((Action)delegate {
+                            FieldMatching fm = new FieldMatching(fieldsDB, fieldsImport);
+                            fm.CreateMessages();
+                            Nullable<Boolean> waiting = fm.ShowDialog();
+                            if (waiting == true)
                             {
-                                if (kk.Key.Equals(kk.Value))
+                                this._dbEntities.FieldsToShow = fm.FieldsToShow;
+                                //DO CHANGES
+                                Dictionary<string, string> myDico = fm.FieldsAccepted;
+                                foreach (KeyValuePair<string, string> kk in myDico)
                                 {
-                                    //INSERT IN TABLE FIELD
-                                    this._dbEntities.InsertNewField(kk.Value);
+                                    if (kk.Key.Equals(kk.Value))
+                                    {
+                                        //INSERT IN TABLE FIELD
+                                        this._dbEntities.InsertNewField(kk.Value);
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            //DO NOTHING
-                        }
-                    });
-
+                            else
+                            {
+                                //DO NOTHING
+                            }
+                        });
+                    }
                 }
 
                 //Data
                 /*else
                 {
                     bool exists = false;
-                    if (indexOfLastName != -1 && indexOfFirstName != -1 && indexOfCompany != -1)
-                    {
-                        string[] datas = s.Split(',');
-                        exists = this._dbEntities.CheckIfAlreadyExists(datas[indexOfLastName], datas[indexOfFirstName], datas[indexOfCompany]);
-                    }
+                    string[] datas = s.Split(',');
+                    exists = this._dbEntities.CheckIfAlreadyExists("e", "e","e");
 
                     if (exists == true) continue;
 

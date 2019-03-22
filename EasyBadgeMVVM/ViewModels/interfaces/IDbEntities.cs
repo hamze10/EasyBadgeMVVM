@@ -19,17 +19,9 @@ namespace EasyBadgeMVVM.ViewModels
         void InsertNewUser(int index, string field, string data);
         void SetIdEvent(int idEvent);
         void SaveAllChanges();
+        HashSet<string> FieldsToShow { get; set; }
         //List<UserEvent> GetAllFieldsOfEvent(int idEvent);
-
-        /// <summary>
-        /// Check if the user with the last name and first name in parameter exists
-        /// </summary>
-        /// <param name="lastName"></param>
-        /// <param name="firstName"></param>
-        /// <param name="company"></param>
-        /// <returns>true if existe, otherwhise false</returns>
         bool CheckIfAlreadyExists(string lastName, string firstName, string company);
-
         void Clear();
         ObservableCollection<Event> GetEvents();
         Event GetEventById(int idEvent);
