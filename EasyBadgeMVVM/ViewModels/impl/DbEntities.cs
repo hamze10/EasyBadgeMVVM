@@ -16,8 +16,8 @@ namespace EasyBadgeMVVM.ViewModels
         private const string USER = "user";
         private const string EVENT = "event";
         private const string FIELD = "field";
-        private const string FIELDUSER = "fielduser";
-        private const string USEREVENT = "userevent";
+        private const string EVENTFIELD = "eventfield";
+        private const string EVENTFIELDuser = "eventfielduser";
 
         private EasyModelContext _dbContext = new EasyModelContext();
         private int _idEvent;
@@ -29,6 +29,7 @@ namespace EasyBadgeMVVM.ViewModels
         {
             this._dbContext.Configuration.AutoDetectChangesEnabled = false;
             this._myUsers = new Dictionary<string, List<object>>();
+            this.FieldsToShow = new HashSet<string>();
         }
 
         public void SetIdEvent(int idEvent)
@@ -102,6 +103,11 @@ namespace EasyBadgeMVVM.ViewModels
         public Event SearchFor(Expression<Func<Event, bool>> predicate)
         {
             return this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(predicate).FirstOrDefault();
+        }
+
+        public ObservableCollection<Field> GetAllFields()
+        {
+            return new ObservableCollection<Field>(this._repostitoryFactory.GetFieldRepository(this._dbContext).GetAll());
         }
 
         /*public List<UserEvent> GetUserEventByDTO(UserEventDTO dto)
@@ -206,10 +212,10 @@ namespace EasyBadgeMVVM.ViewModels
             InsertInFieldTable(f);
         }
 
-        public void InsertNewUser(int index, string field, string data)
+        public void InsertNewUser(int index, string field, string data, bool visibility)
         {
             //INSERT IN USER TABLE
-            /*User user = new User();
+            User user = new User();
             if (index == 0)
             {
                 user.Active = true;
@@ -246,25 +252,26 @@ namespace EasyBadgeMVVM.ViewModels
                 user = this._myUsers[USER].Cast<User>().OrderByDescending(u => u.Barcode).FirstOrDefault();
             }
 
-            //INSERT IN FIELDUSER TABLE
-            Field fff = this._myUsers[FIELD].Cast<Field>().Where(f2 => f2.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
-            Field field2 = fff ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
-
-            FieldUser fieldUser = new FieldUser();
-            fieldUser.Field = field2;
-            fieldUser.User = user;
-            fieldUser.Value = data;
-
-            InsertInFieldUserTable(fieldUser);
-
-            //INSERT IN USEREVENT
+            //INSERT IN EVENTFIELD
             Event ev = this._repostitoryFactory.GetEventRepository(this._dbContext).GetById(this._idEvent);
-            UserEvent userEvent = new UserEvent();
-            userEvent.Event = ev;
-            userEvent.User = user;
-            userEvent.FieldUser = fieldUser;
+            Field fieldDb = this._myUsers[FIELD].Cast<Field>().Where(f2 => f2.Name.ToLower().Equals(field.ToLower())).FirstOrDefault() 
+                ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
 
-            InsertInUserEventTable(userEvent);*/
+            EventField evf = new EventField();
+            evf.Event = ev;
+            evf.Field = fieldDb;
+            evf.Visibility = visibility;
+            evf.Unique = false;
+
+            InsertInEventFieldTable(evf);
+
+            /*EventFieldUser evfu = new EventFieldUser();
+            evfu.User = user;
+            evfu.EventField = evf;
+            evfu.Value = data;
+
+            InsertInEventFieldUserTable(evfu);*/
+
         }
 
         private bool InsertInUserTable(User user)
@@ -302,6 +309,32 @@ namespace EasyBadgeMVVM.ViewModels
                 this._repostitoryFactory.GetFieldRepository(this._dbContext));
         }
 
+        private bool InsertInEventFieldTable(EventField eventField)
+        {
+            return CheckBeforeInsert(
+                EVENTFIELD,
+                ef => ef.Event.Name.ToLower().Equals(eventField.Event.Name.ToLower()) && ef.Field.Name.ToLower().Equals(eventField.Field.Name.ToLower()),
+                ef => ef.Event.Name.ToLower().Equals(eventField.Event.Name.ToLower()) && ef.Field.Name.ToLower().Equals(eventField.Field.Name.ToLower()),
+                eventField,
+                this._repostitoryFactory.GetEventFieldRepository(this._dbContext));
+        }
+
+        private bool InsertInEventFieldUserTable(EventFieldUser eventFieldUser)
+        {
+            this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).Insert(eventFieldUser);
+            return true;
+            /*return CheckBeforeInsert(
+                EVENTFIELDuser,
+                efu => efu.User.Barcode.Equals(eventFieldUser.User.Barcode) 
+                && efu.EventField.Event.Name.ToLower().Equals(eventFieldUser.EventField.Event.Name.ToLower()) 
+                && efu.EventField.Field.Name.ToLower().Equals(eventFieldUser.EventField.Field.Name.ToLower()),
+                                efu => efu.User.Barcode.Equals(eventFieldUser.User.Barcode)
+                && efu.EventField.Event.Name.ToLower().Equals(eventFieldUser.EventField.Event.Name.ToLower())
+                && efu.EventField.Field.Name.ToLower().Equals(eventFieldUser.EventField.Field.Name.ToLower()),
+                eventFieldUser,
+                this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext));*/
+        }
+
         private bool CheckBeforeInsert<T>(string key, Func<T, bool> predicate, Expression<Func<T, bool>> expression, T fieldToInsert, IRepository<T> baseRepository)
         {
             if (!this._myUsers.ContainsKey(key))
@@ -310,21 +343,23 @@ namespace EasyBadgeMVVM.ViewModels
             }
             else
             {
-                bool isExist = this._myUsers[key].Cast<T>().Where(predicate).Count() != 0;
-                if (isExist) return false;
+                if (predicate != null)
+                {
+                    bool isExist = this._myUsers[key].Cast<T>().Where(predicate).Count() != 0;
+                    if (isExist) return false;
+                }
+
             }
 
-            bool isExistInDb = baseRepository.SearchFor(expression).Count() != 0;
-            if (isExistInDb) return false;
+            if (expression != null)
+            {
+                bool isExistInDb = baseRepository.SearchFor(expression).Count() != 0;
+                if (isExistInDb) return false;
+            }
 
             this._myUsers[key].Add(fieldToInsert);
             baseRepository.Insert(fieldToInsert);
             return true;
-        }
-
-        public ObservableCollection<Field> GetAllFields()
-        {
-            return new ObservableCollection<Field>(this._repostitoryFactory.GetFieldRepository(this._dbContext).GetAll());
         }
 
         /*********************************************************************************************************************************************************************/

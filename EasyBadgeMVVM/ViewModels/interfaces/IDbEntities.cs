@@ -16,7 +16,7 @@ namespace EasyBadgeMVVM.ViewModels
     {
         ObservableCollection<UserEventDTO> GetAllUsers();
         void InsertNewField(string field);
-        void InsertNewUser(int index, string field, string data);
+        void InsertNewUser(int index, string field, string data, bool visiblity);
         void SetIdEvent(int idEvent);
         void SaveAllChanges();
         HashSet<string> FieldsToShow { get; set; }

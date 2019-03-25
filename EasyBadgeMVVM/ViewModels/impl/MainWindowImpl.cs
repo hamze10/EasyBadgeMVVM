@@ -22,14 +22,12 @@ namespace EasyBadgeMVVM.ViewModels
         private int _idEvent;
         private IDbEntities _dbEntities;
         public string EventTitle { get; set; }
-        private HashSet<string> _fieldsToShow;
 
         public MainWindowImpl(int idEvent)
         {
             this._idEvent = idEvent;
             this._dbEntities = new DbEntities();
             this._dbEntities.SetIdEvent(idEvent);
-            this._fieldsToShow = new HashSet<string>();
             Event thisEvent = this._dbEntities.GetEventById(idEvent);
             this.EventTitle = thisEvent.Name + " - " + thisEvent.DateOfEvent.ToString();
         }
@@ -165,6 +163,7 @@ namespace EasyBadgeMVVM.ViewModels
             int nbrForInsertion = splitted.Length >= 500 ? splitted.Length >= 5000 ? splitted.Length/25 : splitted.Length/10 : 200;
             int i = 0;
             List<string> allFields = new List<string>();
+            Dictionary<int, bool> fieldsVisiblity = new Dictionary<int, bool>();
 
             foreach(string s in splitted)
             {
@@ -183,30 +182,34 @@ namespace EasyBadgeMVVM.ViewModels
                     {
                         Field f = new Field();
                         f.Name = field2;
-                        if (fieldsDB.Count == 0)
+                        /*if (fieldsDB.Count == 0)
                         {
                             this._dbEntities.InsertNewField(field2);
-                        }
-                        else
-                        {
+                        }*/
+                        //else
+                        //{
                             fieldsImport.Add(f);
-                        }
+                        //}
                         
                     }
 
-                    if (fieldsDB.Count > 0)
-                    {
+                    //if (fieldsDB.Count > 0)
+                    //{
                         Application.Current.Dispatcher.Invoke((Action)delegate {
                             FieldMatching fm = new FieldMatching(fieldsDB, fieldsImport);
                             fm.CreateMessages();
                             Nullable<Boolean> waiting = fm.ShowDialog();
                             if (waiting == true)
                             {
-                                this._dbEntities.FieldsToShow = fm.FieldsToShow;
                                 //DO CHANGES
+                                this._dbEntities.FieldsToShow = fm.FieldsToShow;
                                 Dictionary<string, string> myDico = fm.FieldsAccepted;
+                                int j = 0;
                                 foreach (KeyValuePair<string, string> kk in myDico)
                                 {
+                                    allFields.Add(kk.Value);
+                                    fieldsVisiblity.Add(j++, this._dbEntities.FieldsToShow.Contains(kk.Value));
+
                                     if (kk.Key.Equals(kk.Value))
                                     {
                                         //INSERT IN TABLE FIELD
@@ -219,22 +222,22 @@ namespace EasyBadgeMVVM.ViewModels
                                 //DO NOTHING
                             }
                         });
-                    }
+                    //}
                 }
 
                 //Data
-                /*else
+                else
                 {
-                    bool exists = false;
+                    /*bool exists = false;
                     string[] datas = s.Split(',');
                     exists = this._dbEntities.CheckIfAlreadyExists("e", "e","e");
 
-                    if (exists == true) continue;
+                    if (exists == true) continue;*/
 
                     int j = 0;
                     foreach (string data in s.Split(','))
                     {
-                        this._dbEntities.InsertNewUser(j, allFields.ElementAt(j), data);
+                        this._dbEntities.InsertNewUser(j, allFields.ElementAt(j), data, fieldsVisiblity.ElementAt(j).Value);
                         j++;
                     }
                 }
@@ -243,10 +246,12 @@ namespace EasyBadgeMVVM.ViewModels
                 if (i != 0 && i% nbrForInsertion == 0)
                 {
                     this._dbEntities.SaveAllChanges();
-                }*/
+                }
 
                 i++;
             }
+
+            this._dbEntities.SaveAllChanges();
 
             //Save Changes in DB
             /*this._dbEntities.SaveAllChanges();

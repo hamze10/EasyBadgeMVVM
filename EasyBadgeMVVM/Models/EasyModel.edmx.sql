@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/18/2019 14:28:46
+-- Date Created: 03/25/2019 09:22:45
 -- Generated from EDMX file: C:\Users\onetec\Documents\EasyBadgeMVVM\EasyBadgeMVVM\EasyBadgeMVVM\Models\EasyModel.edmx
 -- --------------------------------------------------
 
@@ -18,7 +18,7 @@ GO
 -- --------------------------------------------------
 
 IF OBJECT_ID(N'[dbo].[FK_UserFieldUser]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FieldUserSet] DROP CONSTRAINT [FK_UserFieldUser];
+    ALTER TABLE [dbo].[EventFieldUserSet] DROP CONSTRAINT [FK_UserFieldUser];
 GO
 IF OBJECT_ID(N'[dbo].[FK_UserPrintBadge]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PrintBadgeSet] DROP CONSTRAINT [FK_UserPrintBadge];
@@ -45,7 +45,7 @@ IF OBJECT_ID(N'[dbo].[FK_EventEventField]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[EventFieldSet] DROP CONSTRAINT [FK_EventEventField];
 GO
 IF OBJECT_ID(N'[dbo].[FK_EventFieldFieldUser]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FieldUserSet] DROP CONSTRAINT [FK_EventFieldFieldUser];
+    ALTER TABLE [dbo].[EventFieldUserSet] DROP CONSTRAINT [FK_EventFieldFieldUser];
 GO
 
 -- --------------------------------------------------
@@ -61,8 +61,8 @@ GO
 IF OBJECT_ID(N'[dbo].[FieldSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[FieldSet];
 GO
-IF OBJECT_ID(N'[dbo].[FieldUserSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[FieldUserSet];
+IF OBJECT_ID(N'[dbo].[EventFieldUserSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventFieldUserSet];
 GO
 IF OBJECT_ID(N'[dbo].[PrintBadgeSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PrintBadgeSet];

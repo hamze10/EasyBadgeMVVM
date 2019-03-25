@@ -138,10 +138,13 @@ namespace EasyBadgeMVVM.Views
                 }
 
                 string labelChoice = ((Label)this.FindName("labelField" + i)).Content.ToString();
-                this.FieldsAccepted.Add(labelChoice, choice.Equals(string.Empty) ? labelChoice : choice);
+
+                string finalChoice = choice.Equals(string.Empty) ? labelChoice : choice;
+
+                this.FieldsAccepted.Add(labelChoice, finalChoice);
 
                 bool isCheck = ((CheckBox)this.FindName("checkboxField" + i)).IsChecked.Value;
-                if (isCheck) this.FieldsToShow.Add(choice.Equals(string.Empty) ? labelChoice : choice);
+                if (isCheck) this.FieldsToShow.Add(finalChoice);
             }
             this.DialogResult = true;
         }
