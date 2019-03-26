@@ -41,43 +41,11 @@ namespace EasyBadgeMVVM.ViewModels
         /*********** GETTERS *************/
         /*********************************************************************************************************************************************************************/
 
-        public ObservableCollection<UserEventDTO> GetAllUsers()
+        public ObservableCollection<EventFieldUser> GetAllUsers()
         {
-            /*IList<UserEvent> lst = this._repostitoryFactory.GetUserEventRepository(this._dbContext)
-                .SearchFor(us => us.User.Active == true && us.EventID_Event == this._idEvent).ToList();
-            IList<PrintBadge> prtB = this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext).SearchFor(p => p.EventID_Event == this._idEvent).ToList();
-            ObservableCollection<UserEventDTO> localCollection = new ObservableCollection<UserEventDTO>();
-
-            UserEventDTO dto = new UserEventDTO();
-            foreach (UserEvent ue in lst)
-            {
-                string nameTrim = Util.TrimWord(ue.FieldUser.Field.Name.ToLower());
-
-                switch (nameTrim)
-                {
-                    case "lastname":
-                        if (AddIfNecessary(localCollection, dto, dto.LastName)) dto = new UserEventDTO();
-                        dto.LastName = ue.FieldUser.Value;
-                        break;
-                    case "firstname":
-                        if (AddIfNecessary(localCollection, dto, dto.FirstName)) dto = new UserEventDTO();
-                        dto.FirstName = ue.FieldUser.Value;
-                        break;
-                    case "company":
-                        if (AddIfNecessary(localCollection, dto, dto.Company)) dto = new UserEventDTO();
-                        dto.Company = ue.FieldUser.Value;
-                        break;
-                    default:
-                        break;
-                }
-                dto.PrintBadge = prtB.Where(pr => pr.UserID_User == ue.UserID_User).SingleOrDefault() == null
-                        ? new DateTime()
-                        : prtB.Where(pr => pr.UserID_User == ue.UserID_User).SingleOrDefault().PrintDate;
-
-                dto.Barcode = ue.FieldUser.User.Barcode;
-            }
-            return localCollection;*/
-            return null;
+            return new ObservableCollection<EventFieldUser>(
+                this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SearchFor(x => x.EventFieldEventID_Event == this._idEvent)
+            );
         }
 
         private bool AddIfNecessary(ObservableCollection<UserEventDTO> coll, UserEventDTO dto, Object obj)
@@ -257,21 +225,26 @@ namespace EasyBadgeMVVM.ViewModels
             Field fieldDb = this._myUsers[FIELD].Cast<Field>().Where(f2 => f2.Name.ToLower().Equals(field.ToLower())).FirstOrDefault() 
                 ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
 
-            EventField evf = new EventField();
-            evf.Event = ev;
-            evf.Field = fieldDb;
-            evf.Visibility = visibility;
-            evf.Unique = false;
+            EventField evf = !this._myUsers.ContainsKey(EVENTFIELD) 
+                             ? null
+                             : this._myUsers[EVENTFIELD].Cast<EventField>().Where(e => e.Event.Name.Equals(ev.Name) && e.Field.Name.Equals(fieldDb.Name)).FirstOrDefault();
+            if (evf == null)
+            {
+                evf = new EventField();
+                evf.Event = ev;
+                evf.Field = fieldDb;
+                evf.Visibility = visibility;
+                evf.Unique = false;
+            }
 
             InsertInEventFieldTable(evf);
 
-            /*EventFieldUser evfu = new EventFieldUser();
+            EventFieldUser evfu = new EventFieldUser();
             evfu.User = user;
             evfu.EventField = evf;
             evfu.Value = data;
 
-            InsertInEventFieldUserTable(evfu);*/
-
+            InsertInEventFieldUserTable(evfu);
         }
 
         private bool InsertInUserTable(User user)
@@ -321,8 +294,8 @@ namespace EasyBadgeMVVM.ViewModels
 
         private bool InsertInEventFieldUserTable(EventFieldUser eventFieldUser)
         {
-            this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).Insert(eventFieldUser);
-            return true;
+            return CheckBeforeInsert(EVENTFIELDuser, null, null, eventFieldUser, this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext));
+
             /*return CheckBeforeInsert(
                 EVENTFIELDuser,
                 efu => efu.User.Barcode.Equals(eventFieldUser.User.Barcode) 

@@ -29,6 +29,7 @@ namespace EasyBadgeMVVM
         private BackgroundWorker bgw = new BackgroundWorker();
 
         private bool toggleState = false; //false no click, true click
+        private bool headImported = false;
 
         private const string DELIMITER = ",";
 
@@ -54,6 +55,7 @@ namespace EasyBadgeMVVM
 
             this.bgw.DoWork += myBgw_doWorker;
             this.bgw.RunWorkerCompleted += myBgw_RunWorkerCompleted;
+            CreateColumnsDataGrid();
 
         }
 
@@ -139,7 +141,7 @@ namespace EasyBadgeMVVM
 
         private void ExportUsers(object sender, RoutedEventArgs e)
         {
-            this.GridLoading.Visibility = Visibility.Visible;
+            /*this.GridLoading.Visibility = Visibility.Visible;
 
             var filePath = string.Empty;
             using (FolderBrowserDialog fd = new FolderBrowserDialog())
@@ -156,7 +158,7 @@ namespace EasyBadgeMVVM
                 return;
             }
 
-            ObservableCollection<UserEventDTO> data = this._mainWindowImpl.MainFields;
+            ObservableCollection<EventFieldUser> data = this._mainWindowImpl.MainFields;
             DateTime now = DateTime.Now;
             string nameFile = filePath + '\\' + "users" + now.ToString("ddMMyyyy") + "-" + now.ToString("HHmmsstt") + ".csv";
 
@@ -165,9 +167,9 @@ namespace EasyBadgeMVVM
             {
                 csvWriter.Configuration.Delimiter = DELIMITER;
                 csvWriter.Configuration.HasHeaderRecord = true;
-                csvWriter.Configuration.AutoMap<UserEventDTO>();
+                csvWriter.Configuration.AutoMap<EventFieldUser>();
 
-                csvWriter.WriteHeader<UserEventDTO>();
+                csvWriter.WriteHeader<EventFieldUser>();
                 csvWriter.NextRecord();
                 csvWriter.WriteRecords(data);
 
@@ -176,7 +178,7 @@ namespace EasyBadgeMVVM
             }
 
             string[] arg = new string[] { WORKER_EXPORT, nameFile};
-            this.RunMyWorker(arg);
+            this.RunMyWorker(arg);*/
         }
 
         private void SyncUsers(object sender, RoutedEventArgs e)
@@ -228,6 +230,65 @@ namespace EasyBadgeMVVM
         private void myBgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.ShowNotification((string) e.Result);
+            this.headImported = true;
+            CreateColumnsDataGrid();
+        }
+
+        private void CreateColumnsDataGrid()
+        {
+            if (!headImported) return;
+            HashSet<string> myFields = this._mainWindowImpl.FieldToShow;
+
+            foreach(string field in myFields)
+            {
+                DataGridTextColumn dataGridTextColumn = new DataGridTextColumn();
+                dataGridTextColumn.Header = field;
+                this.DataGridUsers.Columns.Add(dataGridTextColumn);
+            }
+
+            string lastUser = string.Empty;
+            Dictionary<string, string> fieldValue = new Dictionary<string, string>();
+            string eventName = string.Empty;
+            int i = 0;
+            foreach (var efu in this._mainWindowImpl.MainFields)
+            {
+                eventName = efu.EventField.Event.Name;
+                if (i != 0 && !lastUser.Equals(efu.User.Barcode))
+                {
+                    string toshow = string.Empty;
+                    foreach (KeyValuePair<string, string> entry in fieldValue)
+                    {
+                        toshow += "[" + entry.Key + "," + entry.Value + "]" + ",";
+                    }
+                    //Console.WriteLine("User : {0} | Event : {1} | Field/Value : {2}", lastUser, eventName, toshow);
+                    fieldValue.Clear();
+                    i = 0;
+                }
+                else
+                {
+                    if (i == 0)
+                    {
+                        lastUser = efu.User.Barcode;
+                        i++;
+                    }
+
+                    if (efu.EventField.Visibility == true)
+                    {
+                        fieldValue.Add(efu.EventField.Field.Name, efu.Value);
+                    }
+                }
+            }
+
+            if (fieldValue.Count != 0)
+            {
+                string toshow = string.Empty;
+                foreach (KeyValuePair<string, string> entry in fieldValue)
+                {
+                    toshow += "[" + entry.Key + "," + entry.Value + "]" + ",";
+                }
+                Console.WriteLine("User : {0} | Event : {1} | Field/Value : {2}", lastUser, eventName, toshow);
+                fieldValue.Clear();
+            }
         }
     }
 }

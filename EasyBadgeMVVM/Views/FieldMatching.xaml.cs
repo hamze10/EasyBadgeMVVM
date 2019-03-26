@@ -31,6 +31,10 @@ namespace EasyBadgeMVVM.Views
         public Dictionary<string, string> FieldsAccepted { get; set; }
         public HashSet<string> FieldsToShow { get; set; }
 
+        private const string LABEL_NAME = "labelField";
+        private const string CHECKBOX_NAME = "checkboxField";
+        private const string COMBOBOX_NAME = "comboboxField";
+
         public FieldMatching(ObservableCollection<Field> fieldsDB, ObservableCollection<Field> fieldsImport)
         {
             this._fieldVM = new FieldVM();
@@ -56,18 +60,19 @@ namespace EasyBadgeMVVM.Views
 
                 Label label = new Label();
                 label.Content = myField.Name.Replace("_", "__");
-                label.Name = "labelField" + i;
+                label.Name = LABEL_NAME + i;
                 label.FontSize = 23;
                 label.VerticalAlignment = VerticalAlignment.Center;
                 label.HorizontalAlignment = HorizontalAlignment.Center;
                 label.VerticalContentAlignment = VerticalAlignment.Center;
                 label.HorizontalContentAlignment = HorizontalAlignment.Center;
-                RegisterName("labelField" + i, label);
+                RegisterName(LABEL_NAME + i, label);
 
                 CheckBox checkbox = new CheckBox();
-                checkbox.Name = "checkboxField" + i;
+                checkbox.Name = CHECKBOX_NAME + i;
                 checkbox.Margin = new Thickness(30, 5, 0, 0);
-                RegisterName("checkboxField" + i, checkbox);
+                checkbox.IsChecked = true;
+                RegisterName(CHECKBOX_NAME + i, checkbox);
 
                 grid.Children.Add(checkbox);
                 grid.Children.Add(label);
@@ -93,8 +98,8 @@ namespace EasyBadgeMVVM.Views
                 comboBox.DisplayMemberPath = "Name";
                 comboBox.ItemsSource = this._fieldsInDb;
                 comboBox.FontSize = 20;
-                comboBox.Name = "comboboxField" + i;
-                RegisterName("comboboxField" + i, comboBox);
+                comboBox.Name = COMBOBOX_NAME + i;
+                RegisterName(COMBOBOX_NAME + i, comboBox);
                 grid3.Children.Add(comboBox);
 
 
@@ -130,20 +135,20 @@ namespace EasyBadgeMVVM.Views
         {
             for(int i = 1; i <= this._fieldsImported.Count; i++)
             {
-                Field fieldChoice = (Field)((ComboBox)this.FindName("comboboxField" + i)).SelectedItem;
+                Field fieldChoice = (Field)((ComboBox)this.FindName(COMBOBOX_NAME + i)).SelectedItem;
                 string choice = string.Empty;
                 if (fieldChoice != null)
                 {
                     choice = fieldChoice.Name;
                 }
 
-                string labelChoice = ((Label)this.FindName("labelField" + i)).Content.ToString();
+                string labelChoice = ((Label)this.FindName(LABEL_NAME + i)).Content.ToString();
 
                 string finalChoice = choice.Equals(string.Empty) ? labelChoice : choice;
 
                 this.FieldsAccepted.Add(labelChoice, finalChoice);
 
-                bool isCheck = ((CheckBox)this.FindName("checkboxField" + i)).IsChecked.Value;
+                bool isCheck = ((CheckBox)this.FindName(CHECKBOX_NAME + i)).IsChecked.Value;
                 if (isCheck) this.FieldsToShow.Add(finalChoice);
             }
             this.DialogResult = true;

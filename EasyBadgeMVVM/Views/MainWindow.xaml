@@ -56,13 +56,13 @@
                       Margin="0,-5,0,-15"
                       MouseDoubleClick="ShowUserInfo" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" 
                       HorizontalAlignment="Stretch">
-                    <DataGrid.Columns>
+                    <!--<DataGrid.Columns>
                         <materialDesign:MaterialDataGridTextColumn Width="*" Header="BARCODE" Binding="{Binding Barcode}" />
                         <materialDesign:MaterialDataGridTextColumn Width="*" Header="LAST NAME" Binding="{Binding LastName}" />
                         <materialDesign:MaterialDataGridTextColumn Width="*" Header="FIRST NAME" Binding="{Binding FirstName}" />
                         <materialDesign:MaterialDataGridTextColumn Width="*" Header="COMPANY" Binding="{Binding Company}" />
                         <materialDesign:MaterialDataGridTextColumn Width="*" Header="PRINT BADGE" Binding="{Binding PrintBadge}" />
-                    </DataGrid.Columns>
+                    </DataGrid.Columns> -->
                 </DataGrid>
             </StackPanel>
         </Grid>

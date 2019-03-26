@@ -1,4 +1,5 @@
-﻿
+﻿using EasyBadgeMVVM.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +8,7 @@ namespace EasyBadgeMVVM.ViewModels
 {
     public interface IUserEventVM
     {
-        ObservableCollection<UserEventDTO> MainFields { get; }
+        ObservableCollection<EventFieldUser> MainFields { get; }
         string Search { get; set; }
         UserEventDTO SelectedUserEvent { get; set; }
         void LoadFromImport(string content);
