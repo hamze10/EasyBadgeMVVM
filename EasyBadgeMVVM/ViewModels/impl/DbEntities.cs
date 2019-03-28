@@ -89,6 +89,11 @@ namespace EasyBadgeMVVM.ViewModels
                 .GroupBy(ue1 => ue1.FieldUser.Field.Name).Select(g => g.FirstOrDefault()).ToList();
         }*/
 
+        public ObservableCollection<EventField> GetEventFieldByEvent(int idEvent)
+        {
+            return new ObservableCollection<EventField>(this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SearchFor(eu => eu.EventID_Event == idEvent));
+        }
+
 
         /*********************************************************************************************************************************************************************/
         /*********** INSERT *************/
@@ -226,7 +231,7 @@ namespace EasyBadgeMVVM.ViewModels
                 ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
 
             EventField evf = !this._myUsers.ContainsKey(EVENTFIELD) 
-                             ? null
+                             ? this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SearchFor(e => e.Event.Name.Equals(ev.Name) && e.Field.Name.Equals(fieldDb.Name)).FirstOrDefault()
                              : this._myUsers[EVENTFIELD].Cast<EventField>().Where(e => e.Event.Name.Equals(ev.Name) && e.Field.Name.Equals(fieldDb.Name)).FirstOrDefault();
             if (evf == null)
             {

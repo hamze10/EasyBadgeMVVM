@@ -248,30 +248,6 @@ namespace EasyBadgeMVVM.ViewModels
             this._dbEntities.SaveAllChanges();
             this._mainFields = this._dbEntities.GetAllUsers();
 
-            /*
-            ObservableCollection<EventFieldUser> test = this._dbEntities.GetAllUsers();
-            string lastUser = string.Empty;
-            Dictionary<string, string> fieldValue = new Dictionary<string, string>();
-            foreach(EventFieldUser efu in test)
-            {
-                if (!lastUser.Equals(efu.User.Barcode))
-                {
-                    string toshow = string.Empty;
-                    foreach(KeyValuePair<string, string> entry in fieldValue)
-                    {
-                        toshow += "[" + entry.Key + "," + entry.Value + "]" + ","; 
-                    }
-                    Console.WriteLine("User : {0} | Event : {1} | Field/Value : {2}", efu.User.Barcode, efu.EventField.Event.Name, toshow);
-                    lastUser = efu.User.Barcode;
-                    fieldValue.Clear();
-                }
-                else
-                {
-                    fieldValue.Add(efu.EventField.Field.Name, efu.Value);
-                }
-            }
-            */
-
             //Save Changes in DB
             /*this._dbEntities.SaveAllChanges();
             this._mainFields = this._dbEntities.GetAllUsers();
@@ -299,5 +275,10 @@ namespace EasyBadgeMVVM.ViewModels
         {
             return this._dbEntities.GetAllFieldsOfEvent(idEvent);
         }*/
+
+        public ObservableCollection<EventField> GetEventFieldByEvent(int idEvent)
+        {
+            return this._dbEntities.GetEventFieldByEvent(idEvent);
+        }
     }
 }

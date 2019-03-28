@@ -16,6 +16,7 @@ namespace EasyBadgeMVVM.ViewModels
         void SetDeleteButton(bool value);
         //List<UserEvent> GetUserEventByDTO(UserEventDTO dto);
         //List<UserEvent> GetAllFieldsOfEvent(int idEvent);
+        ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
     }
 
     public class UserEventDTO

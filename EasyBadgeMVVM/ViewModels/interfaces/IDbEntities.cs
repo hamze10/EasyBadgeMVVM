@@ -29,5 +29,6 @@ namespace EasyBadgeMVVM.ViewModels
         bool InsertInEventTable(Event ev);
         //List<UserEvent> GetUserEventByDTO(UserEventDTO dto);
         ObservableCollection<Field> GetAllFields();
+        ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
     }
 }

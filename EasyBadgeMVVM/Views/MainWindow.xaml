@@ -50,8 +50,7 @@
         <!-- DATAGRID WITH LIST OF USERS -->
         <Grid Name="GridDataGrid" Background="#ffffff" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0,31,26,24" Height="Auto" Width="Auto" >
             <StackPanel>
-                <DataGrid Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Name="DataGridUsers" SelectedItem="{Binding SelectedUserEvent}" 
-                      ItemsSource="{Binding MainFields, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" IsReadOnly="True" 
+                <DataGrid Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Name="DataGridUsers" AutoGenerateColumns="False" IsReadOnly="True" 
                       Height="{Binding ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}" Width="Auto"
                       Margin="0,-5,0,-15"
                       MouseDoubleClick="ShowUserInfo" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" 

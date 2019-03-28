@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using MessageBox = System.Windows.MessageBox;
+using Binding = System.Windows.Data.Binding;
 
 namespace EasyBadgeMVVM
 {
@@ -29,7 +30,6 @@ namespace EasyBadgeMVVM
         private BackgroundWorker bgw = new BackgroundWorker();
 
         private bool toggleState = false; //false no click, true click
-        private bool headImported = false;
 
         private const string DELIMITER = ",";
 
@@ -49,7 +49,8 @@ namespace EasyBadgeMVVM
         {
             this._idEvent = idEvent;
             this._mainWindowImpl = new MainWindowImpl(idEvent);
-            this.DataContext = this._mainWindowImpl;
+            //this.DataContext = this._mainWindowImpl;
+            this.DataContext = this;
             InitializeComponent();
             this.ToggleButtonMenu.IsChecked = true;
 
@@ -230,20 +231,39 @@ namespace EasyBadgeMVVM
         private void myBgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.ShowNotification((string) e.Result);
-            this.headImported = true;
             CreateColumnsDataGrid();
         }
 
         private void CreateColumnsDataGrid()
         {
-            if (!headImported) return;
+            this.DataGridUsers.Items.Clear();
+            this.DataGridUsers.Columns.Clear();
             HashSet<string> myFields = this._mainWindowImpl.FieldToShow;
+            if (myFields == null)
+            {
+                myFields = new HashSet<string>();
+                var tt = this._mainWindowImpl.GetEventFieldByEvent(this._idEvent);
+                foreach (var eu in tt)
+                {
+                    if (eu.Visibility == true)
+                    {
+                        myFields.Add(eu.Field.Name);
+                    }
+                }
+            }
 
+            int o = 0;
+            MyItem mi = new MyItem();
+            mi.DicoField = new Dictionary<int, string>();
             foreach(string field in myFields)
             {
+                mi.DicoField.Add(o, field);
                 DataGridTextColumn dataGridTextColumn = new DataGridTextColumn();
                 dataGridTextColumn.Header = field;
+                dataGridTextColumn.Binding = new Binding(mi.DicoField[o]);
+                Console.WriteLine(mi.DicoField[o]);
                 this.DataGridUsers.Columns.Add(dataGridTextColumn);
+                o++;
             }
 
             string lastUser = string.Empty;
@@ -253,42 +273,56 @@ namespace EasyBadgeMVVM
             foreach (var efu in this._mainWindowImpl.MainFields)
             {
                 eventName = efu.EventField.Event.Name;
-                if (i != 0 && !lastUser.Equals(efu.User.Barcode))
+                if (i == 0)
                 {
-                    string toshow = string.Empty;
-                    foreach (KeyValuePair<string, string> entry in fieldValue)
+                    lastUser = efu.User.Barcode;
+                    if (efu.EventField.Visibility == true)
                     {
-                        toshow += "[" + entry.Key + "," + entry.Value + "]" + ",";
+                        fieldValue.Add(efu.EventField.Field.Name, efu.Value);
                     }
-                    //Console.WriteLine("User : {0} | Event : {1} | Field/Value : {2}", lastUser, eventName, toshow);
+                    ++i;
+                }else if (!lastUser.Equals(efu.User.Barcode))
+                {
+                    DisplayFields(fieldValue, lastUser, eventName);
                     fieldValue.Clear();
                     i = 0;
-                }
-                else
-                {
-                    if (i == 0)
-                    {
-                        lastUser = efu.User.Barcode;
-                        i++;
-                    }
+                    lastUser = efu.User.Barcode;
 
                     if (efu.EventField.Visibility == true)
                     {
                         fieldValue.Add(efu.EventField.Field.Name, efu.Value);
                     }
                 }
+                else
+                {
+                    if (efu.EventField.Visibility == true)
+                    {
+                        fieldValue.Add(efu.EventField.Field.Name, efu.Value);
+                    }
+                } 
             }
 
             if (fieldValue.Count != 0)
             {
-                string toshow = string.Empty;
-                foreach (KeyValuePair<string, string> entry in fieldValue)
-                {
-                    toshow += "[" + entry.Key + "," + entry.Value + "]" + ",";
-                }
-                Console.WriteLine("User : {0} | Event : {1} | Field/Value : {2}", lastUser, eventName, toshow);
+                DisplayFields(fieldValue, lastUser, eventName);
                 fieldValue.Clear();
             }
         }
+
+        private void DisplayFields(Dictionary<string, string> toShow, string lastUser, string eventName)
+        {
+            //TODO https://stackoverflow.com/questions/18452134/filling-a-datagrid-with-dynamic-columns
+
+            /*foreach (KeyValuePair<string, string> entry in toShow)
+            {
+                this.DataGridUsers.Items.Add(new MyItem() { Value = entry.Value });
+            }*/
+        }
+    }
+
+    public class MyItem
+    {
+        public string Value { get; set; }
+        public Dictionary<int, string> DicoField { get; set; }
     }
 }
