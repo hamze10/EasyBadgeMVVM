@@ -218,7 +218,13 @@ namespace EasyBadgeMVVM.ViewModels
                     }
                 }
 
-                InsertInUserTable(user);
+                try {
+                    InsertInUserTable(user);
+                }catch(Exception e)
+                {
+                    Console.WriteLine("Error while insert user : {0}", e);
+                }
+                
             }
             else
             {
@@ -242,14 +248,28 @@ namespace EasyBadgeMVVM.ViewModels
                 evf.Unique = false;
             }
 
-            InsertInEventFieldTable(evf);
+            try
+            {
+                InsertInEventFieldTable(evf);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error while insert eventfield : {0}", e);
+            }
 
             EventFieldUser evfu = new EventFieldUser();
             evfu.User = user;
             evfu.EventField = evf;
             evfu.Value = data;
 
-            InsertInEventFieldUserTable(evfu);
+            try
+            {
+                InsertInEventFieldUserTable(evfu);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error while insert eventfielduser : {0}", e);
+            } 
         }
 
         private bool InsertInUserTable(User user)
@@ -300,17 +320,6 @@ namespace EasyBadgeMVVM.ViewModels
         private bool InsertInEventFieldUserTable(EventFieldUser eventFieldUser)
         {
             return CheckBeforeInsert(EVENTFIELDuser, null, null, eventFieldUser, this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext));
-
-            /*return CheckBeforeInsert(
-                EVENTFIELDuser,
-                efu => efu.User.Barcode.Equals(eventFieldUser.User.Barcode) 
-                && efu.EventField.Event.Name.ToLower().Equals(eventFieldUser.EventField.Event.Name.ToLower()) 
-                && efu.EventField.Field.Name.ToLower().Equals(eventFieldUser.EventField.Field.Name.ToLower()),
-                                efu => efu.User.Barcode.Equals(eventFieldUser.User.Barcode)
-                && efu.EventField.Event.Name.ToLower().Equals(eventFieldUser.EventField.Event.Name.ToLower())
-                && efu.EventField.Field.Name.ToLower().Equals(eventFieldUser.EventField.Field.Name.ToLower()),
-                eventFieldUser,
-                this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext));*/
         }
 
         private bool CheckBeforeInsert<T>(string key, Func<T, bool> predicate, Expression<Func<T, bool>> expression, T fieldToInsert, IRepository<T> baseRepository)
@@ -346,9 +355,20 @@ namespace EasyBadgeMVVM.ViewModels
 
         public void SaveAllChanges()
         {
+            /*try {
+                this._repostitoryFactory.GetFieldRepository(this._dbContext).SaveChanges();
+                this._repostitoryFactory.GetUserRepository(this._dbContext).SaveChanges();
+                this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Error while save changes : {0}", e);
+            }*/
+
             this._repostitoryFactory.GetFieldRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetUserRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();
+
         }
 
         public void Clear()

@@ -61,7 +61,21 @@ namespace EasyBadgeMVVM.ViewModels
         private UserEventDTO _selectedUserEvent;
         private ObservableCollection<EventFieldUser> _mainFields;
         private ObservableCollection<EventFieldUser> _allUsers;
-        public int NbrUser { get; set; }
+        private int _nbrUser;
+
+        public int NbrUser
+        {
+            get
+            {
+                return this._nbrUser;
+            }
+            set
+            {
+                this._nbrUser = value;
+                OnPropertyChanged("NbrUser");
+            }
+        }
+
         public HashSet<string> FieldToShow { get; set; }
 
         //Check if delete button is pressed in search bar
@@ -86,7 +100,6 @@ namespace EasyBadgeMVVM.ViewModels
                 if (this._mainFields == null)
                 {
                     this._mainFields = this._dbEntities.GetAllUsers();
-                    //this._mainFields = new ObservableCollection<EventFieldUser>();
                     this._allUsers = this._mainFields;
                     NbrUser = this._mainFields.Count;
                 }
@@ -245,19 +258,14 @@ namespace EasyBadgeMVVM.ViewModels
                 i++;
             }
 
+            //Save Changes in DB
             this._dbEntities.SaveAllChanges();
             this._mainFields = this._dbEntities.GetAllUsers();
-
-            //Save Changes in DB
-            /*this._dbEntities.SaveAllChanges();
-            this._mainFields = this._dbEntities.GetAllUsers();
             this._allUsers = this._mainFields;
-            this.NbrUser = this._mainFields.Count;
             OnPropertyChanged("MainFields");
-            OnPropertyChanged("NbrUser");
 
             //Clear
-            this._dbEntities.Clear();*/
+            this._dbEntities.Clear();
         }
 
         public ObservableCollection<ExportDataDTO> GetExportData()
