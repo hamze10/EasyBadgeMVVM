@@ -61,7 +61,7 @@ namespace EasyBadgeMVVM.Views
                 Label label = new Label();
                 label.Content = myField.Name.Replace("_", "__");
                 label.Name = LABEL_NAME + i;
-                label.FontSize = 23;
+                label.FontSize = myField.Name.Length > 15 ? 18 : 23;
                 label.VerticalAlignment = VerticalAlignment.Center;
                 label.HorizontalAlignment = HorizontalAlignment.Center;
                 label.VerticalContentAlignment = VerticalAlignment.Center;

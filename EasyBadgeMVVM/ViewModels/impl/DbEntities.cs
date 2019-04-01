@@ -17,7 +17,7 @@ namespace EasyBadgeMVVM.ViewModels
         private const string EVENT = "event";
         private const string FIELD = "field";
         private const string EVENTFIELD = "eventfield";
-        private const string EVENTFIELDuser = "eventfielduser";
+        private const string EVENTFIELDUSER = "eventfielduser";
 
         private EasyModelContext _dbContext = new EasyModelContext();
         private int _idEvent;
@@ -98,86 +98,32 @@ namespace EasyBadgeMVVM.ViewModels
         /*********************************************************************************************************************************************************************/
         /*********** INSERT *************/
         /*********************************************************************************************************************************************************************/
-
-        //A CORRIGER CAR L'UNICITE N'EST PAS TOP TOP (nom, prenom, company) + dans SEARCHIFUNIQUE le i < 3 est du harcodage
-        public bool CheckIfAlreadyExists(string lastName, string firstName, string company)
+        
+        public bool CheckIfAlreadyExists(List<string> allFields, HashSet<string> fieldToShow, string datas)
         {
-            /*IEnumerable<UserEvent> testInDb = null;
-            IEnumerable<UserEvent> testInDico = null;
-            if (this._myUsers.ContainsKey(USEREVENT))
+            HashSet<bool> checkIfContains = new HashSet<bool>();
+            int i = 0;
+            foreach(string data in datas.Split(','))
             {
-                testInDico = this._myUsers[USEREVENT].Cast<UserEvent>().Where(ue => ue.EventID_Event == this._idEvent);
-            }
-
-            testInDb = this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue1 => ue1.EventID_Event == this._idEvent);
-
-
-            bool exists = SearchIfUnique(testInDb, lastName, firstName, company);
-            if (exists) return true;
-
-            if (testInDico != null)
-            {
-                exists = SearchIfUnique(testInDico, lastName, firstName, company);
-                if (exists) return true;
-            }*/
-
-            return false;
-        }
-
-        /*private bool SearchIfUnique(IEnumerable<UserEvent> list, string lastName, string firstName, string company)
-        {
-            IEnumerable<IGrouping<int, UserEvent>> myGrouping = list.GroupBy(u => u.UserID_User);
-            foreach (IGrouping<int, UserEvent> uu in myGrouping)
-            {
-                int i = 0;
-                foreach (UserEvent uv in uu)
+                string field = allFields.ElementAt(i++);
+                if (fieldToShow.Contains(field))
                 {
-                    string nameTrim = Util.TrimWord(uv.FieldUser.Field.Name);
+                    bool exists = this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SearchFor(
+                        ef => ef.EventField.EventID_Event == this._idEvent && ef.EventField.Field.Name.Equals(field) && ef.Value.Equals(data)).FirstOrDefault() != null;
 
-                    switch (nameTrim)
+                    if (!exists && this._myUsers.ContainsKey(EVENTFIELDUSER))
                     {
-                        case "lastname":
-                            if (uv.FieldUser.Value.ToLower().Equals(lastName.ToLower()))
-                            {
-                                if (i < 3) i++;
-                            }
-                            else
-                            {
-                                if (i < 3) i = 0;
-                            }
-                            break;
-                        case "firstname":
-                            if (uv.FieldUser.Value.ToLower().Equals(firstName.ToLower()))
-                            {
-                                if (i < 3) i++;
-                            }
-                            else
-                            {
-                                if (i < 3) i = 0;
-                            }
-                            break;
-                        case "company":
-                            if (uv.FieldUser.Value.ToLower().Equals(company.ToLower()))
-                            {
-                                if (i < 3) i++;
-                            }
-                            else
-                            {
-                                if (i < 3) i = 0;
-                            }
-                            break;
-                        default:
-                            break;
+                        exists = this._myUsers[EVENTFIELDUSER].Cast<EventFieldUser>().Where(ef => ef.EventField.Field.Name.Equals(field) && ef.Value.Equals(data))
+                                    .FirstOrDefault() != null;
                     }
 
-                    if (i == 3) return true;
+                    checkIfContains.Add(exists);
                 }
             }
-            return false;
-        }*/
 
-        //Field == oldfieldname with trim
-        //return false if similar field name is not used
+            return checkIfContains.Count == 1 && checkIfContains.ElementAt(0) == true;
+        }
+
         public void InsertNewField(string field)
         {
             Field f = new Field();
@@ -218,12 +164,7 @@ namespace EasyBadgeMVVM.ViewModels
                     }
                 }
 
-                try {
-                    InsertInUserTable(user);
-                }catch(Exception e)
-                {
-                    Console.WriteLine("Error while insert user : {0}", e);
-                }
+                InsertInUserTable(user);
                 
             }
             else
@@ -233,12 +174,24 @@ namespace EasyBadgeMVVM.ViewModels
 
             //INSERT IN EVENTFIELD
             Event ev = this._repostitoryFactory.GetEventRepository(this._dbContext).GetById(this._idEvent);
-            Field fieldDb = this._myUsers[FIELD].Cast<Field>().Where(f2 => f2.Name.ToLower().Equals(field.ToLower())).FirstOrDefault() 
-                ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
 
-            EventField evf = !this._myUsers.ContainsKey(EVENTFIELD) 
-                             ? this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SearchFor(e => e.Event.Name.Equals(ev.Name) && e.Field.Name.Equals(fieldDb.Name)).FirstOrDefault()
-                             : this._myUsers[EVENTFIELD].Cast<EventField>().Where(e => e.Event.Name.Equals(ev.Name) && e.Field.Name.Equals(fieldDb.Name)).FirstOrDefault();
+            bool inDico = this._myUsers.ContainsKey(FIELD);
+            Field fieldDb = inDico 
+                ? this._myUsers[FIELD].Cast<Field>().Where(f2 => f2.Name.ToLower().Equals(field.ToLower())).FirstOrDefault()
+                        ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault()
+                : this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
+
+            EventField evf = this._repostitoryFactory.GetEventFieldRepository(this._dbContext)
+                                .SearchFor(e => e.Event.Name.Equals(ev.Name) && e.Field.Name.Equals(fieldDb.Name)).FirstOrDefault();
+            if (evf == null)
+            {
+                if (this._myUsers.ContainsKey(EVENTFIELD))
+                {
+                    evf =  this._myUsers[EVENTFIELD].Cast<EventField>().Where(e => e.Event.Name.Equals(ev.Name) && e.Field.Name.Equals(fieldDb.Name)).FirstOrDefault();
+                    
+                }
+            }
+
             if (evf == null)
             {
                 evf = new EventField();
@@ -248,28 +201,14 @@ namespace EasyBadgeMVVM.ViewModels
                 evf.Unique = false;
             }
 
-            try
-            {
-                InsertInEventFieldTable(evf);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error while insert eventfield : {0}", e);
-            }
+            InsertInEventFieldTable(evf);
 
             EventFieldUser evfu = new EventFieldUser();
             evfu.User = user;
             evfu.EventField = evf;
             evfu.Value = data;
 
-            try
-            {
-                InsertInEventFieldUserTable(evfu);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error while insert eventfielduser : {0}", e);
-            } 
+            InsertInEventFieldUserTable(evfu);
         }
 
         private bool InsertInUserTable(User user)
@@ -290,10 +229,12 @@ namespace EasyBadgeMVVM.ViewModels
                 e => e.Name.ToLower().Equals(ev.Name.ToLower()), 
                 ev,
                 this._repostitoryFactory.GetEventRepository(this._dbContext)))
+
             {
                 this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();
                 return true;
             }
+
             return false;
         }
 
@@ -319,7 +260,7 @@ namespace EasyBadgeMVVM.ViewModels
 
         private bool InsertInEventFieldUserTable(EventFieldUser eventFieldUser)
         {
-            return CheckBeforeInsert(EVENTFIELDuser, null, null, eventFieldUser, this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext));
+            return CheckBeforeInsert(EVENTFIELDUSER, null, null, eventFieldUser, this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext));
         }
 
         private bool CheckBeforeInsert<T>(string key, Func<T, bool> predicate, Expression<Func<T, bool>> expression, T fieldToInsert, IRepository<T> baseRepository)

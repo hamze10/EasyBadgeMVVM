@@ -235,12 +235,9 @@ namespace EasyBadgeMVVM.ViewModels
                 //Data
                 else
                 {
-                    /*bool exists = false;
-                    string[] datas = s.Split(',');
-                    exists = this._dbEntities.CheckIfAlreadyExists("e", "e","e");
-
-                    if (exists == true) continue;*/
-
+                    bool exists = this._dbEntities.CheckIfAlreadyExists(allFields, this.FieldToShow, s);
+                    if (exists == true) continue;
+                    
                     int j = 0;
                     foreach (string data in s.Split(','))
                     {

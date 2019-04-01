@@ -21,7 +21,7 @@ namespace EasyBadgeMVVM.ViewModels
         void SaveAllChanges();
         HashSet<string> FieldsToShow { get; set; }
         //List<UserEvent> GetAllFieldsOfEvent(int idEvent);
-        bool CheckIfAlreadyExists(string lastName, string firstName, string company);
+        bool CheckIfAlreadyExists(List<string> allFields, HashSet<string> fieldToShow, string datas);
         void Clear();
         ObservableCollection<Event> GetEvents();
         Event GetEventById(int idEvent);
