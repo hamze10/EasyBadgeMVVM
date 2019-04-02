@@ -38,7 +38,8 @@
                                     <materialDesign:PackIcon Kind="Magnify" Opacity=".56" Height="Auto" Width="Auto" RenderTransformOrigin="0.475,0.188" />
                                 </Button>
                                 <TextBox Margin="63,5,21,14" materialDesign:HintAssist.Hint="Search by lastname, firstname, company and/or barcode"
-                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0" MinWidth="200" VerticalAlignment="Center" PreviewKeyDown="EnterSearch"
+                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0" MinWidth="200" VerticalAlignment="Center" 
+                                         TextChanged="TextBox_TextChanged" Name="TextSearch" PreviewKeyDown="EnterSearch"
                                          VerticalContentAlignment="Center" FontSize="24" Grid.ColumnSpan="3" Height="49" Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </materialDesign:ColorZone>
@@ -51,7 +52,7 @@
         <Grid Name="GridDataGrid" Background="#ffffff" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0,31,26,24" Height="Auto" Width="Auto" >
             <StackPanel>
                 <DataGrid Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Name="DataGridUsers" AutoGenerateColumns="True" 
-                      IsReadOnly="True" 
+                      IsReadOnly="True" ItemsSource="{Binding}"
                       Height="{Binding ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}" Width="Auto"
                       Margin="0,-5,0,-15"
                       MouseDoubleClick="ShowUserInfo" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" 

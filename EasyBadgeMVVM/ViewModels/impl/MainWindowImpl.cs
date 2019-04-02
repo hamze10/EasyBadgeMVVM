@@ -127,28 +127,38 @@ namespace EasyBadgeMVVM.ViewModels
             }
         }
 
-        private void DoSearch()
+        public ObservableCollection<EventFieldUser> DoSearch()
         {
-            /*var toSearch = this._search.ToLower();
-
-            if (toSearch.Length == 0 || toSearch.Trim() == "")
+            var toSearch = this._search.ToLower();
+            if (toSearch.Length == 0 || toSearch.Trim() == string.Empty)
             {
-                //this._mainFields = this._dbEntities.GetAllUsers();
-                this._mainFields = new ObservableCollection<EventFieldUser>();
+                this._mainFields = this._dbEntities.GetAllUsers();
                 this.NbrUser = this._mainFields.Count;
-                return;
+                return this._mainFields;
             }
 
             string[] splitted = toSearch.Split(' ');
             toSearch = splitted.Length <= 1 ? splitted[0] : splitted[splitted.Length - 1];
 
-            Func<UserEventDTO, bool> predicate = u => 
-                            u.Barcode != null && u.Barcode.ToLower().Contains(toSearch) ||
-                            u.Company != null && u.Company.ToLower().Contains(toSearch) ||
-                            u.FirstName != null && u.FirstName.ToLower().Contains(toSearch) ||
-                            u.LastName != null && u.LastName.ToLower().Contains(toSearch);
+            Func<EventFieldUser, bool> predicate = ef => ef.EventField.EventID_Event == this._idEvent 
+                                                        && ef.Value != null
+                                                        && ef.Value.ToLower().Contains(toSearch);
 
-            if (this._isDelete && toSearch.Trim() != "")
+            ObservableCollection<EventFieldUser> toSend = new ObservableCollection<EventFieldUser>();
+
+            foreach(var tt in this._mainFields.AsParallel().Where(predicate))
+            {
+                var p = this._mainFields.AsParallel().Where(ee => ee.UserID_User == tt.UserID_User);
+                foreach (var tte in p)
+                {
+                    if (this.FieldToShow.Contains(tte.EventField.Field.Name))
+                    {
+                        toSend.Add(tte);
+                    }
+                }
+            }
+
+            /*if (this._isDelete && toSearch.Trim() != "")
             {
                 this._isDelete = false;
                 this._mainFields = new ObservableCollection<EventFieldUser>(this._allUsers.AsParallel().Where(predicate));
@@ -159,6 +169,8 @@ namespace EasyBadgeMVVM.ViewModels
             }
 
             this.NbrUser = this._mainFields.Count;*/
+
+            return toSend;
  
         }
 
@@ -225,7 +237,7 @@ namespace EasyBadgeMVVM.ViewModels
                         }
                         else
                         {
-                            cancel = true; ;
+                            cancel = true;
                         }
                     });
 
@@ -235,8 +247,7 @@ namespace EasyBadgeMVVM.ViewModels
                 //Data
                 else
                 {
-                    bool exists = this._dbEntities.CheckIfAlreadyExists(allFields, this.FieldToShow, s);
-                    if (exists == true) continue;
+                    if (this._dbEntities.CheckIfAlreadyExists(allFields, this.FieldToShow, s)) continue;
                     
                     int j = 0;
                     foreach (string data in s.Split(','))

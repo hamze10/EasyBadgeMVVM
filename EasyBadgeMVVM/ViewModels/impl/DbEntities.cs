@@ -99,13 +99,15 @@ namespace EasyBadgeMVVM.ViewModels
         /*********** INSERT *************/
         /*********************************************************************************************************************************************************************/
         
+        //TODO CHERCHER LE PB AVEC CETTE FONCTION!!!
         public bool CheckIfAlreadyExists(List<string> allFields, HashSet<string> fieldToShow, string datas)
         {
             HashSet<bool> checkIfContains = new HashSet<bool>();
             int i = 0;
-            foreach(string data in datas.Split(','))
+            foreach (string data in datas.Split(','))
             {
                 string field = allFields.ElementAt(i++);
+                Console.WriteLine("Field : {0} | Data : {1}", field, data);
                 if (fieldToShow.Contains(field))
                 {
                     bool exists = this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SearchFor(
@@ -113,7 +115,9 @@ namespace EasyBadgeMVVM.ViewModels
 
                     if (!exists && this._myUsers.ContainsKey(EVENTFIELDUSER))
                     {
-                        exists = this._myUsers[EVENTFIELDUSER].Cast<EventFieldUser>().Where(ef => ef.EventField.Field.Name.Equals(field) && ef.Value.Equals(data))
+                        exists = this._myUsers[EVENTFIELDUSER].Cast<EventFieldUser>().Where(ef => 
+                                        ef.EventField != null &&
+                                        ef.EventField.Field.Name.Equals(field) && ef.Value.Equals(data))
                                     .FirstOrDefault() != null;
                     }
 

@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 
+using EasyBadgeMVVM.Models;
 using EasyBadgeMVVM.Views;
 using EasyBadgeMVVM.ViewModels;
 
@@ -46,6 +47,8 @@ namespace EasyBadgeMVVM
         private readonly string[] EXTENSIONS = new string[] { ".csv" };
 
         private int _idEvent;
+        private int _nbFields = 0;
+        private DataTable _dt = new DataTable();
 
         public MainWindow(int idEvent)
         {
@@ -241,13 +244,17 @@ namespace EasyBadgeMVVM
             HashSet<string> myFields = this._mainWindowImpl.FieldToShow;
             if (myFields == null)
             {
+                //this._mainWindowImpl.FieldToShow = new HashSet<string>();
                 myFields = new HashSet<string>();
                 var tt = this._mainWindowImpl.GetEventFieldByEvent(this._idEvent).Where(e => e.Visibility == true);
                 foreach (var eu in tt)
                 {
+                    //this._mainWindowImpl.FieldToShow.Add(eu.Field.Name);
                     myFields.Add(eu.Field.Name);
                 }
             }
+
+            this._nbFields = myFields.Count;
 
             DataTable dt = new DataTable();
             foreach(string field in myFields)
@@ -260,7 +267,8 @@ namespace EasyBadgeMVVM
             int nbUser = 0;
             var lastObj = new object[myFields.Count];
 
-            foreach (var efu in this._mainWindowImpl.MainFields.Where(e => e.EventField.Visibility == true))
+            var list = this._mainWindowImpl.MainFields.Where(e => e.EventField.Visibility == true);
+            foreach (var efu in list)
             {
                 if (i == myFields.Count)
                 {
@@ -277,7 +285,43 @@ namespace EasyBadgeMVVM
             dt.Rows.Add(lastObj);
             this._mainWindowImpl.NbrUser = ++nbUser;
             this.DataGridUsers.ColumnWidth = new DataGridLength(10, DataGridLengthUnitType.Star);
-            this.DataGridUsers.ItemsSource = dt.DefaultView;
+            this.DataGridUsers.DataContext = dt.DefaultView;
+            this._dt = dt;
+        }
+
+        private void CreateRowsDataGrid(ObservableCollection<EventFieldUser> list)
+        {
+            this._dt.Rows.Clear();
+            var obj = new object[this._nbFields];
+            int i = 0;
+            int nbUser = 0;
+            var lastObj = new object[this._nbFields];
+
+            foreach (var efu in list)
+            {
+                if (i == this._nbFields)
+                {
+                    this._dt.Rows.Add(obj);
+                    obj = new object[this._nbFields];
+                    i = 0;
+                    nbUser++;
+                }
+                obj[i] = efu.Value;
+                i++;
+                lastObj = obj;
+            }
+
+            this._dt.Rows.Add(lastObj);
+            this._mainWindowImpl.NbrUser = ++nbUser;
+            this.DataGridUsers.ItemsSource = this._dt.DefaultView;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string toSearch = this.TextSearch.Text;
+            this._mainWindowImpl.Search = toSearch;
+            ObservableCollection<EventFieldUser> test = this._mainWindowImpl.DoSearch();
+            CreateRowsDataGrid(test);
         }
     }
 }
