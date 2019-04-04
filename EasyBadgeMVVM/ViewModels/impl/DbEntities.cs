@@ -105,7 +105,7 @@ namespace EasyBadgeMVVM.ViewModels
             string test = datas.Split(',')[0];
 
             var firstQuery = from efuu in this._dbContext.EventFieldUserSet
-                             where efuu.Value.Equals(test)
+                             where efuu.EventField.EventID_Event == this._idEvent && efuu.Value.Equals(test)
                              select efuu.UserID_User;
 
             var defQuery = (from efu in this._dbContext.EventFieldUserSet
