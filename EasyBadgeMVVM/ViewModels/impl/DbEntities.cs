@@ -99,33 +99,50 @@ namespace EasyBadgeMVVM.ViewModels
         /*********** INSERT *************/
         /*********************************************************************************************************************************************************************/
         
-        //TODO CHERCHER LE PB AVEC CETTE FONCTION!!!
+        //TODO CORRIGER (PERFORMANCE + QD USER > 2000)
         public bool CheckIfAlreadyExists(List<string> allFields, HashSet<string> fieldToShow, string datas)
         {
-            HashSet<bool> checkIfContains = new HashSet<bool>();
-            int i = 0;
-            foreach (string data in datas.Split(','))
+            string test = datas.Split(',')[0];
+
+            var firstQuery = from efuu in this._dbContext.EventFieldUserSet
+                             where efuu.Value.Equals(test)
+                             select efuu.UserID_User;
+
+            var defQuery = (from efu in this._dbContext.EventFieldUserSet
+                           where firstQuery.Contains(efu.UserID_User)
+                           select efu).ToList();
+
+            ObservableCollection<EventFieldUser> toCheck = new ObservableCollection<EventFieldUser>(defQuery);
+
+            int i = 1;
+            HashSet<bool> toContains = new HashSet<bool>();
+            List<string> myDatas = new List<string>(datas.Split(','));
+
+            foreach(EventFieldUser uu in toCheck)
             {
-                string field = allFields.ElementAt(i++);
-                Console.WriteLine("Field : {0} | Data : {1}", field, data);
-                if (fieldToShow.Contains(field))
+                if (!fieldToShow.Contains(uu.EventField.Field.Name)) continue;
+
+                if (i == FieldsToShow.Count)
                 {
-                    bool exists = this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SearchFor(
-                        ef => ef.EventField.EventID_Event == this._idEvent && ef.EventField.Field.Name.Equals(field) && ef.Value.Equals(data)).FirstOrDefault() != null;
-
-                    if (!exists && this._myUsers.ContainsKey(EVENTFIELDUSER))
+                    if (toContains.Count == 1 && toContains.ElementAt(0) == true)
                     {
-                        exists = this._myUsers[EVENTFIELDUSER].Cast<EventFieldUser>().Where(ef => 
-                                        ef.EventField != null &&
-                                        ef.EventField.Field.Name.Equals(field) && ef.Value.Equals(data))
-                                    .FirstOrDefault() != null;
+                        return true;
                     }
-
-                    checkIfContains.Add(exists);
+                    else
+                    {
+                        toContains.Clear();
+                    }
+                    i = 1;
                 }
+                else
+                {
+                    toContains.Add(myDatas.Contains(uu.Value));
+                    i++;
+                }
+
             }
 
-            return checkIfContains.Count == 1 && checkIfContains.ElementAt(0) == true;
+            return toContains.Count == 1 && toContains.ElementAt(0) == true;
         }
 
         public void InsertNewField(string field)

@@ -244,12 +244,12 @@ namespace EasyBadgeMVVM
             HashSet<string> myFields = this._mainWindowImpl.FieldToShow;
             if (myFields == null)
             {
-                //this._mainWindowImpl.FieldToShow = new HashSet<string>();
+                this._mainWindowImpl.FieldToShow = new HashSet<string>();
                 myFields = new HashSet<string>();
                 var tt = this._mainWindowImpl.GetEventFieldByEvent(this._idEvent).Where(e => e.Visibility == true);
                 foreach (var eu in tt)
                 {
-                    //this._mainWindowImpl.FieldToShow.Add(eu.Field.Name);
+                    this._mainWindowImpl.FieldToShow.Add(eu.Field.Name);
                     myFields.Add(eu.Field.Name);
                 }
             }
@@ -285,7 +285,7 @@ namespace EasyBadgeMVVM
             dt.Rows.Add(lastObj);
             this._mainWindowImpl.NbrUser = ++nbUser;
             this.DataGridUsers.ColumnWidth = new DataGridLength(10, DataGridLengthUnitType.Star);
-            this.DataGridUsers.DataContext = dt.DefaultView;
+            this.DataGridUsers.ItemsSource = dt.DefaultView;
             this._dt = dt;
         }
 

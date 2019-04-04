@@ -167,7 +167,6 @@ namespace EasyBadgeMVVM.Views
             {
                 string key = ((Label)this.FindName(LABELFIELDNAME + i)).Content.ToString();
                 string value = ((TextBox)this.FindName(NEWNAME + i)).Text.ToString();
-                Console.WriteLine("FIELD : {0} | VALUE : {1}", key, value);
             }
         }
     }
