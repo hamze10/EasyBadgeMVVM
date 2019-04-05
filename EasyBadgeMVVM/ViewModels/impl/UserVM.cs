@@ -45,6 +45,19 @@ namespace EasyBadgeMVVM.ViewModels.impl
             }
         }
 
+        /*********************************************************************************************************************************************************************/
+        /****** MAIN ******/
+        /*********************************************************************************************************************************************************************/
 
+        int i = 0;
+        public void InsertNewUser(Dictionary<string, string> values)
+        {
+            foreach(KeyValuePair<string, string> entry in values)
+            {
+                string field = entry.Key.Trim().Split(':')[0].Trim();
+                this._dbEntities.InsertNewUser(i, field, entry.Value, this._dbEntities.GetVisibilityField(field));
+                i++;
+            }
+        }
     }
 }

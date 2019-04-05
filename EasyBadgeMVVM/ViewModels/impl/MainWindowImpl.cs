@@ -58,7 +58,7 @@ namespace EasyBadgeMVVM.ViewModels
         /********** FIELDS ************/
         /*********************************************************************************************************************************************************************/
 
-        private UserEventDTO _selectedUserEvent;
+        private EventFieldUser _selectedUserEvent;
         private ObservableCollection<EventFieldUser> _mainFields;
         private ObservableCollection<EventFieldUser> _allUsers;
         private int _nbrUser;
@@ -81,7 +81,7 @@ namespace EasyBadgeMVVM.ViewModels
         //Check if delete button is pressed in search bar
         private bool _isDelete = false;
 
-        public UserEventDTO SelectedUserEvent
+        public EventFieldUser SelectedUserEvent
         {
             get
             {
@@ -130,9 +130,9 @@ namespace EasyBadgeMVVM.ViewModels
         public ObservableCollection<EventFieldUser> DoSearch()
         {
             var toSearch = this._search.ToLower();
-            if (toSearch.Length == 0 || toSearch.Trim() == string.Empty)
+            if (toSearch.Length == 0 || toSearch.Trim() == "")
             {
-                this._mainFields = this._dbEntities.GetAllUsers();
+                this._mainFields = this._allUsers ?? this._dbEntities.GetAllUsers();
                 this.NbrUser = this._mainFields.Count;
                 return this._mainFields;
             }
@@ -282,15 +282,15 @@ namespace EasyBadgeMVVM.ViewModels
             return null;
         }
 
-        /*public List<UserEvent> GetUserEventByDTO(UserEventDTO dto)
+        public List<EventFieldUser> GetEventFieldUserByValues(List<string> values)
         {
-            return this._dbEntities.GetUserEventByDTO(dto);
+            return this._dbEntities.GetEventFieldUserByValues(values);
         }
 
-        public List<UserEvent> GetAllFieldsOfEvent(int idEvent)
+        public List<EventFieldUser> GetAllFieldsOfEvent(int idEvent)
         {
             return this._dbEntities.GetAllFieldsOfEvent(idEvent);
-        }*/
+        }
 
         public ObservableCollection<EventField> GetEventFieldByEvent(int idEvent)
         {

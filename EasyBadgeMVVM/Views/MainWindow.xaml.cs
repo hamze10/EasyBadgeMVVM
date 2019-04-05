@@ -75,16 +75,22 @@ namespace EasyBadgeMVVM
 
         private void ShowUserInfo(object sender, RoutedEventArgs e)
         {
-            UserEventDTO dto = this._mainWindowImpl.SelectedUserEvent;
-            if (dto == null || dto.Barcode.Equals(string.Empty)) return;
-            /*UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto), this._idEvent);
-            userWindow.ShowDialog();*/
+            int indexSelected = this.DataGridUsers.SelectedItems.Cast<DataRowView>().Select(view => this._dt.Rows.IndexOf(view.Row)).FirstOrDefault();
+            DataRow dr = this._dt.Rows[indexSelected];
+            List<string> toSend = new List<string>();
+            foreach(DataColumn dc in this._dt.Columns)
+            {
+                toSend.Add(dr[dc].ToString());
+            }
+
+            UserWindow userWindow = new UserWindow(false, this._mainWindowImpl.GetEventFieldUserByValues(toSend), this._idEvent);
+            userWindow.ShowDialog();
         }
 
         private void NewUserInfo(object sender, RoutedEventArgs e)
         {
-            /*UserWindow userWindow = new UserWindow(true, this._userEventVM.GetAllFieldsOfEvent(this._idEvent), this._idEvent);
-            userWindow.ShowDialog();*/
+            UserWindow userWindow = new UserWindow(true, this._mainWindowImpl.GetAllFieldsOfEvent(this._idEvent), this._idEvent);
+            userWindow.ShowDialog();
         }
 
         private void EnterSearch(object sender, System.Windows.Input.KeyEventArgs e)
@@ -93,13 +99,18 @@ namespace EasyBadgeMVVM
             {
                 if (this.DataGridUsers.Items.Count == 1)
                 {
-                    UserEventDTO dto = (UserEventDTO) this.DataGridUsers.Items.GetItemAt(0);
-                    /*UserWindow userWindow = new UserWindow(false, this._userEventVM.GetUserEventByDTO(dto), this._idEvent);
-                    userWindow.ShowDialog();*/
+                    DataRow selected = ((DataRowView) this.DataGridUsers.Items.GetItemAt(0)).Row;
+                    List<string> toSend = new List<string>();
+                    foreach (DataColumn dc in this._dt.Columns)
+                    {
+                        toSend.Add(selected[dc].ToString());
+                    }
+                    UserWindow userWindow = new UserWindow(false, this._mainWindowImpl.GetEventFieldUserByValues(toSend), this._idEvent);
+                    userWindow.ShowDialog();
                 }
             }
 
-            if (e.Key == Key.Back || e.Key == Key.Delete)
+            else if (e.Key == Key.Back || e.Key == Key.Delete)
             {
                 this._mainWindowImpl.SetDeleteButton(true);
             }
@@ -299,6 +310,7 @@ namespace EasyBadgeMVVM
 
             foreach (var efu in list)
             {
+                if (!this._mainWindowImpl.FieldToShow.Contains(efu.EventField.Field.Name)) continue;
                 if (i == this._nbFields)
                 {
                     this._dt.Rows.Add(obj);

@@ -20,15 +20,16 @@ namespace EasyBadgeMVVM.ViewModels
         void SetIdEvent(int idEvent);
         void SaveAllChanges();
         HashSet<string> FieldsToShow { get; set; }
-        //List<UserEvent> GetAllFieldsOfEvent(int idEvent);
+        List<EventFieldUser> GetAllFieldsOfEvent(int idEvent);
         bool CheckIfAlreadyExists(List<string> allFields, HashSet<string> fieldToShow, string datas);
         void Clear();
         ObservableCollection<Event> GetEvents();
         Event GetEventById(int idEvent);
         Event SearchFor(Expression<Func<Event, bool>> predicate);
         bool InsertInEventTable(Event ev);
-        //List<UserEvent> GetUserEventByDTO(UserEventDTO dto);
+        List<EventFieldUser> GetEventFieldUserByValues(List<string> values);
         ObservableCollection<Field> GetAllFields();
         ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
+        bool GetVisibilityField(string field);
     }
 }

@@ -10,12 +10,12 @@ namespace EasyBadgeMVVM.ViewModels
     {
         ObservableCollection<EventFieldUser> MainFields { get; }
         string Search { get; set; }
-        UserEventDTO SelectedUserEvent { get; set; }
+        EventFieldUser SelectedUserEvent { get; set; }
         void LoadFromImport(string content);
         ObservableCollection<ExportDataDTO> GetExportData();
         void SetDeleteButton(bool value);
-        //List<UserEvent> GetUserEventByDTO(UserEventDTO dto);
-        //List<UserEvent> GetAllFieldsOfEvent(int idEvent);
+        List<EventFieldUser> GetEventFieldUserByValues(List<string> values);
+        List<EventFieldUser> GetAllFieldsOfEvent(int idEvent);
         ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
     }
 

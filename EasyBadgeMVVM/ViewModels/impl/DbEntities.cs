@@ -78,22 +78,60 @@ namespace EasyBadgeMVVM.ViewModels
             return new ObservableCollection<Field>(this._repostitoryFactory.GetFieldRepository(this._dbContext).GetAll());
         }
 
-        /*public List<UserEvent> GetUserEventByDTO(UserEventDTO dto)
+        public List<EventFieldUser> GetEventFieldUserByValues(List<string> values)
         {
-            return this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue => ue.User.Barcode.Equals(dto.Barcode)).ToList();
+            Dictionary<int, int> usersWithVal = new Dictionary<int, int>();
+
+            foreach(string val in values)
+            {
+                var users = from efu in this._dbContext.EventFieldUserSet
+                            where efu.EventFieldEventID_Event == this._idEvent && efu.Value.Equals(val)
+                            select efu.UserID_User;
+
+                foreach(var user in users)
+                {
+                    if (usersWithVal.ContainsKey(user))
+                    {
+                        usersWithVal[user] = usersWithVal[user] + 1;
+                    }
+                    else
+                    {
+                        usersWithVal.Add(user, 1);
+                    }
+                    
+                }
+            }
+
+            int userOk = usersWithVal.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+
+            List<EventFieldUser> toSend = (from efu in this._dbContext.EventFieldUserSet
+                                           where efu.EventFieldEventID_Event == this._idEvent && efu.UserID_User == userOk
+                                           select efu).ToList();
+
+            return toSend;
         }
 
-        public List<UserEvent> GetAllFieldsOfEvent(int idEvent)
+        public List<EventFieldUser> GetAllFieldsOfEvent(int idEvent)
         {
-            return this._repostitoryFactory.GetUserEventRepository(this._dbContext).SearchFor(ue => ue.EventID_Event == idEvent)
-                .GroupBy(ue1 => ue1.FieldUser.Field.Name).Select(g => g.FirstOrDefault()).ToList();
-        }*/
+            return this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext)
+                        .SearchFor(efu => efu.EventFieldEventID_Event == idEvent)
+                        .GroupBy(efu => efu.EventField.Field.Name)
+                        .Select(efu => efu.FirstOrDefault())
+                        .ToList();
+        }
 
         public ObservableCollection<EventField> GetEventFieldByEvent(int idEvent)
         {
             return new ObservableCollection<EventField>(this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SearchFor(eu => eu.EventID_Event == idEvent));
         }
 
+        //TODO CORRECTION
+        public bool GetVisibilityField(string field)
+        {
+            return this._repostitoryFactory.GetEventFieldRepository(this._dbContext)
+                    .SearchFor(ef => ef.EventID_Event == this._idEvent && ef.Field.Name.Equals(field))
+                    .FirstOrDefault().Visibility;
+        }
 
         /*********************************************************************************************************************************************************************/
         /*********** INSERT *************/
@@ -330,6 +368,8 @@ namespace EasyBadgeMVVM.ViewModels
             this._repostitoryFactory.GetFieldRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetUserRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();
+            this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SaveChanges();
+            this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SaveChanges();
 
         }
 
