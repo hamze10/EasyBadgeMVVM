@@ -17,19 +17,7 @@ namespace EasyBadgeMVVM.ViewModels
         List<EventFieldUser> GetEventFieldUserByValues(List<string> values);
         List<EventFieldUser> GetAllFieldsOfEvent(int idEvent);
         ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
-    }
-
-    public class UserEventDTO
-    {
-        public string Barcode { get; set; }
-
-        public string LastName { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string Company { get; set; }
-
-        public DateTime PrintBadge { get; set; }
+        ObservableCollection<EventFieldUser> RefreshMainsFields();
     }
 
     public class ExportDataDTO

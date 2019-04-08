@@ -42,6 +42,8 @@ namespace EasyBadgeMVVM.Views
         private const string LABELFIELDNAME = "label";
         private const string SHOWNAME = "show";
         private const string NEWNAME = "name";
+        private const string BUTTON_CONFIRM = "Confirm";
+        private const string BUTTON_PRINTBADGE = "Print Badge";
 
         private SolidColorBrush[] brushes = new SolidColorBrush[2] { System.Windows.Media.Brushes.White, System.Windows.Media.Brushes.WhiteSmoke};
 
@@ -78,12 +80,15 @@ namespace EasyBadgeMVVM.Views
                 label2.Name = SHOWNAME + i;
                 label2.Content = this._CurrentUser[(i - 1)].Value;
                 label2.VerticalAlignment = VerticalAlignment.Center;
+                label2.FontSize = FONTSIZELABEL;
                 grid2.Children.Add(label2);
 
                 this.UserWindowGrid.Children.Add(grid2);
 
                 RegisterName(SHOWNAME + i, label2);
             }
+
+            CreateButton(BUTTON_PRINTBADGE, this._CurrentUser.Count + 1);
         }
 
         private void NewUser()
@@ -110,7 +115,7 @@ namespace EasyBadgeMVVM.Views
                 RegisterName(NEWNAME + i, textBox);
             }
 
-            CreateButton("Confirm", this._CurrentUser.Count + 1);
+            CreateButton(BUTTON_CONFIRM, this._CurrentUser.Count + 1);
         }
 
         private void CreateFields(int i)
@@ -154,7 +159,21 @@ namespace EasyBadgeMVVM.Views
             button.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             button.Background = this.TitleBar.Background;
             button.BorderBrush = this.TitleBar.Background;
-            button.Click += new RoutedEventHandler(Add_New);
+
+            RoutedEventHandler routedEventHandler = null;
+            switch (content)
+            {
+                case BUTTON_CONFIRM:
+                    routedEventHandler = Add_New;
+                    break;
+                case BUTTON_PRINTBADGE:
+                    routedEventHandler = Print_Badge;
+                    break;
+                default:
+                    break;
+            }
+            button.Click += new RoutedEventHandler(routedEventHandler);
+
             grid.Children.Add(button);
 
             this.UserWindowGrid.Children.Add(grid);
@@ -173,6 +192,15 @@ namespace EasyBadgeMVVM.Views
             }
 
             this._userVM.InsertNewUser(toSend);
+            this.DialogResult = true;
+            this.Close();
+        }
+
+        private void Print_Badge(object sender, RoutedEventArgs e)
+        {
+            PrintBadge printBadge = new PrintBadge();
+            printBadge.Show();
+            this.Close();
         }
     }
 }

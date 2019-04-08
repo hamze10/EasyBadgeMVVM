@@ -90,7 +90,11 @@ namespace EasyBadgeMVVM
         private void NewUserInfo(object sender, RoutedEventArgs e)
         {
             UserWindow userWindow = new UserWindow(true, this._mainWindowImpl.GetAllFieldsOfEvent(this._idEvent), this._idEvent);
-            userWindow.ShowDialog();
+            bool onClose = userWindow.ShowDialog().Value;
+            if (onClose)
+            {
+                this.CreateRowsDataGrid(this._mainWindowImpl.RefreshMainsFields());
+            }
         }
 
         private void EnterSearch(object sender, System.Windows.Input.KeyEventArgs e)

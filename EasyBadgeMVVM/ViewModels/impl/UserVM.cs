@@ -21,6 +21,7 @@ namespace EasyBadgeMVVM.ViewModels.impl
         {
             this._dbEntities = new DbEntities();
             this._idEvent = idEvent;
+            this._dbEntities.SetIdEvent(this._idEvent);
         }
 
         public int IdEvent
@@ -58,6 +59,7 @@ namespace EasyBadgeMVVM.ViewModels.impl
                 this._dbEntities.InsertNewUser(i, field, entry.Value, this._dbEntities.GetVisibilityField(field));
                 i++;
             }
+            this._dbEntities.SaveAllChanges();
         }
     }
 }

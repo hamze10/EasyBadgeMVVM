@@ -48,16 +48,6 @@ namespace EasyBadgeMVVM.ViewModels
             );
         }
 
-        private bool AddIfNecessary(ObservableCollection<UserEventDTO> coll, UserEventDTO dto, Object obj)
-        {
-            if (obj != null)
-            {
-                coll.Add(dto);
-                return true;
-            }
-            return false;
-        }
-
         public ObservableCollection<Event> GetEvents()
         {
             return new ObservableCollection<Event>(this._repostitoryFactory.GetEventRepository(this._dbContext).GetAll());
@@ -131,6 +121,7 @@ namespace EasyBadgeMVVM.ViewModels
             return this._repostitoryFactory.GetEventFieldRepository(this._dbContext)
                     .SearchFor(ef => ef.EventID_Event == this._idEvent && ef.Field.Name.Equals(field))
                     .FirstOrDefault().Visibility;
+
         }
 
         /*********************************************************************************************************************************************************************/

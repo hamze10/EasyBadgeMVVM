@@ -108,6 +108,13 @@ namespace EasyBadgeMVVM.ViewModels
             }
         }
 
+        public ObservableCollection<EventFieldUser> RefreshMainsFields()
+        {
+            this._mainFields = this._dbEntities.GetAllUsers();
+            NbrUser = this._mainFields.Count;
+            return this._mainFields;
+        }
+
         /*********************************************************************************************************************************************************************/
         /********** SEARCH ************/
         /*********************************************************************************************************************************************************************/
@@ -157,18 +164,6 @@ namespace EasyBadgeMVVM.ViewModels
                     }
                 }
             }
-
-            /*if (this._isDelete && toSearch.Trim() != "")
-            {
-                this._isDelete = false;
-                this._mainFields = new ObservableCollection<EventFieldUser>(this._allUsers.AsParallel().Where(predicate));
-            }
-            else
-            {
-                this._mainFields = new ObservableCollection<EventFieldUser>(this._mainFields.AsParallel().Where(predicate));
-            }
-
-            this.NbrUser = this._mainFields.Count;*/
 
             return toSend;
  
