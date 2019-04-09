@@ -21,7 +21,8 @@
 
         <Grid Grid.ColumnSpan="2" Margin="15" Background="White">
             <ScrollViewer>
-                <DataGrid Name="DataGridBadge" ItemsSource="{Binding ListBadgeType}" SelectedItem="{Binding SelectedBadge}" CanUserAddRows="False" AutoGenerateColumns="False">
+                <DataGrid Name="DataGridBadge" ItemsSource="{Binding ListBadgeType}" SelectedItem="{Binding SelectedBadge}" 
+                          CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>
@@ -40,7 +41,7 @@
             </ScrollViewer>
         </Grid>
 
-        <Canvas Name="BadgeScreen" Grid.Row="1" Margin="20">
+        <Canvas Name="BadgeScreen" Grid.Row="1">
             
         </Canvas>
 
