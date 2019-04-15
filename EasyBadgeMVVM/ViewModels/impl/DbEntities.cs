@@ -115,6 +115,11 @@ namespace EasyBadgeMVVM.ViewModels
             return new ObservableCollection<EventField>(this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SearchFor(eu => eu.EventID_Event == idEvent));
         }
 
+        public ObservableCollection<Badge> GetAllBadges()
+        {
+            return new ObservableCollection<Badge>(this._repostitoryFactory.GetBadgeRepository(this._dbContext).GetAll());
+        }
+
         //TODO CORRECTION
         public bool GetVisibilityField(string field)
         {
@@ -338,6 +343,16 @@ namespace EasyBadgeMVVM.ViewModels
             this._myUsers[key].Add(fieldToInsert);
             baseRepository.Insert(fieldToInsert);
             return true;
+        }
+
+        public void InsertInBadgeEvent(int idBadge, int idEvent)
+        {
+            BadgeEvent be = new BadgeEvent();
+            be.Badge = this._repostitoryFactory.GetBadgeRepository(this._dbContext).GetById(idBadge);
+            be.Event = this._repostitoryFactory.GetEventRepository(this._dbContext).GetById(idEvent);
+            var repo = this._repostitoryFactory.GetBadgeEventRepository(this._dbContext);
+            repo.Insert(be);
+            repo.SaveChanges();
         }
 
         /*********************************************************************************************************************************************************************/

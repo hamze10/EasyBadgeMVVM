@@ -110,6 +110,8 @@
     <Property Name="ID_Badge" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Dimension_X" Type="float" Nullable="false" />
     <Property Name="Dimension_Y" Type="float" Nullable="false" />
+    <Property Name="TypeBadge" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="BadgeEventSet">
     <Key>
@@ -118,7 +120,6 @@
     </Key>
     <Property Name="BadgeID_Badge" Type="int" Nullable="false" />
     <Property Name="EventID_Event" Type="int" Nullable="false" />
-    <Property Name="TypeBadge" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="PositionSet">
     <Key>
@@ -387,6 +388,8 @@
           <Property Name="Dimension_X" Type="Double" Nullable="false" />
           <Property Name="Dimension_Y" Type="Double" Nullable="false" />
           <NavigationProperty Name="BadgeEvents" Relationship="EasyModel.BadgeBadgeEvent" FromRole="Badge" ToRole="BadgeEvent" />
+          <Property Name="TypeBadge" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="BadgeEvent">
           <Key>
@@ -395,7 +398,6 @@
           </Key>
           <Property Name="BadgeID_Badge" Type="Int32" Nullable="false" />
           <Property Name="EventID_Event" Type="Int32" Nullable="false" />
-          <Property Name="TypeBadge" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Event" Relationship="EasyModel.EventBadgeEvent" FromRole="BadgeEvent" ToRole="Event" />
           <NavigationProperty Name="Badge" Relationship="EasyModel.BadgeBadgeEvent" FromRole="BadgeEvent" ToRole="Badge" />
           <NavigationProperty Name="Positions" Relationship="EasyModel.BadgeEventPosition" FromRole="BadgeEvent" ToRole="Position" />
@@ -612,6 +614,8 @@
           <ScalarProperty Name="ID_Badge" ColumnName="ID_Badge" />
           <ScalarProperty Name="Dimension_X" ColumnName="Dimension_X" />
           <ScalarProperty Name="Dimension_Y" ColumnName="Dimension_Y" />
+          <ScalarProperty Name="TypeBadge" ColumnName="TypeBadge" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -620,7 +624,6 @@
         <MappingFragment StoreEntitySet="BadgeEventSet">
           <ScalarProperty Name="BadgeID_Badge" ColumnName="BadgeID_Badge" />
           <ScalarProperty Name="EventID_Event" ColumnName="EventID_Event" />
-          <ScalarProperty Name="TypeBadge" ColumnName="TypeBadge" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

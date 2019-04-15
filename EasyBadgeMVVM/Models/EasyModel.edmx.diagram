@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e3c056ef01d24ebba0d31acb112451f5" Name="Diagram1" ZoomLevel="97" >
+      <Diagram DiagramId="e3c056ef01d24ebba0d31acb112451f5" Name="Diagram1" ZoomLevel="102" >
         <EntityTypeShape EntityType="EasyModel.User" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="EasyModel.Event" Width="1.5" PointX="9.625" PointY="1.25" />
+        <EntityTypeShape EntityType="EasyModel.Event" Width="1.5" PointX="9.625" PointY="2.25" />
         <EntityTypeShape EntityType="EasyModel.Field" Width="1.5" PointX="4.625" PointY="8.125" />
         <EntityTypeShape EntityType="EasyModel.EventFieldUser" Width="1.5" PointX="2.125" PointY="4.75" />
         <EntityTypeShape EntityType="EasyModel.PrintBadge" Width="1.5" PointX="5.625" PointY="0.5" />

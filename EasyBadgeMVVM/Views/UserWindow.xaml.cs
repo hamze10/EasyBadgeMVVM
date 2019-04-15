@@ -198,9 +198,9 @@ namespace EasyBadgeMVVM.Views
 
         private void Print_Badge(object sender, RoutedEventArgs e)
         {
-            PrintBadge printBadge = new PrintBadge();
+            /*PrintBadge printBadge = new PrintBadge(this._idEvent);
             printBadge.Show();
-            this.Close();
+            this.Close();*/
         }
     }
 }

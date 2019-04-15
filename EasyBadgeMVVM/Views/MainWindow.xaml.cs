@@ -339,5 +339,12 @@ namespace EasyBadgeMVVM
             ObservableCollection<EventFieldUser> test = this._mainWindowImpl.DoSearch();
             CreateRowsDataGrid(test);
         }
+
+        private void SettingsButton(object sender, RoutedEventArgs e)
+        {
+            ConfigBadge configBadge = new ConfigBadge(this._idEvent);
+            configBadge.Show();
+            this.Close();
+        }
     }
 }

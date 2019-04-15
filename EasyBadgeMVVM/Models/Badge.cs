@@ -23,6 +23,8 @@ namespace EasyBadgeMVVM.Models
         public int ID_Badge { get; set; }
         public double Dimension_X { get; set; }
         public double Dimension_Y { get; set; }
+        public string TypeBadge { get; set; }
+        public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BadgeEvent> BadgeEvents { get; set; }

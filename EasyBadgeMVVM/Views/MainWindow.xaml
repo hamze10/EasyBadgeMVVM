@@ -151,7 +151,7 @@
             </Grid>
 
             <Grid Background="#F8EFBA" Grid.Row="9" Margin="0,0,124,31">
-                <Button Background="#F8EFBA" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
+                <Button Click="SettingsButton" Background="#F8EFBA" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
                             HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-3,2,-31,-77">
                     <StackPanel Orientation="Horizontal" Width="Auto">
                         <materialDesign:PackIcon Kind="Settings" Height="Auto" Width="52" Foreground="Black" />

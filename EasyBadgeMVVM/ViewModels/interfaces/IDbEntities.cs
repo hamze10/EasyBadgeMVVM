@@ -31,5 +31,7 @@ namespace EasyBadgeMVVM.ViewModels
         ObservableCollection<Field> GetAllFields();
         ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
         bool GetVisibilityField(string field);
+        ObservableCollection<Badge> GetAllBadges();
+        void InsertInBadgeEvent(int idBadge, int idEvent);
     }
 }
