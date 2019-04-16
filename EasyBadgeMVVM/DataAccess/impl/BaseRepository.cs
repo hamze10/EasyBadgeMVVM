@@ -20,7 +20,6 @@ namespace EasyBadgeMVVM.DataAccess
 
         public void Insert(TEntity entity)
         {
-
             _dbContext.Set<TEntity>().Add(entity);
         }
 

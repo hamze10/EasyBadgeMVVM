@@ -11,8 +11,10 @@ SELECT * FROM UserSet;
 SELECT * FROM EventSet;
 
 SELECT * FROM BadgeSet
+INSERT INTO BadgeSet VALUES(97,86, 'A5', 'Butterfly');
 INSERT INTO BadgeSet VALUES(97,116,'XL', 'Butterfly');
 INSERT INTO BadgeSet VALUES(97,148,'A6', 'Butterfly');
 INSERT INTO BadgeSet VALUES(86,54,'PVC', 'PVC');
 
-SELECT * FROM BadgeEventSet
+SELECT * FROM BadgeEventSet;
+SELECT * FROM PositionSet;

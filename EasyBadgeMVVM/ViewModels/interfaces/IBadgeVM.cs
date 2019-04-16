@@ -11,7 +11,11 @@ namespace EasyBadgeMVVM.ViewModels
         BadgeDTO SelectedBadge { get; set; }
         List<string> GetAllFields();
         Field GetFieldByName(string name);
-        void SaveOnBadgeEvent();
+        BadgeEvent SaveOnBadgeEvent();
+        void SaveOnPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize);
+        BadgeEvent GetBadgeEvent();
+        void RemoveRowsPosition();
+        List<Position> GetPositions(int idBadge, int idEvent);
     }
 
     public class BadgeDTO

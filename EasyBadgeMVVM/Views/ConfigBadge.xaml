@@ -53,5 +53,12 @@
                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,5"></Button>
         </Grid>
 
+        <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="180,0,938,0">
+            <materialDesign:Snackbar
+              HorizontalAlignment="Stretch"
+              MessageQueue="{materialDesign:MessageQueue}"
+              Name="SnackbarBadge" Background="#0a3d62" Width="754" />
+        </Grid>
+
     </Grid>
 </Window>

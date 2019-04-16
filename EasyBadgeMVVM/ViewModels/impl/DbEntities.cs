@@ -120,6 +120,17 @@ namespace EasyBadgeMVVM.ViewModels
             return new ObservableCollection<Badge>(this._repostitoryFactory.GetBadgeRepository(this._dbContext).GetAll());
         }
 
+        public BadgeEvent GetBadgeEvent(int idBadge, int idEvent)
+        {
+            return this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).SearchFor(be => be.BadgeID_Badge == idBadge && be.EventID_Event == idEvent).FirstOrDefault();
+        }
+
+        public List<Position> GetPositions(int idBadge, int idEvent)
+        {
+            return this._repostitoryFactory.GetPositionRepository(this._dbContext).SearchFor(p => p.BadgeEventBadgeID_Badge == idBadge && p.BadgeEventEventID_Event == idEvent)
+                            .ToList();
+        }
+
         //TODO CORRECTION
         public bool GetVisibilityField(string field)
         {
@@ -345,14 +356,45 @@ namespace EasyBadgeMVVM.ViewModels
             return true;
         }
 
-        public void InsertInBadgeEvent(int idBadge, int idEvent)
+        public BadgeEvent InsertInBadgeEvent(int idBadge, int idEvent)
         {
-            BadgeEvent be = new BadgeEvent();
-            be.Badge = this._repostitoryFactory.GetBadgeRepository(this._dbContext).GetById(idBadge);
-            be.Event = this._repostitoryFactory.GetEventRepository(this._dbContext).GetById(idEvent);
             var repo = this._repostitoryFactory.GetBadgeEventRepository(this._dbContext);
+            var badgeEventFound = repo.SearchFor(b => b.BadgeID_Badge == idBadge && b.EventID_Event == idEvent).FirstOrDefault();
+
+            if (badgeEventFound != null)
+            {
+                return badgeEventFound;
+            }
+
+            BadgeEvent be = new BadgeEvent();
+            be.Badge = this._repostitoryFactory.GetBadgeRepository(this._dbContext).SearchFor(badg => badg.ID_Badge == idBadge).FirstOrDefault();
+            be.Event = this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(eve => eve.ID_Event == idEvent).FirstOrDefault();
+
             repo.Insert(be);
             repo.SaveChanges();
+
+            
+            return repo.SearchFor(b => b.BadgeID_Badge == idBadge && b.EventID_Event == idEvent).FirstOrDefault();
+        }
+
+        public void InsertInPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize)
+        {
+            Position p = new Position();
+            p.BadgeEvent = be;
+            p.Field = f;
+            p.Position_X = posX;
+            p.Position_Y = posY;
+            p.FontFamily = fontFamily;
+            p.FontSize = fontSize;
+
+            var repo = this._repostitoryFactory.GetPositionRepository(this._dbContext);
+            repo.Insert(p);
+            repo.SaveChanges();
+        }
+
+        public void DeleteRowPosition(int idBadge, int idEvent)
+        {
+            this._repostitoryFactory.GetPositionRepository(this._dbContext).RemoveRows(idBadge, idEvent);
         }
 
         /*********************************************************************************************************************************************************************/
@@ -361,16 +403,6 @@ namespace EasyBadgeMVVM.ViewModels
 
         public void SaveAllChanges()
         {
-            /*try {
-                this._repostitoryFactory.GetFieldRepository(this._dbContext).SaveChanges();
-                this._repostitoryFactory.GetUserRepository(this._dbContext).SaveChanges();
-                this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Error while save changes : {0}", e);
-            }*/
-
             this._repostitoryFactory.GetFieldRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetUserRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();

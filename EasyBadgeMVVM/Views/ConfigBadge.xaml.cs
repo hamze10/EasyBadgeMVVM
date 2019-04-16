@@ -119,6 +119,14 @@ namespace EasyBadgeMVVM.Views
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
+            Canvas c = this.BadgeScreen;
+
+            //http://classicalprogrammer.wikidot.com/don-t-delete-an-element-from-collection-in-foreach-loop
+            for (int inx = c.Children.Count - 1; inx >= 0; inx--)
+            {
+                if (c.Children[inx] is Label) c.Children.Remove(c.Children[inx]);
+            }
+
             BadgeDTO selected = this._badgeVM.SelectedBadge;
             this.BadgeScreen.Background = Brushes.White;
             this.BadgeScreen.AllowDrop = true;
@@ -126,6 +134,28 @@ namespace EasyBadgeMVVM.Views
             this.BadgeScreen.DragEnter += new DragEventHandler(Drag_DragEnter);
             this.BadgeScreen.Width = selected.Width;
             this.BadgeScreen.Height = selected.Height;
+
+            //CHECK IN THE DB IF A BADGE IN POSITION NOT ALREADY EXISTS, IF EXISTS SHOW IT
+            List<Position> myPositions = this._badgeVM.GetPositions(selected.ID, this._idEvent);
+            foreach(Position p in myPositions)
+            {
+                Label label = new Label();
+                label.Content = p.Field.Name;
+                label.FontFamily = ALLFONTS.Where(font => font.ToString().Equals(p.FontFamily)).FirstOrDefault();
+                label.FontSize = p.FontSize;
+                label.MouseMove += new MouseEventHandler(Label_MouseMove);
+                label.PreviewMouseRightButtonDown += new MouseButtonEventHandler(Label_RightClick);
+                label.AllowDrop = true;
+                label.Drop += new DragEventHandler(Drag_Drop);
+                label.DragEnter += new DragEventHandler(Drag_DragEnter);
+
+                var child = this.BadgeScreen.Children.OfType<Label>().Where(la => la == label).FirstOrDefault();
+                if (child != null) c.Children.Remove(child);
+
+                c.Children.Add(label);
+                Canvas.SetLeft(label, p.Position_X);
+                Canvas.SetTop(label, p.Position_Y);
+            }
         }
 
         private void Label_MouseMove(object sender, MouseEventArgs e)
@@ -194,19 +224,27 @@ namespace EasyBadgeMVVM.Views
 
         private void Save_Positions(object sender, RoutedEventArgs e)
         {
-            //TODO
             //Save on BadgeEvent
-            this._badgeVM.SaveOnBadgeEvent();
-            
+            BadgeEvent insertedBe = this._badgeVM.SaveOnBadgeEvent();
+
             //Save on Position
+            //But first delete if there are updates
+            this._badgeVM.RemoveRowsPosition();
             foreach (FrameworkElement child in this.BadgeScreen.Children)
             {
                 Label label = child as Label;
 
-                double top = (double)child.GetValue(Canvas.TopProperty); //Pos_X
-                double left = (double)child.GetValue(Canvas.LeftProperty); //Pos_Y
+                string fontFamily = label.FontFamily.ToString(); //FontFamily
+                int fontSize = Convert.ToInt32(label.FontSize); //FontSize
+                double posY = (double)child.GetValue(Canvas.TopProperty); //Pos_Y
+                double posX = (double)child.GetValue(Canvas.LeftProperty); //Pos_X
                 Field field = this._badgeVM.GetFieldByName(label.Content.ToString()); //Field
+
+                this._badgeVM.SaveOnPosition(insertedBe, field, posX, posY, fontFamily, fontSize);
             }
+
+            var messageQueue = this.SnackbarBadge.MessageQueue;
+            Task.Factory.StartNew(() => messageQueue.Enqueue("Your badge has been saved"));
         }
 
         //https://www.wundervisionenvisionthefuture.com/blog/wpf-c-drag-and-drop-icon-adorner

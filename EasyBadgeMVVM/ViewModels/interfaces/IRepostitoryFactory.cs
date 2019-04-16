@@ -13,5 +13,6 @@ namespace EasyBadgeMVVM.ViewModels
         EventFieldUserRepository GetEventFieldUserRepository(EasyModelContext model);
         BadgeRepository GetBadgeRepository(EasyModelContext model);
         BadgeEventRepository GetBadgeEventRepository(EasyModelContext model);
+        PositionRepository GetPositionRepository(EasyModelContext model);
     }
 }

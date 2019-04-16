@@ -49,5 +49,10 @@ namespace EasyBadgeMVVM.ViewModels
         {
             return new BadgeEventRepository(model);
         }
+
+        public PositionRepository GetPositionRepository(EasyModelContext model)
+        {
+            return new PositionRepository(model);
+        }
     }
 }

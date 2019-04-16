@@ -19,6 +19,8 @@ namespace EasyBadgeMVVM.Models
         public int FieldID_Field { get; set; }
         public double Position_X { get; set; }
         public double Position_Y { get; set; }
+        public string FontFamily { get; set; }
+        public int FontSize { get; set; }
     
         public virtual Field Field { get; set; }
         public virtual BadgeEvent BadgeEvent { get; set; }

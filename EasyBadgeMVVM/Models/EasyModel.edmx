@@ -132,6 +132,8 @@
     <Property Name="FieldID_Field" Type="int" Nullable="false" />
     <Property Name="Position_X" Type="float" Nullable="false" />
     <Property Name="Position_Y" Type="float" Nullable="false" />
+    <Property Name="FontFamily" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FontSize" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="EventFieldSet">
     <Key>
@@ -415,6 +417,8 @@
           <Property Name="Position_Y" Type="Double" Nullable="false" />
           <NavigationProperty Name="Field" Relationship="EasyModel.FieldPosition" FromRole="Position" ToRole="Field" />
           <NavigationProperty Name="BadgeEvent" Relationship="EasyModel.BadgeEventPosition" FromRole="Position" ToRole="BadgeEvent" />
+          <Property Name="FontFamily" Type="String" Nullable="false" />
+          <Property Name="FontSize" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="UserFieldUser">
           <End Type="EasyModel.User" Role="User" Multiplicity="1" />
@@ -635,6 +639,8 @@
           <ScalarProperty Name="FieldID_Field" ColumnName="FieldID_Field" />
           <ScalarProperty Name="Position_X" ColumnName="Position_X" />
           <ScalarProperty Name="Position_Y" ColumnName="Position_Y" />
+          <ScalarProperty Name="FontFamily" ColumnName="FontFamily" />
+          <ScalarProperty Name="FontSize" ColumnName="FontSize" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -344,7 +344,9 @@ namespace EasyBadgeMVVM
         {
             ConfigBadge configBadge = new ConfigBadge(this._idEvent);
             configBadge.Show();
-            this.Close();
+
+            /*MainSettings mainSettings = new MainSettings();
+            mainSettings.Show();*/
         }
     }
 }

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/15/2019 10:27:16
+-- Date Created: 04/16/2019 08:49:46
 -- Generated from EDMX file: C:\Users\onetec\Documents\EasyBadgeMVVM\EasyBadgeMVVM\EasyBadgeMVVM\Models\EasyModel.edmx
 -- --------------------------------------------------
 
@@ -151,7 +151,9 @@ CREATE TABLE [dbo].[PositionSet] (
     [BadgeEventEventID_Event] int  NOT NULL,
     [FieldID_Field] int  NOT NULL,
     [Position_X] float  NOT NULL,
-    [Position_Y] float  NOT NULL
+    [Position_Y] float  NOT NULL,
+    [FontFamily] nvarchar(max)  NOT NULL,
+    [FontSize] int  NOT NULL
 );
 GO
 

@@ -90,6 +90,7 @@
     <Compile Include="DataAccess\impl\EventFieldUserRepository.cs" />
     <Compile Include="DataAccess\impl\EventRepository.cs" />
     <Compile Include="DataAccess\impl\FieldRepository.cs" />
+    <Compile Include="DataAccess\impl\PositionRepository.cs" />
     <Compile Include="DataAccess\impl\PrintBadgeRepository.cs" />
     <Compile Include="DataAccess\interfaces\IBadgeEventRepository.cs" />
     <Compile Include="DataAccess\interfaces\IBadgeRepository.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="DataAccess\interfaces\IEventFieldUserRepository.cs" />
     <Compile Include="DataAccess\interfaces\IEventRepository.cs" />
     <Compile Include="DataAccess\interfaces\IFieldRepository.cs" />
+    <Compile Include="DataAccess\interfaces\IPositionRepository.cs" />
     <Compile Include="DataAccess\interfaces\IPrintBadgeRepository.cs" />
     <Compile Include="DataAccess\interfaces\IRepository.cs" />
     <Compile Include="DataAccess\interfaces\IUserRepository.cs" />
@@ -128,6 +130,9 @@
     <Compile Include="Views\ConfigBadge.xaml.cs">
       <DependentUpon>ConfigBadge.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainSettings.xaml.cs">
+      <DependentUpon>MainSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserWindow.xaml.cs">
       <DependentUpon>UserWindow.xaml</DependentUpon>
     </Compile>
@@ -135,6 +140,10 @@
       <DependentUpon>SelectEvent.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\FieldMatching.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

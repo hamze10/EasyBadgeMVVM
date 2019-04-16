@@ -74,9 +74,29 @@ namespace EasyBadgeMVVM.ViewModels
             return this._dbEntities.GetAllFieldsOfEvent(this._idEvent).FirstOrDefault(f => f.EventField.Field.Name.Equals(name)).EventField.Field;
         }
 
-        public void SaveOnBadgeEvent()
+        public BadgeEvent GetBadgeEvent()
         {
-            this._dbEntities.InsertInBadgeEvent(this.SelectedBadge.ID, this._idEvent);
+            return this._dbEntities.GetBadgeEvent(this.SelectedBadge.ID, this._idEvent);
+        }
+
+        public List<Position> GetPositions(int idBadge, int idEvent)
+        {
+            return this._dbEntities.GetPositions(idBadge, idEvent);
+        }
+
+        public BadgeEvent SaveOnBadgeEvent()
+        {
+            return this._dbEntities.InsertInBadgeEvent(this.SelectedBadge.ID, this._idEvent);
+        }
+
+        public void SaveOnPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize)
+        {
+            this._dbEntities.InsertInPosition(be, f, posX, posY, fontFamily, fontSize);
+        }
+
+        public void RemoveRowsPosition()
+        {
+            this._dbEntities.DeleteRowPosition(this.SelectedBadge.ID, this._idEvent);
         }
     }
 }
