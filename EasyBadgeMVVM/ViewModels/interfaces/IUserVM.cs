@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EasyBadgeMVVM.ViewModels.impl
+namespace EasyBadgeMVVM.ViewModels
 {
     public interface IUserVM
     {

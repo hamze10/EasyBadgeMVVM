@@ -2,19 +2,22 @@
 
 using EasyBadgeMVVM.Models;
 using EasyBadgeMVVM.Views;
-using EasyBadgeMVVM.ViewModels.impl;
+using EasyBadgeMVVM.ViewModels;
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
+using System.Printing;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -30,7 +33,8 @@ namespace EasyBadgeMVVM.Views
     /// </summary>
     public partial class UserWindow : Window
     {
-        private UserVM _userVM;
+        private IUserVM _userVM;
+        private IBadgeVM _badgeVM;
         private List<EventFieldUser> _CurrentUser;
         private bool _isNew;
         private int _idEvent;
@@ -52,6 +56,7 @@ namespace EasyBadgeMVVM.Views
             this._isNew = isNew;
             this._idEvent = idEvent;
             this._userVM = new UserVM(idEvent);
+            this._badgeVM = new BadgeVM(idEvent);
             this._CurrentUser = list;
             this.DataContext = this._userVM;
             InitializeComponent();
@@ -198,9 +203,54 @@ namespace EasyBadgeMVVM.Views
 
         private void Print_Badge(object sender, RoutedEventArgs e)
         {
-            /*PrintBadge printBadge = new PrintBadge(this._idEvent);
-            printBadge.Show();
-            this.Close();*/
+            System.Windows.Forms.PrintPreviewDialog pdi = new System.Windows.Forms.PrintPreviewDialog();
+            pdi.ClientSize = new System.Drawing.Size(800, 600);
+            pdi.DesktopLocation = new System.Drawing.Point(29, 29);
+            pdi.Name = "PrintPreviewDialog1";
+
+            PrintDocument printDocument = new PrintDocument();
+            printDocument.DefaultPageSettings.PaperSize = new PaperSize("PVC", 650, 408);
+            printDocument.PrintPage += new PrintPageEventHandler(document_PrintPage);
+            pdi.Document = printDocument;
+
+            if (pdi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                Console.WriteLine("good");
+            }
+        }
+
+        private void document_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            //Recupérer positions
+            //Recupérer valeur de l'user selectionné
+
+            //String text = "Henry"
+            //Font printFont = new Font("FontFamily", "FontSize (a calculer)", FontStyle.Regular)
+            //e.Graphics.DrawString(text, printfont, Brushes.Black, Position_X, Position_Y)
+
+            List<Position> positions = this._badgeVM.GetPositions(4, this._idEvent);
+
+            foreach (Position p in positions)
+            {
+                string text = this._CurrentUser.Find(efu => efu.EventField.Field.Name.Equals(p.Field.Name)).Value;
+                Font printFont = new Font(p.FontFamily, p.FontSize, System.Drawing.FontStyle.Regular);
+                e.Graphics.DrawString(text, printFont, Brushes.Black, (float) p.Position_X, (float) p.Position_Y);
+            }
+
+
+            e.Graphics.DrawImage(System.Drawing.Image.FromFile("../../asset/images/Capture.PNG"), 650, 408);
+
+
+            //--------------------------------------------------------------------------------------------//
+            /*string text = "Company";
+            string text2 = "LastName";
+            string text3 = "Profile";
+            Font printFont = new Font("Blackoak Std", 35, System.Drawing.FontStyle.Regular);
+            Font printFont2 = new Font("Segoe UI", 12, System.Drawing.FontStyle.Regular);
+            Font printFont3 = new Font("Segoe Script", 46, System.Drawing.FontStyle.Regular);
+            e.Graphics.DrawString(text, printFont, Brushes.Black, 24, (float) 43.133885);
+            e.Graphics.DrawString(text2, printFont2, Brushes.Black, (float) 389.133885, (float) 677.10634);
+            e.Graphics.DrawString(text3, printFont3, Brushes.Black, (float) 110.133885, (float) 630.10634);*/
         }
     }
 }

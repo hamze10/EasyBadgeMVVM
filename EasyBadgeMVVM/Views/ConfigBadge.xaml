@@ -42,10 +42,19 @@
         </Grid>
 
         <Canvas Name="BadgeScreen" Grid.Row="1">
-
+            <Image Name="imgCanvas" Stretch="Fill" />
         </Canvas>
 
-        <Grid Background="White" Name="BadgeLabels" Grid.Row="1" Grid.Column="1" Margin="20">
+        <Grid Name="UploadBackground" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="20,0,0,0">
+            <TextBlock>
+                <Label Content="Upload a background : " FontSize="20" VerticalAlignment="Center" />
+                <Button Click="Load_Picture" Content="Load" FontSize="15" Background="DarkGray" BorderBrush="White" Foreground="Black" Width="100" 
+                        Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            </TextBlock>
+
+        </Grid>
+
+        <Grid Background="White" Name="BadgeLabels" Grid.Row="1" Grid.Column="1" Margin="20,62,20,20">
         </Grid>
 
         <Grid Grid.Row="3">

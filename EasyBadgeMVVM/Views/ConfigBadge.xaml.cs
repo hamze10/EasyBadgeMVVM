@@ -127,6 +127,8 @@ namespace EasyBadgeMVVM.Views
                 if (c.Children[inx] is Label) c.Children.Remove(c.Children[inx]);
             }
 
+            this.imgCanvas.Source = new BitmapImage();
+
             BadgeDTO selected = this._badgeVM.SelectedBadge;
             this.BadgeScreen.Background = Brushes.White;
             this.BadgeScreen.AllowDrop = true;
@@ -233,7 +235,7 @@ namespace EasyBadgeMVVM.Views
             foreach (FrameworkElement child in this.BadgeScreen.Children)
             {
                 Label label = child as Label;
-
+                if (label == null) continue;
                 string fontFamily = label.FontFamily.ToString(); //FontFamily
                 int fontSize = Convert.ToInt32(label.FontSize); //FontSize
                 double posY = (double)child.GetValue(Canvas.TopProperty); //Pos_Y
@@ -245,6 +247,24 @@ namespace EasyBadgeMVVM.Views
 
             var messageQueue = this.SnackbarBadge.MessageQueue;
             Task.Factory.StartNew(() => messageQueue.Enqueue("Your badge has been saved"));
+        }
+
+        private void Load_Picture(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog op = new System.Windows.Forms.OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var bitmapToChange = new BitmapImage(new Uri(op.FileName));
+                var bitmapTrans = new TransformedBitmap(bitmapToChange, new ScaleTransform(
+                        this.BadgeScreen.Width / bitmapToChange.PixelWidth,
+                        this.BadgeScreen.Height / bitmapToChange.PixelHeight
+                    ));
+                this.imgCanvas.Source = bitmapTrans;
+            }
         }
 
         //https://www.wundervisionenvisionthefuture.com/blog/wpf-c-drag-and-drop-icon-adorner

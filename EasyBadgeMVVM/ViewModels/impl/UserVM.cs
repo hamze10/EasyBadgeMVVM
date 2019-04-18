@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyBadgeMVVM.ViewModels.impl
+namespace EasyBadgeMVVM.ViewModels
 {
     public class UserVM : INotifyPropertyChanged, IUserVM
     {
