@@ -17,4 +17,7 @@ INSERT INTO BadgeSet VALUES(97,148,'A6', 'Butterfly');
 INSERT INTO BadgeSet VALUES(86,54,'PVC', 'PVC');
 
 SELECT * FROM BadgeEventSet;
-SELECT * FROM PositionSet;
+
+SELECT * FROM PositionSet p 
+WHERE p.BadgeEventID_BadgeEvent = (SELECT ID_BadgeEvent FROM BadgeEventSet be WHERE be.BadgeID_Badge = 4)
+

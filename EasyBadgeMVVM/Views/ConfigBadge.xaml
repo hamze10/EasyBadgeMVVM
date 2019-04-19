@@ -45,8 +45,12 @@
             <Image Name="imgCanvas" Stretch="Fill" />
         </Canvas>
 
-        <Grid Name="UploadBackground" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="20,0,0,0">
-            <TextBlock>
+        <Grid Name="OtherInformation" Grid.Row="1" Grid.Column="1" Background="White" VerticalAlignment="Top" Margin="20,0" Height="99">
+            <TextBlock Margin="0,0,0,-90">
+                <Label Content="Name of this template : " FontSize="20" VerticalAlignment="Center" /> 
+                <TextBox Name="TemplateBadgeName" Text="AAA" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="39" FontSize="20" />
+                <LineBreak />
+                <LineBreak />
                 <Label Content="Upload a background : " FontSize="20" VerticalAlignment="Center" />
                 <Button Click="Load_Picture" Content="Load" FontSize="15" Background="DarkGray" BorderBrush="White" Foreground="Black" Width="100" 
                         Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Left" />
@@ -54,7 +58,7 @@
 
         </Grid>
 
-        <Grid Background="White" Name="BadgeLabels" Grid.Row="1" Grid.Column="1" Margin="20,62,20,20">
+        <Grid Background="White" Name="BadgeLabels" Grid.Row="1" Grid.Column="1" Margin="20,117,20,20">
         </Grid>
 
         <Grid Grid.Row="3">

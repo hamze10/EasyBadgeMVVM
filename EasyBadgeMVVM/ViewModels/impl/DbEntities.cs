@@ -410,7 +410,6 @@ namespace EasyBadgeMVVM.ViewModels
             this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SaveChanges();
-
         }
 
         public void Clear()

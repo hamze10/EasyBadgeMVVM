@@ -226,6 +226,15 @@ namespace EasyBadgeMVVM.Views
 
         private void Save_Positions(object sender, RoutedEventArgs e)
         {
+            string templateName = this.TemplateBadgeName.Text;
+            var messageQueue = this.SnackbarBadge.MessageQueue;
+            if (templateName == string.Empty)
+            {
+                this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom("#c0392b");
+                Task.Factory.StartNew(() => messageQueue.Enqueue("Please enter a valid template name"));
+                return;
+            }
+
             //Save on BadgeEvent
             BadgeEvent insertedBe = this._badgeVM.SaveOnBadgeEvent();
 
@@ -245,7 +254,7 @@ namespace EasyBadgeMVVM.Views
                 this._badgeVM.SaveOnPosition(insertedBe, field, posX, posY, fontFamily, fontSize);
             }
 
-            var messageQueue = this.SnackbarBadge.MessageQueue;
+            this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom("#0a3d62");
             Task.Factory.StartNew(() => messageQueue.Enqueue("Your badge has been saved"));
         }
 

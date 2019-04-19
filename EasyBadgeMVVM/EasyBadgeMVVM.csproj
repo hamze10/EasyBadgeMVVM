@@ -131,6 +131,12 @@
     <Compile Include="Models\PrintBadge.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Rule.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Target.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\User.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
