@@ -35,7 +35,7 @@ namespace EasyBadgeMVVM.Views
     {
         private IUserVM _userVM;
         private IBadgeVM _badgeVM;
-        private List<EventFieldUser> _CurrentUser;
+        private List<EventFieldUser> _currentUser;
         private bool _isNew;
         private int _idEvent;
 
@@ -57,7 +57,7 @@ namespace EasyBadgeMVVM.Views
             this._idEvent = idEvent;
             this._userVM = new UserVM(idEvent);
             this._badgeVM = new BadgeVM(idEvent);
-            this._CurrentUser = list;
+            this._currentUser = list;
             this.DataContext = this._userVM;
             InitializeComponent();
             if (this._isNew)
@@ -72,7 +72,7 @@ namespace EasyBadgeMVVM.Views
 
         private void ShowUser()
         {
-            for (int i = 1; i <= this._CurrentUser.Count; i++)
+            for (int i = 1; i <= this._currentUser.Count; i++)
             {
                 CreateFields(i);
 
@@ -83,7 +83,7 @@ namespace EasyBadgeMVVM.Views
 
                 Label label2 = new Label();
                 label2.Name = SHOWNAME + i;
-                label2.Content = this._CurrentUser[(i - 1)].Value;
+                label2.Content = this._currentUser[(i - 1)].Value;
                 label2.VerticalAlignment = VerticalAlignment.Center;
                 label2.FontSize = FONTSIZELABEL;
                 grid2.Children.Add(label2);
@@ -93,12 +93,12 @@ namespace EasyBadgeMVVM.Views
                 RegisterName(SHOWNAME + i, label2);
             }
 
-            CreateButton(BUTTON_PRINTBADGE, this._CurrentUser.Count + 1);
+            CreateButton(BUTTON_PRINTBADGE, this._currentUser.Count + 1);
         }
 
         private void NewUser()
         {
-            for (int i = 1; i <= this._CurrentUser.Count; i++)
+            for (int i = 1; i <= this._currentUser.Count; i++)
             {
                 CreateFields(i);
 
@@ -120,7 +120,7 @@ namespace EasyBadgeMVVM.Views
                 RegisterName(NEWNAME + i, textBox);
             }
 
-            CreateButton(BUTTON_CONFIRM, this._CurrentUser.Count + 1);
+            CreateButton(BUTTON_CONFIRM, this._currentUser.Count + 1);
         }
 
         private void CreateFields(int i)
@@ -136,7 +136,7 @@ namespace EasyBadgeMVVM.Views
 
             Label label = new Label();
             label.Name = LABELFIELDNAME + i;
-            label.Content = this._CurrentUser[(i - 1)].EventField.Field.Name + " : ";
+            label.Content = this._currentUser[(i - 1)].EventField.Field.Name + " : ";
             label.FontSize = FONTSIZELABEL;
             label.VerticalAlignment = VerticalAlignment.Center;
             grid.Children.Add(label);
@@ -188,7 +188,7 @@ namespace EasyBadgeMVVM.Views
         {
             Dictionary<string, string> toSend = new Dictionary<string, string>();
 
-            for(int i = 1; i <= this._CurrentUser.Count; i++)
+            for(int i = 1; i <= this._currentUser.Count; i++)
             {
                 string key = ((Label)this.FindName(LABELFIELDNAME + i)).Content.ToString();
                 string value = ((TextBox)this.FindName(NEWNAME + i)).Text.ToString();
@@ -232,14 +232,10 @@ namespace EasyBadgeMVVM.Views
 
             foreach (Position p in positions)
             {
-                string text = this._CurrentUser.Find(efu => efu.EventField.Field.Name.Equals(p.Field.Name)).Value;
-                Font printFont = new Font(p.FontFamily, p.FontSize, System.Drawing.FontStyle.Regular);
+                string text = this._currentUser.Find(efu => efu.EventField.Field.Name.Equals(p.Field.Name)).Value;
+                Font printFont = new Font(p.FontFamily, (float) p.FontSize, System.Drawing.FontStyle.Regular);
                 e.Graphics.DrawString(text, printFont, Brushes.Black, (float) p.Position_X, (float) p.Position_Y);
             }
-
-
-            e.Graphics.DrawImage(System.Drawing.Image.FromFile("../../asset/images/Capture.PNG"), 650, 408);
-
 
             //--------------------------------------------------------------------------------------------//
             /*string text = "Company";

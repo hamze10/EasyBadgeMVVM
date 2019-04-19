@@ -127,7 +127,7 @@ namespace EasyBadgeMVVM.ViewModels
 
         public List<Position> GetPositions(int idBadge, int idEvent)
         {
-            return this._repostitoryFactory.GetPositionRepository(this._dbContext).SearchFor(p => p.BadgeEventBadgeID_Badge == idBadge && p.BadgeEventEventID_Event == idEvent)
+            return this._repostitoryFactory.GetPositionRepository(this._dbContext).SearchFor(p => p.BadgeEvent.BadgeID_Badge == idBadge && p.BadgeEvent.EventID_Event == idEvent)
                             .ToList();
         }
 
@@ -359,22 +359,23 @@ namespace EasyBadgeMVVM.ViewModels
         public BadgeEvent InsertInBadgeEvent(int idBadge, int idEvent)
         {
             var repo = this._repostitoryFactory.GetBadgeEventRepository(this._dbContext);
-            var badgeEventFound = repo.SearchFor(b => b.BadgeID_Badge == idBadge && b.EventID_Event == idEvent).FirstOrDefault();
+            var name = "My Name";
+            /*var badgeEventFound = repo.SearchFor(b => b.BadgeID_Badge == idBadge && b.EventID_Event == idEvent).FirstOrDefault();
 
             if (badgeEventFound != null)
             {
                 return badgeEventFound;
-            }
+            }*/
 
             BadgeEvent be = new BadgeEvent();
             be.Badge = this._repostitoryFactory.GetBadgeRepository(this._dbContext).SearchFor(badg => badg.ID_Badge == idBadge).FirstOrDefault();
             be.Event = this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(eve => eve.ID_Event == idEvent).FirstOrDefault();
-
+            be.Name = name;
             repo.Insert(be);
             repo.SaveChanges();
 
             
-            return repo.SearchFor(b => b.BadgeID_Badge == idBadge && b.EventID_Event == idEvent).FirstOrDefault();
+            return repo.SearchFor(b => b.BadgeID_Badge == idBadge && b.EventID_Event == idEvent && be.Name.Equals(name)).FirstOrDefault();
         }
 
         public void InsertInPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize)
@@ -386,6 +387,7 @@ namespace EasyBadgeMVVM.ViewModels
             p.Position_Y = posY;
             p.FontFamily = fontFamily;
             p.FontSize = fontSize;
+            p.FontStyle = System.Drawing.FontStyle.Regular.ToString();
 
             var repo = this._repostitoryFactory.GetPositionRepository(this._dbContext);
             repo.Insert(p);

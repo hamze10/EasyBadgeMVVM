@@ -19,7 +19,7 @@ namespace EasyBadgeMVVM.DataAccess
         {
             var ctx = this._dbContext;
             var setPos = ctx.Set<Position>();
-            List<Position> result = setPos.Where(pos => pos.BadgeEventBadgeID_Badge == idBadge && pos.BadgeEventEventID_Event == idEvent).ToList();
+            List<Position> result = setPos.Where(pos => pos.BadgeEvent.BadgeID_Badge == idBadge && pos.BadgeEvent.EventID_Event == idEvent).ToList();
 
             foreach (Position p in result)
             {

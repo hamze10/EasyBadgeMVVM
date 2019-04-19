@@ -12,18 +12,16 @@ namespace EasyBadgeMVVM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Position
+    public partial class Rule
     {
-        public int ID_Position { get; set; }
-        public int FieldID_Field { get; set; }
+        public int ID_Rule { get; set; }
+        public int FilterID_Filter { get; set; }
+        public string HexaCode { get; set; }
+        public int TargetID_Target { get; set; }
         public int BadgeEventID_BadgeEvent { get; set; }
-        public double Position_X { get; set; }
-        public double Position_Y { get; set; }
-        public string FontFamily { get; set; }
-        public double FontSize { get; set; }
-        public string FontStyle { get; set; }
     
-        public virtual Field Field { get; set; }
+        public virtual Filter Filter { get; set; }
+        public virtual Target Target { get; set; }
         public virtual BadgeEvent BadgeEvent { get; set; }
     }
 }

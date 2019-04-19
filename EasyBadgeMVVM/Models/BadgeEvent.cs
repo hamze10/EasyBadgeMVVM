@@ -18,14 +18,19 @@ namespace EasyBadgeMVVM.Models
         public BadgeEvent()
         {
             this.Positions = new HashSet<Position>();
+            this.Rules = new HashSet<Rule>();
         }
     
-        public int BadgeID_Badge { get; set; }
+        public int ID_BadgeEvent { get; set; }
         public int EventID_Event { get; set; }
+        public int BadgeID_Badge { get; set; }
+        public string Name { get; set; }
     
         public virtual Event Event { get; set; }
         public virtual Badge Badge { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Position> Positions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Rule> Rules { get; set; }
     }
 }

@@ -104,10 +104,34 @@
     <Compile Include="DataAccess\interfaces\IRepository.cs" />
     <Compile Include="DataAccess\interfaces\IUserRepository.cs" />
     <Compile Include="DataAccess\impl\UserRepository.cs" />
+    <Compile Include="Models\Badge.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BadgeEvent.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Event.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EventField.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EventFieldUser.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Field.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Filter.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Position.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PrintBadge.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Util.cs" />
@@ -174,12 +198,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Badge.cs">
-      <DependentUpon>EasyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\BadgeEvent.cs">
-      <DependentUpon>EasyModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EasyModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -194,21 +212,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EasyModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Event.cs">
-      <DependentUpon>EasyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Field.cs">
-      <DependentUpon>EasyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Position.cs">
-      <DependentUpon>EasyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PrintBadge.cs">
-      <DependentUpon>EasyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\User.cs">
-      <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
