@@ -9,13 +9,15 @@ namespace EasyBadgeMVVM.ViewModels
     {
         ObservableCollection<BadgeDTO> ListBadgeType { get; }
         BadgeDTO SelectedBadge { get; set; }
+        string SelectedTemplate { get; set; }
         List<string> GetAllFields();
         Field GetFieldByName(string name);
-        BadgeEvent SaveOnBadgeEvent();
+        BadgeEvent SaveOnBadgeEvent(string templateName);
         void SaveOnPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize);
         BadgeEvent GetBadgeEvent();
-        void RemoveRowsPosition();
-        List<Position> GetPositions(int idBadge, int idEvent);
+        void RemoveRowsPosition(string templateName);
+        List<Position> GetPositions(int idBadge, int idEvent, string templateName);
+        void RefreshListBadgeType();
     }
 
     public class BadgeDTO
@@ -25,5 +27,6 @@ namespace EasyBadgeMVVM.ViewModels
         public double Height { get; set; } //Badge -> Dimension_X
         public double Width { get; set; } //Badge -> Dimension_Y
         public string Type { get; set; } //Badge -> TypeBadge
+        public string Template { get; set; } //BadgeEvent -> Name
     }
 }

@@ -228,7 +228,7 @@ namespace EasyBadgeMVVM.Views
             //Font printFont = new Font("FontFamily", "FontSize (a calculer)", FontStyle.Regular)
             //e.Graphics.DrawString(text, printfont, Brushes.Black, Position_X, Position_Y)
 
-            List<Position> positions = this._badgeVM.GetPositions(4, this._idEvent);
+            List<Position> positions = this._badgeVM.GetPositions(4, this._idEvent, "test");
 
             foreach (Position p in positions)
             {

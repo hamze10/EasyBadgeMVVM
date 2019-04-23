@@ -15,11 +15,13 @@ namespace EasyBadgeMVVM.DataAccess
 
         }
 
-        public void RemoveRows(int idBadge, int idEvent)
+        public void RemoveRows(int idBadge, int idEvent, string templateName)
         {
             var ctx = this._dbContext;
             var setPos = ctx.Set<Position>();
-            List<Position> result = setPos.Where(pos => pos.BadgeEvent.BadgeID_Badge == idBadge && pos.BadgeEvent.EventID_Event == idEvent).ToList();
+            List<Position> result = setPos
+                .Where(pos => pos.BadgeEvent.BadgeID_Badge == idBadge && pos.BadgeEvent.EventID_Event == idEvent && pos.BadgeEvent.Name.Equals(templateName))
+                .ToList();
 
             foreach (Position p in result)
             {

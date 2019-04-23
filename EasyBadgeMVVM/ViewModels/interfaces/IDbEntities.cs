@@ -32,10 +32,11 @@ namespace EasyBadgeMVVM.ViewModels
         ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
         bool GetVisibilityField(string field);
         ObservableCollection<Badge> GetAllBadges();
-        BadgeEvent InsertInBadgeEvent(int idBadge, int idEvent);
+        BadgeEvent InsertInBadgeEvent(int idBadge, int idEvent, string templateName);
         void InsertInPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize);
         BadgeEvent GetBadgeEvent(int idBadge, int idEvent);
-        void DeleteRowPosition(int idBadge, int idEvent);
-        List<Position> GetPositions(int idBadge, int idEvent);
+        void DeleteRowPosition(int idBadge, int idEvent, string templateName);
+        List<Position> GetPositions(int idBadge, int idEvent, string templateName);
+        ObservableCollection<BadgeEvent> GetAllBadgeEvent();
     }
 }

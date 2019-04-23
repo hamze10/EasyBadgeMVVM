@@ -3,6 +3,7 @@ using EasyBadgeMVVM.ViewModels;
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -137,8 +138,10 @@ namespace EasyBadgeMVVM.Views
             this.BadgeScreen.Width = selected.Width;
             this.BadgeScreen.Height = selected.Height;
 
+            this._badgeVM.SelectedTemplate = selected.Template;
+
             //CHECK IN THE DB IF A BADGE IN POSITION NOT ALREADY EXISTS, IF EXISTS SHOW IT
-            List<Position> myPositions = this._badgeVM.GetPositions(selected.ID, this._idEvent);
+            List<Position> myPositions = this._badgeVM.GetPositions(selected.ID, this._idEvent, selected.Template);
             foreach(Position p in myPositions)
             {
                 Label label = new Label();
@@ -236,11 +239,11 @@ namespace EasyBadgeMVVM.Views
             }
 
             //Save on BadgeEvent
-            BadgeEvent insertedBe = this._badgeVM.SaveOnBadgeEvent();
+            BadgeEvent insertedBe = this._badgeVM.SaveOnBadgeEvent(templateName);
 
             //Save on Position
             //But first delete if there are updates
-            this._badgeVM.RemoveRowsPosition();
+            this._badgeVM.RemoveRowsPosition(templateName);
             foreach (FrameworkElement child in this.BadgeScreen.Children)
             {
                 Label label = child as Label;
@@ -253,6 +256,8 @@ namespace EasyBadgeMVVM.Views
 
                 this._badgeVM.SaveOnPosition(insertedBe, field, posX, posY, fontFamily, fontSize);
             }
+
+            this._badgeVM.RefreshListBadgeType();
 
             this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom("#0a3d62");
             Task.Factory.StartNew(() => messageQueue.Enqueue("Your badge has been saved"));

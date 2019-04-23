@@ -21,7 +21,7 @@
 
         <Grid Grid.ColumnSpan="2" Margin="15" Background="White">
             <ScrollViewer>
-                <DataGrid Name="DataGridBadge" ItemsSource="{Binding ListBadgeType}" SelectedItem="{Binding SelectedBadge}" 
+                <DataGrid Name="DataGridBadge" ItemsSource="{Binding ListBadgeType, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedBadge}" 
                           CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
@@ -36,6 +36,7 @@
                         <materialDesign:MaterialDataGridTextColumn Width="*" Header="HEIGHT" Binding="{Binding Height}" />
                         <materialDesign:MaterialDataGridTextColumn Width="*" Header="WIDTH" Binding="{Binding Width}" />
                         <materialDesign:MaterialDataGridTextColumn Width="*" Header="TYPE" Binding="{Binding Type}" />
+                        <materialDesign:MaterialDataGridTextColumn Width="*" Header="TEMPLATE" Binding="{Binding Template}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
@@ -48,7 +49,7 @@
         <Grid Name="OtherInformation" Grid.Row="1" Grid.Column="1" Background="White" VerticalAlignment="Top" Margin="20,0" Height="99">
             <TextBlock Margin="0,0,0,-90">
                 <Label Content="Name of this template : " FontSize="20" VerticalAlignment="Center" /> 
-                <TextBox Name="TemplateBadgeName" Text="AAA" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="39" FontSize="20" />
+                <TextBox Name="TemplateBadgeName" Text="{Binding SelectedTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="39" FontSize="20" />
                 <LineBreak />
                 <LineBreak />
                 <Label Content="Upload a background : " FontSize="20" VerticalAlignment="Center" />

@@ -10,6 +10,6 @@ namespace EasyBadgeMVVM.DataAccess
 {
     public interface IPositionRepository
     {
-        void RemoveRows(int idBadge, int idEvent);
+        void RemoveRows(int idBadge, int idEvent, string templateName);
     }
 }
