@@ -238,6 +238,13 @@ namespace EasyBadgeMVVM.Views
                 return;
             }
 
+            if (this._badgeVM.SelectedBadge == null)
+            {
+                this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom("#c0392b");
+                Task.Factory.StartNew(() => messageQueue.Enqueue("Please select a template"));
+                return;
+            }
+
             //Save on BadgeEvent
             BadgeEvent insertedBe = this._badgeVM.SaveOnBadgeEvent(templateName);
 
@@ -258,6 +265,7 @@ namespace EasyBadgeMVVM.Views
             }
 
             this._badgeVM.RefreshListBadgeType();
+            this._badgeVM.UpdateDefaultPrint();
 
             this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom("#0a3d62");
             Task.Factory.StartNew(() => messageQueue.Enqueue("Your badge has been saved"));

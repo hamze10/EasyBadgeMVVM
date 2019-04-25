@@ -94,6 +94,7 @@ namespace EasyBadgeMVVM
             if (onClose)
             {
                 this.CreateRowsDataGrid(this._mainWindowImpl.RefreshMainsFields());
+                this.ShowNotification("User added");
             }
         }
 

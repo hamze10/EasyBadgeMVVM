@@ -38,5 +38,8 @@ namespace EasyBadgeMVVM.ViewModels
         void DeleteRowPosition(int idBadge, int idEvent, string templateName);
         List<Position> GetPositions(int idBadge, int idEvent, string templateName);
         ObservableCollection<BadgeEvent> GetAllBadgeEvent();
+        BadgeEvent GetBadgeEventById(int idBadgeEvent);
+        void UpdateDefaultPrint(int idBadgeEvent);
+        BadgeEvent GetDefaultBadgeEvent();
     }
 }

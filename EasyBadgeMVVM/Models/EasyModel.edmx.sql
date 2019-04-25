@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/23/2019 11:52:12
+-- Date Created: 04/25/2019 11:59:39
 -- Generated from EDMX file: C:\Users\onetec\Documents\EasyBadgeMVVM\EasyBadgeMVVM\EasyBadgeMVVM\Models\EasyModel.edmx
 -- --------------------------------------------------
 
@@ -186,7 +186,8 @@ CREATE TABLE [dbo].[BadgeEventSet] (
     [ID_BadgeEvent] int IDENTITY(1,1) NOT NULL,
     [EventID_Event] int  NOT NULL,
     [BadgeID_Badge] int  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL
+    [Name] nvarchar(max)  NOT NULL,
+    [DefaultPrint] bit  NOT NULL
 );
 GO
 

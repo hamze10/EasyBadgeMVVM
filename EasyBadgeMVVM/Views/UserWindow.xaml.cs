@@ -42,6 +42,8 @@ namespace EasyBadgeMVVM.Views
         private const int FONTSIZELABEL = 16;
         private const double GRIDLENGTHHEIGHT = 60;
         private const int COLUMNPROPS = 2;
+        private const double MM_PX = 3.779528;
+        private const int MAXFONT = 17;
 
         private const string LABELFIELDNAME = "label";
         private const string SHOWNAME = "show";
@@ -208,9 +210,12 @@ namespace EasyBadgeMVVM.Views
             pdi.DesktopLocation = new System.Drawing.Point(29, 29);
             pdi.Name = "PrintPreviewDialog1";
 
+            BadgeEvent defaultBadge = this._badgeVM.GetDefaultBadge();
+
             PrintDocument printDocument = new PrintDocument();
-            printDocument.DefaultPageSettings.PaperSize = new PaperSize("PVC", 650, 408);
-            printDocument.PrintPage += new PrintPageEventHandler(document_PrintPage);
+            printDocument.DefaultPageSettings.PaperSize = 
+                new PaperSize("PVC", Convert.ToInt32(defaultBadge.Badge.Dimension_X * MM_PX), Convert.ToInt32(defaultBadge.Badge.Dimension_Y * MM_PX));
+            printDocument.PrintPage += (sender2, e2) => document_PrintPage(sender2, e2, defaultBadge); // new PrintPageEventHandler(document_PrintPage);
             pdi.Document = printDocument;
 
             if (pdi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -219,7 +224,7 @@ namespace EasyBadgeMVVM.Views
             }
         }
 
-        private void document_PrintPage(object sender, PrintPageEventArgs e)
+        private void document_PrintPage(object sender, PrintPageEventArgs e, BadgeEvent defaultBadge)
         {
             //Recupérer positions
             //Recupérer valeur de l'user selectionné
@@ -228,25 +233,25 @@ namespace EasyBadgeMVVM.Views
             //Font printFont = new Font("FontFamily", "FontSize (a calculer)", FontStyle.Regular)
             //e.Graphics.DrawString(text, printfont, Brushes.Black, Position_X, Position_Y)
 
-            List<Position> positions = this._badgeVM.GetPositions(4, this._idEvent, "test");
+            List<Position> positions = this._badgeVM.GetPositions(defaultBadge.BadgeID_Badge, defaultBadge.EventID_Event, defaultBadge.Name);
 
             foreach (Position p in positions)
             {
                 string text = this._currentUser.Find(efu => efu.EventField.Field.Name.Equals(p.Field.Name)).Value;
-                Font printFont = new Font(p.FontFamily, (float) p.FontSize, System.Drawing.FontStyle.Regular);
+                float computedSize = text.Length > MAXFONT ? (float) (p.FontSize/GetDivisor(text.Length,MAXFONT)) : (float) p.FontSize;
+                Font printFont = new Font(p.FontFamily, computedSize, System.Drawing.FontStyle.Regular);
                 e.Graphics.DrawString(text, printFont, Brushes.Black, (float) p.Position_X, (float) p.Position_Y);
             }
+        }
 
-            //--------------------------------------------------------------------------------------------//
-            /*string text = "Company";
-            string text2 = "LastName";
-            string text3 = "Profile";
-            Font printFont = new Font("Blackoak Std", 35, System.Drawing.FontStyle.Regular);
-            Font printFont2 = new Font("Segoe UI", 12, System.Drawing.FontStyle.Regular);
-            Font printFont3 = new Font("Segoe Script", 46, System.Drawing.FontStyle.Regular);
-            e.Graphics.DrawString(text, printFont, Brushes.Black, 24, (float) 43.133885);
-            e.Graphics.DrawString(text2, printFont2, Brushes.Black, (float) 389.133885, (float) 677.10634);
-            e.Graphics.DrawString(text3, printFont3, Brushes.Black, (float) 110.133885, (float) 630.10634);*/
+        private double GetDivisor(int x, int y)
+        {
+            int result = x - y;
+
+            if (result < 5) return 1.25;
+            if (result < 10) return 1.5;
+            if (result < 15) return 1.75;
+            return 2;
         }
     }
 }

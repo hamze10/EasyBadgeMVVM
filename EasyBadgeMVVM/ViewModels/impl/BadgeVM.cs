@@ -29,7 +29,9 @@ namespace EasyBadgeMVVM.ViewModels
         private int _idEvent;
         private IDbEntities _dbEntities;
         private ObservableCollection<BadgeDTO> _listBadgeType;
+        private ObservableCollection<BadgeDTO> _listBadgeTypeWithoutEmpty;
         public BadgeDTO SelectedBadge { get; set; }
+        public int SelectedBadgeEvent { get; set; }
         private string _selectedTemplate;
         private const double MM_PX = 3.779528;
 
@@ -73,6 +75,25 @@ namespace EasyBadgeMVVM.ViewModels
             }
         }
 
+        public ObservableCollection<BadgeDTO> ListBadgeTypeWithoutEmpty
+        {
+            get
+            {
+                if (this._listBadgeTypeWithoutEmpty == null)
+                {
+                    this._listBadgeTypeWithoutEmpty = new ObservableCollection<BadgeDTO>(this._listBadgeType.Where(l => l.ID_BadgeEvent != -1));
+                }
+
+                return this._listBadgeTypeWithoutEmpty;
+            }
+
+            set
+            {
+                this._listBadgeTypeWithoutEmpty = value;
+                OnPropertyChanged("ListBadgeTypeWithoutEmpty");
+            }
+        }
+
         private ObservableCollection<BadgeDTO> LoadBadgesType()
         {
             ObservableCollection<Badge> listBadge = this._dbEntities.GetAllBadges();
@@ -84,6 +105,7 @@ namespace EasyBadgeMVVM.ViewModels
                 var myBadgeEvent = listBadgeEvent.Where(bEv => bEv.BadgeID_Badge == b.ID_Badge);
 
                 BadgeDTO bdto = new BadgeDTO();
+                bdto.ID_BadgeEvent = -1;
                 bdto.ID = b.ID_Badge;
                 bdto.Name = b.Name;
                 double multi = GiveMultiplicator(b.Dimension_X * MM_PX, b.Dimension_Y * MM_PX);
@@ -96,6 +118,7 @@ namespace EasyBadgeMVVM.ViewModels
                 foreach (BadgeEvent be in myBadgeEvent)
                 {
                     BadgeDTO bdto2 = new BadgeDTO();
+                    bdto2.ID_BadgeEvent = be.ID_BadgeEvent;
                     bdto2.ID = b.ID_Badge;
                     bdto2.Name = b.Name;
                     double multi2 = GiveMultiplicator(b.Dimension_X * MM_PX, b.Dimension_Y * MM_PX);
@@ -113,6 +136,7 @@ namespace EasyBadgeMVVM.ViewModels
         public void RefreshListBadgeType()
         {
             this.ListBadgeType = LoadBadgesType();
+            this.ListBadgeTypeWithoutEmpty = new ObservableCollection<BadgeDTO>(this.ListBadgeType.Where(l => l.ID_BadgeEvent != -1));
         }
 
         private double GiveMultiplicator(double dimX, double dimY)
@@ -136,9 +160,19 @@ namespace EasyBadgeMVVM.ViewModels
             return this._dbEntities.GetBadgeEvent(this.SelectedBadge.ID, this._idEvent);
         }
 
+        public BadgeEvent GetById(int idBadgeEvent)
+        {
+            return this._dbEntities.GetBadgeEventById(idBadgeEvent);
+        }
+
         public List<Position> GetPositions(int idBadge, int idEvent, string templateName)
         {
             return this._dbEntities.GetPositions(idBadge, idEvent, templateName);
+        }
+
+        public BadgeEvent GetDefaultBadge()
+        {
+            return this._dbEntities.GetDefaultBadgeEvent();
         }
 
         public BadgeEvent SaveOnBadgeEvent(string templateName)
@@ -149,6 +183,11 @@ namespace EasyBadgeMVVM.ViewModels
         public void SaveOnPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize)
         {
             this._dbEntities.InsertInPosition(be, f, posX, posY, fontFamily, fontSize);
+        }
+
+        public void UpdateDefaultPrint()
+        {
+            this._dbEntities.UpdateDefaultPrint(this.SelectedBadgeEvent);
         }
 
         public void RemoveRowsPosition(string templateName)

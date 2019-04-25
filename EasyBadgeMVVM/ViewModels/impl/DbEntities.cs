@@ -138,6 +138,21 @@ namespace EasyBadgeMVVM.ViewModels
                         .ToList();
         }
 
+        public BadgeEvent GetBadgeEventById(int idBadgeEvent)
+        {
+            return this._repostitoryFactory
+                        .GetBadgeEventRepository(this._dbContext)
+                        .GetById(idBadgeEvent);
+        }
+
+        public BadgeEvent GetDefaultBadgeEvent()
+        {
+            return this._repostitoryFactory
+                        .GetBadgeEventRepository(this._dbContext)
+                        .SearchFor(be => be.DefaultPrint == true)
+                        .SingleOrDefault();
+        }
+
         //TODO CORRECTION
         public bool GetVisibilityField(string field)
         {
@@ -403,6 +418,12 @@ namespace EasyBadgeMVVM.ViewModels
         public void DeleteRowPosition(int idBadge, int idEvent, string templateName)
         {
             this._repostitoryFactory.GetPositionRepository(this._dbContext).RemoveRows(idBadge, idEvent, templateName);
+        }
+
+        public void UpdateDefaultPrint(int idBadgeEvent)
+        {
+            this._repostitoryFactory.GetBadgeEventRepository(this._dbContext)
+                .UpdateDefaultPrint(idBadgeEvent, this._idEvent);
         }
 
         /*********************************************************************************************************************************************************************/
