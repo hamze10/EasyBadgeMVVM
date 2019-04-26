@@ -187,6 +187,7 @@ namespace EasyBadgeMVVM.ViewModels
 
         public void UpdateDefaultPrint()
         {
+            if (this.SelectedBadgeEvent == 0) return;
             this._dbEntities.UpdateDefaultPrint(this.SelectedBadgeEvent);
         }
 

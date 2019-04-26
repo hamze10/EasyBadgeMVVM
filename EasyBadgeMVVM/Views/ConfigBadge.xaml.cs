@@ -27,13 +27,19 @@ namespace EasyBadgeMVVM.Views
     {
         private IBadgeVM _badgeVM;
         private int _idEvent;
+
         private bool isAlreadyCalled = false; //TO SHOW ONCE THE LABEL IN BADGESCREEN WHEN DRAG AND DROP
+
         private static readonly IEnumerable<FontFamily> ALLFONTS = Fonts.SystemFontFamilies.OrderBy(x => x.Source);
         private static readonly IEnumerable<int> ALLSIZE = Enumerable.Range(1, 120 - 1);
+
         private const string LABELFIELDNAME = "labelfieldname";
         private const string COMBOBOXFONTFAMILYNAME = "comboboxfontfamilyname";
         private const string COMBOBOXFONTSIZENAME = "comboboxfontsizename";
         private const string GRIDLABEL = "grindlabel";
+
+        private const string PRIMARY_COLOR = "#0a3d62";
+        private const string ERROR_COLOR = "#c0392b";
 
         public ConfigBadge(int idEvent)
         {
@@ -231,17 +237,23 @@ namespace EasyBadgeMVVM.Views
         {
             string templateName = this.TemplateBadgeName.Text;
             var messageQueue = this.SnackbarBadge.MessageQueue;
-            if (templateName == string.Empty)
+
+            if (templateName == string.Empty && this._badgeVM.SelectedBadgeEvent == 0)
             {
-                this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom("#c0392b");
-                Task.Factory.StartNew(() => messageQueue.Enqueue("Please enter a valid template name"));
+                this.ShowNotification("Please enter a valid template name", ERROR_COLOR);
                 return;
             }
 
-            if (this._badgeVM.SelectedBadge == null)
+            if (this._badgeVM.SelectedBadge == null && this._badgeVM.SelectedBadgeEvent == 0)
             {
-                this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom("#c0392b");
-                Task.Factory.StartNew(() => messageQueue.Enqueue("Please select a template"));
+                this.ShowNotification("Please select a template", ERROR_COLOR);
+                return;
+            }
+
+            if ( (templateName == string.Empty || this._badgeVM.SelectedBadge == null) && this._badgeVM.SelectedBadgeEvent != 0)
+            {
+                this._badgeVM.UpdateDefaultPrint();
+                this.ShowNotification("Default print updated.");
                 return;
             }
 
@@ -267,8 +279,7 @@ namespace EasyBadgeMVVM.Views
             this._badgeVM.RefreshListBadgeType();
             this._badgeVM.UpdateDefaultPrint();
 
-            this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom("#0a3d62");
-            Task.Factory.StartNew(() => messageQueue.Enqueue("Your badge has been saved"));
+            this.ShowNotification("Your badge has been saved");
         }
 
         private void Load_Picture(object sender, RoutedEventArgs e)
@@ -289,18 +300,32 @@ namespace EasyBadgeMVVM.Views
             }
         }
 
+        private void ShowNotification(string message, string color = PRIMARY_COLOR)
+        {
+            var messageQueue = this.SnackbarBadge.MessageQueue;
+            this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom(color);
+            Task.Factory.StartNew(() => messageQueue.Enqueue(message));
+        }
+
         //https://www.wundervisionenvisionthefuture.com/blog/wpf-c-drag-and-drop-icon-adorner
         /*private class DraggableAdorner : Adorner
         {
+            Rect renderRect;
+            Brush renderBrush;
+            public Point CenterOffset;
 
-            public DraggableAdorner(PrintBadge adornedElement) : base(adornedElement)
+            public DraggableAdorner(ConfigBadge adornedElement) : base(adornedElement)
             {
+                renderRect = new Rect(new Size(400, 200));
                 this.IsHitTestVisible = false;
+                //Clone so that it can be modified with on modifying the original
+                renderBrush = Brushes.Red;
+                CenterOffset = new Point(-renderRect.Width / 2, -renderRect.Height / 2);
             }
 
             protected override void OnRender(DrawingContext drawingContext)
             {
-                base.OnRender(drawingContext);
+                drawingContext.DrawRectangle(renderBrush, null, renderRect);
             }
         }*/
     }

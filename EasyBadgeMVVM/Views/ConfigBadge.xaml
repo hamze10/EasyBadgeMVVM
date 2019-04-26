@@ -46,41 +46,54 @@
             <Image Name="imgCanvas" Stretch="Fill" />
         </Canvas>
 
-        <Grid Name="OtherInformation" Grid.Row="1" Grid.Column="1" Background="White" VerticalAlignment="Top" Margin="20,0" Height="99">
-            <TextBlock Margin="0,0,0,-90">
-                <Label Content="Name of this template : " FontSize="20" VerticalAlignment="Center" /> 
-                <TextBox Name="TemplateBadgeName" Text="{Binding SelectedTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="39" FontSize="20" />
-                <LineBreak />
-                <LineBreak />
-                <Label Content="Upload a background : " FontSize="20" VerticalAlignment="Center" />
-                <Button Click="Load_Picture" Content="Load" FontSize="15" Background="DarkGray" BorderBrush="White" Foreground="Black" Width="100" 
-                        Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Left" />
-            </TextBlock>
+        <Grid Name="OtherInformation" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="20,0" Height="133">
+            <GroupBox Header="Informations" Background="White" Margin="0,0,0,-20" Style="{DynamicResource MaterialDesignGroupBox}"
+                      materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
+                <TextBlock>
+                    <Label Content="Name of this template : " FontSize="16" VerticalAlignment="Center" /> 
+                    <TextBox Name="TemplateBadgeName" Text="{Binding SelectedTemplate}" HorizontalAlignment="Center"
+                             VerticalAlignment="Center" Width="300" Height="39" FontSize="20" />
+                    <LineBreak />
+                    <LineBreak />
+                    <Label Content="Upload a background  : " FontSize="16" VerticalAlignment="Center" Width="178" />
+                    <Button Click="Load_Picture" Content="Load" FontSize="15" Width="70"
+                            Height="Auto" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                </TextBlock>
+            </GroupBox>
+
         </Grid>
 
-        <Grid Background="White" Name="BadgeLabels" Grid.Row="1" Grid.Column="1" Margin="20,117,20,20">
-        </Grid>
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="Fields" Background="White" Margin="20,175,20,146" Style="{DynamicResource MaterialDesignGroupBox}"
+                      materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
+            <ScrollViewer>
+                <Grid Name="BadgeLabels" >
+                </Grid>
+            </ScrollViewer>
+        </GroupBox>
 
         <Grid Grid.Row="3">
-            <Button Click="Save_Positions" Background="#0a3d62" Content="Save" FontSize="28" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="45" Width="128"
+            <Button Click="Save_Positions" Content="Save" FontSize="28" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="45" Width="128"
                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,5"></Button>
         </Grid>
 
         <Grid Grid.Row="3" Grid.Column="1">
-            <ComboBox materialDesign:HintAssist.Hint="Default print badge" Height="30" Width="Auto" Margin="20,-6,495,26" Background="White"
+            <GroupBox Header="Default template for print" Background="White" Margin="20,-116,19,82" Style="{DynamicResource MaterialDesignGroupBox}"
+                      materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
+                <ComboBox materialDesign:HintAssist.Hint="Choose template"
                               ItemsSource="{Binding ListBadgeTypeWithoutEmpty, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValuePath="ID_BadgeEvent"
                               SelectedValue="{Binding SelectedBadgeEvent}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
                             <Run Text="{Binding ID}" />
                             <Run Text=" - " />
                             <Run Text="{Binding Template}" />
-                        </TextBlock>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </GroupBox>
         </Grid>
 
         <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="180,0,938,0">
