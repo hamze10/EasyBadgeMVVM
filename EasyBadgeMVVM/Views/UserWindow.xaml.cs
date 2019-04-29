@@ -238,20 +238,23 @@ namespace EasyBadgeMVVM.Views
             foreach (Position p in positions)
             {
                 string text = this._currentUser.Find(efu => efu.EventField.Field.Name.Equals(p.Field.Name)).Value;
-                float computedSize = text.Length > MAXFONT ? (float) (p.FontSize/GetDivisor(text.Length,MAXFONT)) : (float) p.FontSize;
+                //float computedSize = text.Length > MAXFONT ? (float) (p.FontSize/GetDivisor(text.Length,MAXFONT)) : (float) p.FontSize;
+                double computedDiv = GetDivisor(text.Length, p.Position_X, p.Position_Y, defaultBadge.Badge.Dimension_X * MM_PX, defaultBadge.Badge.Dimension_Y * MM_PX);
+                float computedSize = (float)(p.FontSize / computedDiv);
                 Font printFont = new Font(p.FontFamily, computedSize, System.Drawing.FontStyle.Regular);
                 e.Graphics.DrawString(text, printFont, Brushes.Black, (float) p.Position_X, (float) p.Position_Y);
             }
         }
 
-        private double GetDivisor(int x, int y)
+        private double GetDivisor(int textLength, double posX, double posY, double screenX, double screenY)
         {
-            int result = x - y;
+            //TODO ALGORITHM
+            if (textLength > 20)
+            {
+                return 3;
+            }
 
-            if (result < 5) return 1.25;
-            if (result < 10) return 1.5;
-            if (result < 15) return 1.75;
-            return 2;
+            return 1;
         }
     }
 }

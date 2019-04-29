@@ -140,7 +140,6 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Util.cs" />
     <Compile Include="ViewModels\impl\BadgeVM.cs" />
     <Compile Include="ViewModels\impl\DbEntities.cs" />
     <Compile Include="ViewModels\impl\EventVM.cs" />
