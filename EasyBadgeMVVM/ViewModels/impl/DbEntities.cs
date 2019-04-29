@@ -120,15 +120,37 @@ namespace EasyBadgeMVVM.ViewModels
             return new ObservableCollection<Badge>(this._repostitoryFactory.GetBadgeRepository(this._dbContext).GetAll());
         }
 
+        public ObservableCollection<BadgeEvent> GetAllBadgeEvent()
+        {
+            return new ObservableCollection<BadgeEvent>(this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).GetAll());
+        }
+
         public BadgeEvent GetBadgeEvent(int idBadge, int idEvent)
         {
             return this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).SearchFor(be => be.BadgeID_Badge == idBadge && be.EventID_Event == idEvent).FirstOrDefault();
         }
 
-        public List<Position> GetPositions(int idBadge, int idEvent)
+        public List<Position> GetPositions(int idBadge, int idEvent, string templateName)
         {
-            return this._repostitoryFactory.GetPositionRepository(this._dbContext).SearchFor(p => p.BadgeEvent.BadgeID_Badge == idBadge && p.BadgeEvent.EventID_Event == idEvent)
-                            .ToList();
+            return this._repostitoryFactory
+                        .GetPositionRepository(this._dbContext)
+                        .SearchFor(p => p.BadgeEvent.BadgeID_Badge == idBadge && p.BadgeEvent.EventID_Event == idEvent && p.BadgeEvent.Name.Equals(templateName))
+                        .ToList();
+        }
+
+        public BadgeEvent GetBadgeEventById(int idBadgeEvent)
+        {
+            return this._repostitoryFactory
+                        .GetBadgeEventRepository(this._dbContext)
+                        .GetById(idBadgeEvent);
+        }
+
+        public BadgeEvent GetDefaultBadgeEvent()
+        {
+            return this._repostitoryFactory
+                        .GetBadgeEventRepository(this._dbContext)
+                        .SearchFor(be => be.DefaultPrint == true)
+                        .SingleOrDefault();
         }
 
         //TODO CORRECTION
@@ -391,26 +413,25 @@ namespace EasyBadgeMVVM.ViewModels
             return true;
         }
 
-        public BadgeEvent InsertInBadgeEvent(int idBadge, int idEvent)
+        public BadgeEvent InsertInBadgeEvent(int idBadge, int idEvent, string templateName)
         {
             var repo = this._repostitoryFactory.GetBadgeEventRepository(this._dbContext);
-            var name = "My Name";
-            /*var badgeEventFound = repo.SearchFor(b => b.BadgeID_Badge == idBadge && b.EventID_Event == idEvent).FirstOrDefault();
+            var badgeEventFound = repo.SearchFor(b => b.Badge.ID_Badge == idBadge && b.Event.ID_Event == idEvent && b.Name.Equals(templateName)).FirstOrDefault();
 
             if (badgeEventFound != null)
             {
                 return badgeEventFound;
-            }*/
+            }
 
             BadgeEvent be = new BadgeEvent();
             be.Badge = this._repostitoryFactory.GetBadgeRepository(this._dbContext).SearchFor(badg => badg.ID_Badge == idBadge).FirstOrDefault();
             be.Event = this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(eve => eve.ID_Event == idEvent).FirstOrDefault();
-            be.Name = name;
+            be.Name = templateName;
             repo.Insert(be);
             repo.SaveChanges();
 
             
-            return repo.SearchFor(b => b.BadgeID_Badge == idBadge && b.EventID_Event == idEvent && be.Name.Equals(name)).FirstOrDefault();
+            return repo.SearchFor(b => b.Badge.ID_Badge == idBadge && b.Event.ID_Event == idEvent && b.Name.Equals(templateName)).FirstOrDefault();
         }
 
         public void InsertInPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize)
@@ -429,9 +450,15 @@ namespace EasyBadgeMVVM.ViewModels
             repo.SaveChanges();
         }
 
-        public void DeleteRowPosition(int idBadge, int idEvent)
+        public void DeleteRowPosition(int idBadge, int idEvent, string templateName)
         {
-            this._repostitoryFactory.GetPositionRepository(this._dbContext).RemoveRows(idBadge, idEvent);
+            this._repostitoryFactory.GetPositionRepository(this._dbContext).RemoveRows(idBadge, idEvent, templateName);
+        }
+
+        public void UpdateDefaultPrint(int idBadgeEvent)
+        {
+            this._repostitoryFactory.GetBadgeEventRepository(this._dbContext)
+                .UpdateDefaultPrint(idBadgeEvent, this._idEvent);
         }
 
         public void InsertNewFilter(Filter newFilter)

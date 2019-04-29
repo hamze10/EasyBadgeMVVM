@@ -25,6 +25,7 @@ namespace EasyBadgeMVVM.Models
         public int EventID_Event { get; set; }
         public int BadgeID_Badge { get; set; }
         public string Name { get; set; }
+        public bool DefaultPrint { get; set; }
     
         public virtual Event Event { get; set; }
         public virtual Badge Badge { get; set; }

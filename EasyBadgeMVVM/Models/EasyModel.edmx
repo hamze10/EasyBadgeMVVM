@@ -163,6 +163,7 @@
     <Property Name="EventID_Event" Type="int" Nullable="false" />
     <Property Name="BadgeID_Badge" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DefaultPrint" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="FilterSet">
     <Key>
@@ -621,6 +622,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Positions" Relationship="EasyModel.BadgeEventPosition" FromRole="BadgeEvent" ToRole="Position" />
           <NavigationProperty Name="Rules" Relationship="EasyModel.BadgeEventRule" FromRole="BadgeEvent" ToRole="Rule" />
+          <Property Name="DefaultPrint" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="EventBadgeEvent">
           <End Type="EasyModel.Event" Role="Event" Multiplicity="1" />
@@ -850,6 +852,7 @@
           <ScalarProperty Name="EventID_Event" ColumnName="EventID_Event" />
           <ScalarProperty Name="BadgeID_Badge" ColumnName="BadgeID_Badge" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DefaultPrint" ColumnName="DefaultPrint" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

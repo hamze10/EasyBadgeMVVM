@@ -8,5 +8,6 @@ namespace EasyBadgeMVVM.DataAccess
 {
     public interface IBadgeEventRepository
     {
+        void UpdateDefaultPrint(int idBadgeEvent, int idEvent);
     }
 }

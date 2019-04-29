@@ -94,6 +94,7 @@ namespace EasyBadgeMVVM
             if (onClose)
             {
                 this.CreateRowsDataGrid(this._mainWindowImpl.RefreshMainsFields());
+                this.ShowNotification("User added");
             }
         }
 
@@ -214,6 +215,14 @@ namespace EasyBadgeMVVM
             Task.Factory.StartNew(() => messageQueue.Enqueue(message));
         }
 
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string toSearch = this.TextSearch.Text;
+            this._mainWindowImpl.Search = toSearch;
+            ObservableCollection<EventFieldUser> test = this._mainWindowImpl.DoSearch();
+            CreateRowsDataGrid(test);
+        }
+
         /*********************************************************************************************************************************************************************/
         /*********** BACKGROUNDWORKERS *************/
         /*********************************************************************************************************************************************************************/
@@ -253,6 +262,11 @@ namespace EasyBadgeMVVM
             }
             this.ShowNotification((string) e.Result);
         }
+
+
+        /*********************************************************************************************************************************************************************/
+        /*********** FILL USERS TABLE *************/
+        /*********************************************************************************************************************************************************************/
 
         private void CreateColumnsDataGrid()
         {
@@ -332,14 +346,6 @@ namespace EasyBadgeMVVM
             this.DataGridUsers.ItemsSource = this._dt.DefaultView;
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string toSearch = this.TextSearch.Text;
-            this._mainWindowImpl.Search = toSearch;
-            ObservableCollection<EventFieldUser> test = this._mainWindowImpl.DoSearch();
-            CreateRowsDataGrid(test);
-        }
-
         private void SettingsButton(object sender, RoutedEventArgs e)
         {
             /*ConfigBadge configBadge = new ConfigBadge(this._idEvent);
@@ -350,5 +356,6 @@ namespace EasyBadgeMVVM
             /*MainSettings mainSettings = new MainSettings();
             mainSettings.Show();*/
         }
+
     }
 }

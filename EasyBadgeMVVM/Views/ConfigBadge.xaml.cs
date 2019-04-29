@@ -3,6 +3,7 @@ using EasyBadgeMVVM.ViewModels;
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,13 +27,19 @@ namespace EasyBadgeMVVM.Views
     {
         private IBadgeVM _badgeVM;
         private int _idEvent;
+
         private bool isAlreadyCalled = false; //TO SHOW ONCE THE LABEL IN BADGESCREEN WHEN DRAG AND DROP
+
         private static readonly IEnumerable<FontFamily> ALLFONTS = Fonts.SystemFontFamilies.OrderBy(x => x.Source);
         private static readonly IEnumerable<int> ALLSIZE = Enumerable.Range(1, 120 - 1);
+
         private const string LABELFIELDNAME = "labelfieldname";
         private const string COMBOBOXFONTFAMILYNAME = "comboboxfontfamilyname";
         private const string COMBOBOXFONTSIZENAME = "comboboxfontsizename";
         private const string GRIDLABEL = "grindlabel";
+
+        private const string PRIMARY_COLOR = "#0a3d62";
+        private const string ERROR_COLOR = "#c0392b";
 
         public ConfigBadge(int idEvent)
         {
@@ -137,8 +144,10 @@ namespace EasyBadgeMVVM.Views
             this.BadgeScreen.Width = selected.Width;
             this.BadgeScreen.Height = selected.Height;
 
+            this._badgeVM.SelectedTemplate = selected.Template;
+
             //CHECK IN THE DB IF A BADGE IN POSITION NOT ALREADY EXISTS, IF EXISTS SHOW IT
-            List<Position> myPositions = this._badgeVM.GetPositions(selected.ID, this._idEvent);
+            List<Position> myPositions = this._badgeVM.GetPositions(selected.ID, this._idEvent, selected.Template);
             foreach(Position p in myPositions)
             {
                 Label label = new Label();
@@ -226,12 +235,34 @@ namespace EasyBadgeMVVM.Views
 
         private void Save_Positions(object sender, RoutedEventArgs e)
         {
+            string templateName = this.TemplateBadgeName.Text;
+            var messageQueue = this.SnackbarBadge.MessageQueue;
+
+            if (templateName == string.Empty && this._badgeVM.SelectedBadgeEvent == 0)
+            {
+                this.ShowNotification("Please enter a valid template name", ERROR_COLOR);
+                return;
+            }
+
+            if (this._badgeVM.SelectedBadge == null && this._badgeVM.SelectedBadgeEvent == 0)
+            {
+                this.ShowNotification("Please select a template", ERROR_COLOR);
+                return;
+            }
+
+            if ( (templateName == string.Empty || this._badgeVM.SelectedBadge == null) && this._badgeVM.SelectedBadgeEvent != 0)
+            {
+                this._badgeVM.UpdateDefaultPrint();
+                this.ShowNotification("Default print updated.");
+                return;
+            }
+
             //Save on BadgeEvent
-            BadgeEvent insertedBe = this._badgeVM.SaveOnBadgeEvent();
+            BadgeEvent insertedBe = this._badgeVM.SaveOnBadgeEvent(templateName);
 
             //Save on Position
             //But first delete if there are updates
-            this._badgeVM.RemoveRowsPosition();
+            this._badgeVM.RemoveRowsPosition(templateName);
             foreach (FrameworkElement child in this.BadgeScreen.Children)
             {
                 Label label = child as Label;
@@ -245,8 +276,10 @@ namespace EasyBadgeMVVM.Views
                 this._badgeVM.SaveOnPosition(insertedBe, field, posX, posY, fontFamily, fontSize);
             }
 
-            var messageQueue = this.SnackbarBadge.MessageQueue;
-            Task.Factory.StartNew(() => messageQueue.Enqueue("Your badge has been saved"));
+            this._badgeVM.RefreshListBadgeType();
+            this._badgeVM.UpdateDefaultPrint();
+
+            this.ShowNotification("Your badge has been saved");
         }
 
         private void Load_Picture(object sender, RoutedEventArgs e)
@@ -267,18 +300,32 @@ namespace EasyBadgeMVVM.Views
             }
         }
 
+        private void ShowNotification(string message, string color = PRIMARY_COLOR)
+        {
+            var messageQueue = this.SnackbarBadge.MessageQueue;
+            this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom(color);
+            Task.Factory.StartNew(() => messageQueue.Enqueue(message));
+        }
+
         //https://www.wundervisionenvisionthefuture.com/blog/wpf-c-drag-and-drop-icon-adorner
         /*private class DraggableAdorner : Adorner
         {
+            Rect renderRect;
+            Brush renderBrush;
+            public Point CenterOffset;
 
-            public DraggableAdorner(PrintBadge adornedElement) : base(adornedElement)
+            public DraggableAdorner(ConfigBadge adornedElement) : base(adornedElement)
             {
+                renderRect = new Rect(new Size(400, 200));
                 this.IsHitTestVisible = false;
+                //Clone so that it can be modified with on modifying the original
+                renderBrush = Brushes.Red;
+                CenterOffset = new Point(-renderRect.Width / 2, -renderRect.Height / 2);
             }
 
             protected override void OnRender(DrawingContext drawingContext)
             {
-                base.OnRender(drawingContext);
+                drawingContext.DrawRectangle(renderBrush, null, renderRect);
             }
         }*/
     }
