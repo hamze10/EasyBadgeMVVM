@@ -140,10 +140,45 @@ namespace EasyBadgeMVVM.ViewModels
 
         }
 
+
+        public ObservableCollection<Filter> GetAllFilters()
+        {
+            return new ObservableCollection<Filter>(this._repostitoryFactory.GetFilterRepository(this._dbContext).GetAll());
+        }
+
+        public ObservableCollection<Filter> GetAllFilters(int eventId)
+        {
+            ObservableCollection<Filter> all = new ObservableCollection<Filter>(this._repostitoryFactory.GetFilterRepository(this._dbContext).GetAll());
+            List<Filter> result = all.Where(f => f.EventFieldEventID_Event == eventId).ToList();
+            ObservableCollection<Filter> toReturn = new ObservableCollection<Filter>();
+            foreach(Filter item in result)
+            {
+                toReturn.Add(item);
+            }
+            return toReturn;
+        }
+
+        public ObservableCollection<Rule> GetAllRules(int filterId)
+        {
+            ObservableCollection<Rule> all = new ObservableCollection<Rule>(this._repostitoryFactory.GetRuleRepository(this._dbContext).GetAll());
+            List<Rule> result = all.Where(r => r.FilterID_Filter == filterId).ToList();
+            ObservableCollection<Rule> toReturn = new ObservableCollection<Rule>();
+            foreach (Rule item in result)
+            {
+                toReturn.Add(item);
+            }
+            return toReturn;
+        }
+
+        public ObservableCollection<Target> GetAllTargets()
+        {
+            return new ObservableCollection<Target>(this._repostitoryFactory.GetTargetRepository(this._dbContext).GetAll());
+        }
+
         /*********************************************************************************************************************************************************************/
         /*********** INSERT *************/
         /*********************************************************************************************************************************************************************/
-        
+
         //TODO CORRIGER (PERFORMANCE + QD USER > 2000)
         public bool CheckIfAlreadyExists(List<string> allFields, HashSet<string> fieldToShow, string datas)
         {
@@ -399,6 +434,32 @@ namespace EasyBadgeMVVM.ViewModels
             this._repostitoryFactory.GetPositionRepository(this._dbContext).RemoveRows(idBadge, idEvent);
         }
 
+        public void InsertNewFilter(Filter newFilter)
+        {
+            this._repostitoryFactory.GetFilterRepository(this._dbContext).Insert(newFilter);
+        }
+
+        public void UpdateFilter(int filterId, Filter updatedFilter)
+        {
+            this._repostitoryFactory.GetFilterRepository(this._dbContext).UpdateFilter(filterId, updatedFilter);
+        }
+
+        public void InsertNewRule(Rule newRule)
+        {
+            this._repostitoryFactory.GetRuleRepository(this._dbContext).Insert(newRule);
+        }
+
+        public void UpdateRule(int ruleId, Rule updatedRule)
+        {
+            this._repostitoryFactory.GetRuleRepository(this._dbContext).UpdateRule(ruleId, updatedRule);
+        }
+
+        public void InsertNewTarget(Target newTarget)
+        {
+            this._repostitoryFactory.GetTargetRepository(this._dbContext).Insert(newTarget);
+        }
+
+
         /*********************************************************************************************************************************************************************/
         /*********** OTHER *************/
         /*********************************************************************************************************************************************************************/
@@ -410,7 +471,9 @@ namespace EasyBadgeMVVM.ViewModels
             this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SaveChanges();
-
+            this._repostitoryFactory.GetFilterRepository(this._dbContext).SaveChanges();
+            this._repostitoryFactory.GetRuleRepository(this._dbContext).SaveChanges();
+            this._repostitoryFactory.GetTargetRepository(this._dbContext).SaveChanges();
         }
 
         public void Clear()

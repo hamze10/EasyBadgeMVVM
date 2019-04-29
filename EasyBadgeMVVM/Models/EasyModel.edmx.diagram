@@ -24,7 +24,7 @@
         <AssociationConnector Association="EasyModel.BadgeBadgeEvent" />
         <AssociationConnector Association="EasyModel.FieldPosition" />
         <AssociationConnector Association="EasyModel.BadgeEventPosition" />
-        <EntityTypeShape EntityType="EasyModel.Filter" Width="1.5" PointX="0.625" PointY="7.75" />
+        <EntityTypeShape EntityType="EasyModel.Filter" Width="2.375" PointX="0.5" PointY="7.75" />
         <AssociationConnector Association="EasyModel.EventFieldFilter" />
         <EntityTypeShape EntityType="EasyModel.Rule" Width="1.5" PointX="1.375" PointY="11" />
         <AssociationConnector Association="EasyModel.FilterRule" />

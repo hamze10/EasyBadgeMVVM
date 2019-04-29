@@ -1,4 +1,5 @@
 ﻿using EasyBadgeMVVM.DataAccess;
+using EasyBadgeMVVM.DataAccess.impl;
 using EasyBadgeMVVM.Models;
 
 
@@ -53,6 +54,21 @@ namespace EasyBadgeMVVM.ViewModels
         public PositionRepository GetPositionRepository(EasyModelContext model)
         {
             return new PositionRepository(model);
+        }
+
+        public FilterRepository GetFilterRepository(EasyModelContext model)
+        {
+            return new FilterRepository(model);
+        }
+
+        public RuleRepository GetRuleRepository(EasyModelContext model)
+        {
+            return new RuleRepository(model);
+        }
+
+        public TargetRepository GetTargetRepository(EasyModelContext model)
+        {
+            return new TargetRepository(model);
         }
     }
 }

@@ -342,8 +342,10 @@ namespace EasyBadgeMVVM
 
         private void SettingsButton(object sender, RoutedEventArgs e)
         {
-            ConfigBadge configBadge = new ConfigBadge(this._idEvent);
-            configBadge.Show();
+            /*ConfigBadge configBadge = new ConfigBadge(this._idEvent);
+            configBadge.Show();*/
+            FiltersWindow filtersWindow = new FiltersWindow(this._idEvent);
+            filtersWindow.Show();
 
             /*MainSettings mainSettings = new MainSettings();
             mainSettings.Show();*/

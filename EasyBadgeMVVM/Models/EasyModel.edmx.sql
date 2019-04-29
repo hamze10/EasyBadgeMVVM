@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/19/2019 11:27:20
--- Generated from EDMX file: C:\Users\onetec\Documents\EasyBadgeMVVM\EasyBadgeMVVM\EasyBadgeMVVM\Models\EasyModel.edmx
+-- Date Created: 04/19/2019 11:39:03
+-- Generated from EDMX file: C:\Users\onetec\Documents\DocsPerso\BABADGEDGE\EasyBadgeMVVM\EasyBadgeMVVM\Models\EasyModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -17,20 +17,11 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_BadgeBadgeEvent]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[BadgeEventSet] DROP CONSTRAINT [FK_BadgeBadgeEvent];
+IF OBJECT_ID(N'[dbo].[FK_UserFieldUser]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventFieldUserSet] DROP CONSTRAINT [FK_UserFieldUser];
 GO
-IF OBJECT_ID(N'[dbo].[FK_BadgeEventPosition]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PositionSet] DROP CONSTRAINT [FK_BadgeEventPosition];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EventBadgeEvent]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[BadgeEventSet] DROP CONSTRAINT [FK_EventBadgeEvent];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EventEventField]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EventFieldSet] DROP CONSTRAINT [FK_EventEventField];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EventFieldFieldUser]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EventFieldUserSet] DROP CONSTRAINT [FK_EventFieldFieldUser];
+IF OBJECT_ID(N'[dbo].[FK_UserPrintBadge]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PrintBadgeSet] DROP CONSTRAINT [FK_UserPrintBadge];
 GO
 IF OBJECT_ID(N'[dbo].[FK_EventPrintBadge]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PrintBadgeSet] DROP CONSTRAINT [FK_EventPrintBadge];
@@ -38,31 +29,43 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_FieldEventField]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[EventFieldSet] DROP CONSTRAINT [FK_FieldEventField];
 GO
+IF OBJECT_ID(N'[dbo].[FK_EventEventField]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventFieldSet] DROP CONSTRAINT [FK_EventEventField];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventFieldFieldUser]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventFieldUserSet] DROP CONSTRAINT [FK_EventFieldFieldUser];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventBadgeEvent]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[BadgeEventSet] DROP CONSTRAINT [FK_EventBadgeEvent];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BadgeBadgeEvent]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[BadgeEventSet] DROP CONSTRAINT [FK_BadgeBadgeEvent];
+GO
 IF OBJECT_ID(N'[dbo].[FK_FieldPosition]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PositionSet] DROP CONSTRAINT [FK_FieldPosition];
 GO
-IF OBJECT_ID(N'[dbo].[FK_UserFieldUser]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EventFieldUserSet] DROP CONSTRAINT [FK_UserFieldUser];
+IF OBJECT_ID(N'[dbo].[FK_BadgeEventPosition]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PositionSet] DROP CONSTRAINT [FK_BadgeEventPosition];
 GO
-IF OBJECT_ID(N'[dbo].[FK_UserPrintBadge]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PrintBadgeSet] DROP CONSTRAINT [FK_UserPrintBadge];
+IF OBJECT_ID(N'[dbo].[FK_EventFieldFilter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FilterSet] DROP CONSTRAINT [FK_EventFieldFilter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FilterRule]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RuleSet] DROP CONSTRAINT [FK_FilterRule];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TargetRule]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RuleSet] DROP CONSTRAINT [FK_TargetRule];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BadgeEventRule]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RuleSet] DROP CONSTRAINT [FK_BadgeEventRule];
 GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[BadgeEventSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[BadgeEventSet];
-GO
-IF OBJECT_ID(N'[dbo].[BadgeSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[BadgeSet];
-GO
-IF OBJECT_ID(N'[dbo].[EventFieldSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EventFieldSet];
-GO
-IF OBJECT_ID(N'[dbo].[EventFieldUserSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EventFieldUserSet];
+IF OBJECT_ID(N'[dbo].[UserSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserSet];
 GO
 IF OBJECT_ID(N'[dbo].[EventSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EventSet];
@@ -70,14 +73,32 @@ GO
 IF OBJECT_ID(N'[dbo].[FieldSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[FieldSet];
 GO
-IF OBJECT_ID(N'[dbo].[PositionSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[PositionSet];
+IF OBJECT_ID(N'[dbo].[EventFieldUserSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventFieldUserSet];
 GO
 IF OBJECT_ID(N'[dbo].[PrintBadgeSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PrintBadgeSet];
 GO
-IF OBJECT_ID(N'[dbo].[UserSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserSet];
+IF OBJECT_ID(N'[dbo].[BadgeSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[BadgeSet];
+GO
+IF OBJECT_ID(N'[dbo].[EventFieldSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventFieldSet];
+GO
+IF OBJECT_ID(N'[dbo].[PositionSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PositionSet];
+GO
+IF OBJECT_ID(N'[dbo].[BadgeEventSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[BadgeEventSet];
+GO
+IF OBJECT_ID(N'[dbo].[FilterSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FilterSet];
+GO
+IF OBJECT_ID(N'[dbo].[RuleSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RuleSet];
+GO
+IF OBJECT_ID(N'[dbo].[TargetSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TargetSet];
 GO
 
 -- --------------------------------------------------

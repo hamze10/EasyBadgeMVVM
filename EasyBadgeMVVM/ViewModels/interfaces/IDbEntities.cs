@@ -37,5 +37,17 @@ namespace EasyBadgeMVVM.ViewModels
         BadgeEvent GetBadgeEvent(int idBadge, int idEvent);
         void DeleteRowPosition(int idBadge, int idEvent);
         List<Position> GetPositions(int idBadge, int idEvent);
+
+        ObservableCollection<Filter> GetAllFilters();
+        ObservableCollection<Filter> GetAllFilters(int eventId);
+        void InsertNewFilter(Filter newFilter);
+        void UpdateFilter(int filterId, Filter updatedFilter);
+
+        ObservableCollection<Rule> GetAllRules(int filterId);
+        void InsertNewRule(Rule newRule);
+        void UpdateRule(int ruleId, Rule updatedRule);
+
+        ObservableCollection<Target> GetAllTargets();
+        void InsertNewTarget(Target newTarget);
     }
 }
