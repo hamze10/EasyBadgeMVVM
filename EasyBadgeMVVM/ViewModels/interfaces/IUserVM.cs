@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using EasyBadgeMVVM.Models;
+
+using System.Collections.Generic;
 
 namespace EasyBadgeMVVM.ViewModels
 {
@@ -6,5 +8,6 @@ namespace EasyBadgeMVVM.ViewModels
     {
         int IdEvent { get; }
         void InsertNewUser(Dictionary<string, string> values);
+        Event GetEventById(int idEvent);
     }
 }

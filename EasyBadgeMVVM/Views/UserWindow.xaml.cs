@@ -213,21 +213,29 @@ namespace EasyBadgeMVVM.Views
             BadgeEvent defaultBadge = this._badgeVM.GetDefaultBadge();
 
             PrintDocument printDocument = new PrintDocument();
-            printDocument.DefaultPageSettings.PaperSize = 
-                new PaperSize("PVC", Convert.ToInt32(defaultBadge.Badge.Dimension_X * MM_PX), Convert.ToInt32(defaultBadge.Badge.Dimension_Y * MM_PX));
+            printDocument.DefaultPageSettings.PaperSize = new PaperSize("PVC", 
+                                                                        Convert.ToInt32(defaultBadge.Badge.Dimension_X * MM_PX), 
+                                                                        Convert.ToInt32(defaultBadge.Badge.Dimension_Y * MM_PX));
+
             printDocument.PrintPage += (sender2, e2) => document_PrintPage(sender2, e2, defaultBadge); // new PrintPageEventHandler(document_PrintPage);
             pdi.Document = printDocument;
-
             if (pdi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                Console.WriteLine("good");
+                //INSERT IN PRINTBADGE
+                PrintBadge pbadge = new PrintBadge();
+                pbadge.User = this._currentUser[0].User;
+                pbadge.Event = this._userVM.GetEventById(this._idEvent);
+                pbadge.PrintDate = DateTime.Now;
+                
+                //TODO PrintBy : how to determine who is the current pc
+                //     Comment : how to allow someone to add comment after print
             }
         }
 
         private void document_PrintPage(object sender, PrintPageEventArgs e, BadgeEvent defaultBadge)
         {
-            //Recupérer positions
-            //Recupérer valeur de l'user selectionné
+            //retrieve positions
+            //retrieve selected user value
 
             //String text = "Henry"
             //Font printFont = new Font("FontFamily", "FontSize (a calculer)", FontStyle.Regular)
@@ -238,23 +246,38 @@ namespace EasyBadgeMVVM.Views
             foreach (Position p in positions)
             {
                 string text = this._currentUser.Find(efu => efu.EventField.Field.Name.Equals(p.Field.Name)).Value;
-                //float computedSize = text.Length > MAXFONT ? (float) (p.FontSize/GetDivisor(text.Length,MAXFONT)) : (float) p.FontSize;
-                double computedDiv = GetDivisor(text.Length, p.Position_X, p.Position_Y, defaultBadge.Badge.Dimension_X * MM_PX, defaultBadge.Badge.Dimension_Y * MM_PX);
-                float computedSize = (float)(p.FontSize / computedDiv);
-                Font printFont = new Font(p.FontFamily, computedSize, System.Drawing.FontStyle.Regular);
+                Font printFont = new Font(p.FontFamily, (float) p.FontSize, System.Drawing.FontStyle.Regular);
+                float computedSize = 
+                    GetNewFontSize(e.Graphics.MeasureString(text, printFont), 
+                                   defaultBadge.Badge.Dimension_Y * MM_PX, 
+                                   printFont.Size, 
+                                   e, 
+                                   text, 
+                                   printFont);
+                printFont = new Font(p.FontFamily, computedSize, System.Drawing.FontStyle.Regular);
                 e.Graphics.DrawString(text, printFont, Brushes.Black, (float) p.Position_X, (float) p.Position_Y);
             }
         }
 
-        private double GetDivisor(int textLength, double posX, double posY, double screenX, double screenY)
+        //CHECK ALGORITHM (it seems to work well oO)
+        private float GetNewFontSize(SizeF measureString, double posY, double fontSize, PrintPageEventArgs ppevent, string text, Font printFont)
         {
-            //TODO ALGORITHM
-            if (textLength > 20)
+            float newFontSize = (float)fontSize;
+            float firstFontSize = newFontSize;
+
+            while (measureString.Width >= posY)
             {
-                return 3;
+                newFontSize = newFontSize - 1;
+                Font other = new Font(printFont.FontFamily, newFontSize, System.Drawing.FontStyle.Regular);
+                measureString = ppevent.Graphics.MeasureString(text, other);
             }
 
-            return 1;
+            float result = firstFontSize - newFontSize;
+            int minus = result == 0 ? 0 : result < 5 ? 1 : result >= 10 ? 3 : 2;
+
+            newFontSize = newFontSize - minus;
+
+            return newFontSize;
         }
     }
 }

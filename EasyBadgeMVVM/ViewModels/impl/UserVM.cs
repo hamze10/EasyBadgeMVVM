@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EasyBadgeMVVM.Models;
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -60,6 +62,11 @@ namespace EasyBadgeMVVM.ViewModels
                 i++;
             }
             this._dbEntities.SaveAllChanges();
+        }
+
+        public Event GetEventById(int idEvent)
+        {
+            return this._dbEntities.GetEventById(idEvent);
         }
     }
 }
