@@ -6,9 +6,10 @@ using System.Collections.ObjectModel;
 
 namespace EasyBadgeMVVM.ViewModels
 {
-    public interface IUserEventVM
+    public interface IMainWindow
     {
         ObservableCollection<EventFieldUser> MainFields { get; }
+        string MachineName { get; }
         string Search { get; set; }
         EventFieldUser SelectedUserEvent { get; set; }
         void LoadFromImport(string content);
@@ -18,6 +19,7 @@ namespace EasyBadgeMVVM.ViewModels
         List<EventFieldUser> GetAllFieldsOfEvent(int idEvent);
         ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
         ObservableCollection<EventFieldUser> RefreshMainsFields();
+        List<PrintBadge> GetAllPrintBadge();
     }
 
     public class ExportDataDTO

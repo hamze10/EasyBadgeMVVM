@@ -212,6 +212,12 @@ namespace EasyBadgeMVVM.Views
 
             BadgeEvent defaultBadge = this._badgeVM.GetDefaultBadge();
 
+            if (defaultBadge == null)
+            {
+                System.Windows.MessageBox.Show("Please configure a default print in badge settings");
+                return;
+            }
+
             PrintDocument printDocument = new PrintDocument();
             printDocument.DefaultPageSettings.PaperSize = new PaperSize("PVC", 
                                                                         Convert.ToInt32(defaultBadge.Badge.Dimension_X * MM_PX), 
@@ -226,9 +232,10 @@ namespace EasyBadgeMVVM.Views
                 pbadge.User = this._currentUser[0].User;
                 pbadge.Event = this._userVM.GetEventById(this._idEvent);
                 pbadge.PrintDate = DateTime.Now;
-                
-                //TODO PrintBy : how to determine who is the current pc
-                //     Comment : how to allow someone to add comment after print
+                pbadge.PrintBy = Environment.MachineName;
+                this._badgeVM.SaveOnPrintBadge(pbadge);
+
+                //TODO Comment : how to allow someone to add comment after print
             }
         }
 

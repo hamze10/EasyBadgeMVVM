@@ -122,7 +122,10 @@ namespace EasyBadgeMVVM.ViewModels
 
         public ObservableCollection<BadgeEvent> GetAllBadgeEvent()
         {
-            return new ObservableCollection<BadgeEvent>(this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).GetAll());
+            return new ObservableCollection<BadgeEvent>(
+                this._repostitoryFactory.GetBadgeEventRepository(this._dbContext)
+                .SearchFor(be => be.EventID_Event == this._idEvent)
+            );
         }
 
         public BadgeEvent GetBadgeEvent(int idBadge, int idEvent)
@@ -149,7 +152,7 @@ namespace EasyBadgeMVVM.ViewModels
         {
             return this._repostitoryFactory
                         .GetBadgeEventRepository(this._dbContext)
-                        .SearchFor(be => be.DefaultPrint == true)
+                        .SearchFor(be => be.EventID_Event == this._idEvent && be.DefaultPrint == true)
                         .SingleOrDefault();
         }
 
@@ -162,10 +165,15 @@ namespace EasyBadgeMVVM.ViewModels
 
         }
 
+        public List<PrintBadge> GetAllPrintBadge()
+        {
+            return this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext).SearchFor(p => p.EventID_Event == this._idEvent).ToList();
+        }
+
         /*********************************************************************************************************************************************************************/
         /*********** INSERT *************/
         /*********************************************************************************************************************************************************************/
-        
+
         //TODO CORRIGER (PERFORMANCE + QD USER > 2000)
         public bool CheckIfAlreadyExists(List<string> allFields, HashSet<string> fieldToShow, string datas)
         {
@@ -415,6 +423,13 @@ namespace EasyBadgeMVVM.ViewModels
             repo.SaveChanges();
         }
 
+        public void InsertInPrintBadge(PrintBadge pb)
+        {
+            var repo = this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext);
+            repo.Insert(pb);
+            repo.SaveChanges();
+        }
+
         public void DeleteRowPosition(int idBadge, int idEvent, string templateName)
         {
             this._repostitoryFactory.GetPositionRepository(this._dbContext).RemoveRows(idBadge, idEvent, templateName);
@@ -437,6 +452,7 @@ namespace EasyBadgeMVVM.ViewModels
             this._repostitoryFactory.GetEventRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SaveChanges();
+            this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext).SaveChanges();
         }
 
         public void Clear()

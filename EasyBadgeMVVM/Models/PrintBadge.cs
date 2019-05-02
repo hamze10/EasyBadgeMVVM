@@ -14,11 +14,12 @@ namespace EasyBadgeMVVM.Models
     
     public partial class PrintBadge
     {
-        public int UserID_User { get; set; }
-        public int EventID_Event { get; set; }
+        public int ID_PrintBadge { get; set; }
         public System.DateTime PrintDate { get; set; }
         public string PrintBy { get; set; }
         public string Comment { get; set; }
+        public int UserID_User { get; set; }
+        public int EventID_Event { get; set; }
     
         public virtual User User { get; set; }
         public virtual Event Event { get; set; }

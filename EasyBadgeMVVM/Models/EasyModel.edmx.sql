@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/25/2019 11:59:39
+-- Date Created: 05/02/2019 12:16:16
 -- Generated from EDMX file: C:\Users\onetec\Documents\EasyBadgeMVVM\EasyBadgeMVVM\EasyBadgeMVVM\Models\EasyModel.edmx
 -- --------------------------------------------------
 
@@ -141,11 +141,12 @@ GO
 
 -- Creating table 'PrintBadgeSet'
 CREATE TABLE [dbo].[PrintBadgeSet] (
-    [UserID_User] int  NOT NULL,
-    [EventID_Event] int  NOT NULL,
+    [ID_PrintBadge] int IDENTITY(1,1) NOT NULL,
     [PrintDate] datetime  NOT NULL,
     [PrintBy] nvarchar(max)  NOT NULL,
-    [Comment] nvarchar(max)  NULL
+    [Comment] nvarchar(max)  NULL,
+    [UserID_User] int  NOT NULL,
+    [EventID_Event] int  NOT NULL
 );
 GO
 
@@ -246,10 +247,10 @@ ADD CONSTRAINT [PK_EventFieldUserSet]
     PRIMARY KEY CLUSTERED ([UserID_User], [EventFieldFieldID_Field], [EventFieldEventID_Event] ASC);
 GO
 
--- Creating primary key on [UserID_User], [EventID_Event] in table 'PrintBadgeSet'
+-- Creating primary key on [ID_PrintBadge] in table 'PrintBadgeSet'
 ALTER TABLE [dbo].[PrintBadgeSet]
 ADD CONSTRAINT [PK_PrintBadgeSet]
-    PRIMARY KEY CLUSTERED ([UserID_User], [EventID_Event] ASC);
+    PRIMARY KEY CLUSTERED ([ID_PrintBadge] ASC);
 GO
 
 -- Creating primary key on [ID_Badge] in table 'BadgeSet'
@@ -305,30 +306,6 @@ ADD CONSTRAINT [FK_UserFieldUser]
     REFERENCES [dbo].[UserSet]
         ([ID_User])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [UserID_User] in table 'PrintBadgeSet'
-ALTER TABLE [dbo].[PrintBadgeSet]
-ADD CONSTRAINT [FK_UserPrintBadge]
-    FOREIGN KEY ([UserID_User])
-    REFERENCES [dbo].[UserSet]
-        ([ID_User])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [EventID_Event] in table 'PrintBadgeSet'
-ALTER TABLE [dbo].[PrintBadgeSet]
-ADD CONSTRAINT [FK_EventPrintBadge]
-    FOREIGN KEY ([EventID_Event])
-    REFERENCES [dbo].[EventSet]
-        ([ID_Event])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EventPrintBadge'
-CREATE INDEX [IX_FK_EventPrintBadge]
-ON [dbo].[PrintBadgeSet]
-    ([EventID_Event]);
 GO
 
 -- Creating foreign key on [FieldID_Field] in table 'EventFieldSet'
@@ -488,6 +465,36 @@ GO
 CREATE INDEX [IX_FK_BadgeEventRule]
 ON [dbo].[RuleSet]
     ([BadgeEventID_BadgeEvent]);
+GO
+
+-- Creating foreign key on [UserID_User] in table 'PrintBadgeSet'
+ALTER TABLE [dbo].[PrintBadgeSet]
+ADD CONSTRAINT [FK_UserPrintBadge]
+    FOREIGN KEY ([UserID_User])
+    REFERENCES [dbo].[UserSet]
+        ([ID_User])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserPrintBadge'
+CREATE INDEX [IX_FK_UserPrintBadge]
+ON [dbo].[PrintBadgeSet]
+    ([UserID_User]);
+GO
+
+-- Creating foreign key on [EventID_Event] in table 'PrintBadgeSet'
+ALTER TABLE [dbo].[PrintBadgeSet]
+ADD CONSTRAINT [FK_EventPrintBadge]
+    FOREIGN KEY ([EventID_Event])
+    REFERENCES [dbo].[EventSet]
+        ([ID_Event])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EventPrintBadge'
+CREATE INDEX [IX_FK_EventPrintBadge]
+ON [dbo].[PrintBadgeSet]
+    ([EventID_Event]);
 GO
 
 -- --------------------------------------------------

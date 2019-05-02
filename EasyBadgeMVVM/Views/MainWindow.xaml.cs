@@ -39,12 +39,17 @@ namespace EasyBadgeMVVM
         private const string MESSAGE_IMPORT = "Selected file : ";
         private const string MESSAGE_EXPORT = "File created : ";
         private const string MESSAGE_SYNC = "Sync done !";
+        private const string MESSAGE_REFRESH = "Refresh done !";
 
         private const string WORKER_IMPORT = "import";
         private const string WORKER_EXPORT = "export";
         private const string WORKER_SYNC = "sync";
+        private const string WORKER_REFRESH = "refresh";
 
         private readonly string[] EXTENSIONS = new string[] { ".csv" };
+
+        private const string PRINT_BADGE = "Print Badge";
+        private const string EMPTY_COLUMN = "//";
 
         private int _idEvent;
         private int _nbFields = 0;
@@ -208,6 +213,13 @@ namespace EasyBadgeMVVM
             this.RunMyWorker(arg);
         }
 
+        private void RefreshList(object sender, RoutedEventArgs e)
+        {
+            this.GridLoading.Visibility = Visibility.Visible;
+            string[] arg = new string[] { WORKER_REFRESH };
+            this.RunMyWorker(arg);
+        }
+
         private void ShowNotification(string message)
         {
             this.GridLoading.Visibility = Visibility.Hidden;
@@ -258,6 +270,10 @@ namespace EasyBadgeMVVM
                 case WORKER_SYNC:
                     e.Result = MESSAGE_SYNC;
                     break;
+                case WORKER_REFRESH:
+                    this._mainWindowImpl.RefreshMainsFields();
+                    e.Result = MESSAGE_REFRESH;
+                    break;
                 default:
                     break;
             }
@@ -265,7 +281,7 @@ namespace EasyBadgeMVVM
 
         private void myBgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Result.ToString().Contains(MESSAGE_IMPORT))
+            if (e.Result.ToString().Contains(MESSAGE_IMPORT) || e.Result.ToString().Contains(MESSAGE_REFRESH))
             {
                 CreateColumnsDataGrid();
             }
@@ -300,28 +316,43 @@ namespace EasyBadgeMVVM
                 dt.Columns.Add(new DataColumn(field, typeof(string)));
             }
 
-            var obj = new object[myFields.Count];
+            if (myFields.Count > 0) dt.Columns.Add(new DataColumn(PRINT_BADGE, typeof(string)));
+
+            var size = myFields.Count + 1;
+            var obj = new object[size];
             int i = 0;
             int nbUser = 0;
-            var lastObj = new object[myFields.Count];
-
+            var lastObj = new object[size];
+            EventFieldUser lastUser = null;
+            var allPrintBadge = this._mainWindowImpl.GetAllPrintBadge();
             var list = this._mainWindowImpl.MainFields.Where(e => e.EventField.Visibility == true);
+
             foreach (var efu in list)
             {
                 if (i == myFields.Count)
                 {
+                    //Get printbadge
+                    var datePrint = allPrintBadge.Where(p => p.UserID_User == lastUser.UserID_User).OrderByDescending(p => p.PrintDate).FirstOrDefault();
+                    obj[i] = datePrint != null ? datePrint.PrintDate.ToString() : EMPTY_COLUMN;
                     dt.Rows.Add(obj);
-                    obj = new object[myFields.Count];
+                    obj = new object[size];
                     i = 0;
                     nbUser++;
                 }
                 obj[i] = efu.Value;
                 i++;
                 lastObj = obj;
+                lastUser = efu;
             }
 
-            dt.Rows.Add(lastObj);
-            this._mainWindowImpl.NbrUser = ++nbUser;
+            if (lastObj[0] != null)
+            {
+                var datePrint2 = allPrintBadge.Where(p => p.UserID_User == lastUser.UserID_User).OrderByDescending(p => p.PrintDate).FirstOrDefault();
+                obj[i] = datePrint2 != null ? datePrint2.ToString() : EMPTY_COLUMN;
+                dt.Rows.Add(lastObj);
+            }
+
+            this._mainWindowImpl.NbrUser = lastObj[0] != null ? ++nbUser : 0;
             this.DataGridUsers.ColumnWidth = new DataGridLength(10, DataGridLengthUnitType.Star);
             this.DataGridUsers.ItemsSource = dt.DefaultView;
             this._dt = dt;

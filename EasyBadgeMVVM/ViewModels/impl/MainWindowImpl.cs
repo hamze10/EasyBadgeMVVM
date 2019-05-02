@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace EasyBadgeMVVM.ViewModels
 {
-    public class MainWindowImpl : INotifyPropertyChanged, IUserEventVM
+    public class MainWindowImpl : INotifyPropertyChanged, IMainWindow
     {
 
         /*********************************************************************************************************************************************************************/
@@ -22,6 +22,15 @@ namespace EasyBadgeMVVM.ViewModels
         private int _idEvent;
         private IDbEntities _dbEntities;
         public string EventTitle { get; set; }
+        private string[] Months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+        private string[] Prefix = new string[] { "st", "nd", "rd", "th" };
+        public string MachineName {
+            get {
+                DateTime now = DateTime.Now;
+                string display = now.DayOfWeek + " " + now.Day + Prefix[(now.Day%10) - 1 > 3 ? 3 : (now.Day % 10) - 1] + " " + Months[now.Month - 1] + " " + now.Year;
+                return Environment.MachineName + " - " + display;
+            }
+        }
 
         public MainWindowImpl(int idEvent)
         {
@@ -290,6 +299,11 @@ namespace EasyBadgeMVVM.ViewModels
         public ObservableCollection<EventField> GetEventFieldByEvent(int idEvent)
         {
             return this._dbEntities.GetEventFieldByEvent(idEvent);
+        }
+
+        public List<PrintBadge> GetAllPrintBadge()
+        {
+            return this._dbEntities.GetAllPrintBadge();
         }
     }
 }

@@ -12,8 +12,6 @@
         <EntityTypeShape EntityType="EasyModel.PrintBadge" Width="1.5" PointX="5.625" PointY="0.5" />
         <EntityTypeShape EntityType="EasyModel.Badge" Width="1.5" PointX="7.875" PointY="5.5" />
         <AssociationConnector Association="EasyModel.UserFieldUser" />
-        <AssociationConnector Association="EasyModel.UserPrintBadge" />
-        <AssociationConnector Association="EasyModel.EventPrintBadge" />
         <EntityTypeShape EntityType="EasyModel.EventField" Width="1.5" PointX="5.75" PointY="3.875" />
         <AssociationConnector Association="EasyModel.FieldEventField" />
         <AssociationConnector Association="EasyModel.EventEventField" />
@@ -31,6 +29,8 @@
         <EntityTypeShape EntityType="EasyModel.Target" Width="1.5" PointX="4.5" PointY="11.25" />
         <AssociationConnector Association="EasyModel.TargetRule" />
         <AssociationConnector Association="EasyModel.BadgeEventRule" />
+        <AssociationConnector Association="EasyModel.UserPrintBadge" />
+        <AssociationConnector Association="EasyModel.EventPrintBadge" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

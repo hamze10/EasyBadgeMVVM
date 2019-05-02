@@ -185,6 +185,11 @@ namespace EasyBadgeMVVM.ViewModels
             this._dbEntities.InsertInPosition(be, f, posX, posY, fontFamily, fontSize);
         }
 
+        public void SaveOnPrintBadge(PrintBadge pb)
+        {
+            this._dbEntities.InsertInPrintBadge(pb);
+        }
+
         public void UpdateDefaultPrint()
         {
             if (this.SelectedBadgeEvent == 0) return;
