@@ -1,8 +1,0 @@
-Pour le profile : si il existe un profile avec une couleur, template pour le .csv :
-
-	PROFILE			|	ADDITIONNALINFORMATION
-
-	STAFF				RED
-	VIP				BLUE
-	GUEST				YELLOW
-	...

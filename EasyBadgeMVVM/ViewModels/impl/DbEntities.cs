@@ -156,7 +156,6 @@ namespace EasyBadgeMVVM.ViewModels
                         .SingleOrDefault();
         }
 
-        //TODO CORRECTION
         public bool GetVisibilityField(string field)
         {
             return this._repostitoryFactory.GetEventFieldRepository(this._dbContext)
@@ -459,6 +458,5 @@ namespace EasyBadgeMVVM.ViewModels
         {
             this._myUsers.Clear();
         }
-
     }
 }

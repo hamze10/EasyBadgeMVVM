@@ -1,2 +1,0 @@
-last-name,company,first_name,print_badge
-Simpsons,Springfield,homer,1/1/0001 12:00:00 AM
