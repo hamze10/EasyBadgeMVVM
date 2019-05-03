@@ -37,7 +37,7 @@ namespace EasyBadgeMVVM.Views
 
         private void EventConfirm(object sender, RoutedEventArgs e)
         {
-            Event selected = this._eventVm.GetEventById(this._eventVm.SelectedEvent);
+            EventSet selected = this._eventVm.GetEventById(this._eventVm.SelectedEvent);
             if (selected == null) return;
             ShowMainWindow(selected.ID_Event);
         }
@@ -55,10 +55,10 @@ namespace EasyBadgeMVVM.Views
             }
             
             DateTime date = new DateTime(dateS.Year, dateS.Month, dateS.Day, hour.Hour, hour.Minute, hour.Second);
-            Event ev = new Event();
+            EventSet ev = new EventSet();
             ev.DateOfEvent = date;
             ev.Name = name;
-            Event inserted = this._eventVm.InsertEvent(ev);
+            EventSet inserted = this._eventVm.InsertEvent(ev);
             if (inserted == null)
             {
                 MessageBox.Show("Name already exists, please choose another one");

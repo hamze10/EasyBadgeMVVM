@@ -28,7 +28,7 @@ namespace EasyBadgeMVVM.ViewModels
         }
 
         private IDbEntities _dbEntities;
-        private ObservableCollection<Event> _listOfEvents;
+        private ObservableCollection<EventSet> _listOfEvents;
         private int _selectedEvent;
 
         public EventVM()
@@ -36,7 +36,7 @@ namespace EasyBadgeMVVM.ViewModels
             this._dbEntities = new DbEntities();
         }
 
-        public ObservableCollection<Event> ListOfEvents
+        public ObservableCollection<EventSet> ListOfEvents
         {
             get
             {
@@ -49,7 +49,7 @@ namespace EasyBadgeMVVM.ViewModels
             }
         }
 
-        public ObservableCollection<Event> LoadEvents()
+        public ObservableCollection<EventSet> LoadEvents()
         {
             return this._dbEntities.GetEvents();
         }
@@ -67,13 +67,13 @@ namespace EasyBadgeMVVM.ViewModels
             }
         }
 
-        public Event InsertEvent(Event ev)
+        public EventSet InsertEvent(EventSet ev)
         {
             this._dbEntities.InsertInEventTable(ev);
             return this._dbEntities.SearchFor(e1 => e1.Name.Equals(ev.Name) && e1.DateOfEvent.Equals(ev.DateOfEvent));
         }
 
-        public Event GetEventById(int idEvent)
+        public EventSet GetEventById(int idEvent)
         {
             return this._dbEntities.GetEventById(idEvent);
         }

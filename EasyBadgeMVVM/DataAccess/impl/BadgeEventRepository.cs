@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace EasyBadgeMVVM.DataAccess
 {
-    public class BadgeEventRepository : BaseRepository<BadgeEvent>, IBadgeEventRepository
+    public class BadgeEventRepository : BaseRepository<BadgeEventSet>, IBadgeEventRepository
     {
-        public BadgeEventRepository(EasyModelContext dbContext) : base(dbContext)
+        public BadgeEventRepository(EasyBadgeModelContext dbContext) : base(dbContext)
         {
 
         }
@@ -18,7 +18,7 @@ namespace EasyBadgeMVVM.DataAccess
         public void UpdateDefaultPrint(int idBadgeEvent, int idEvent)
         {
             var ctx = this._dbContext;
-            var allBadgeEvent = ctx.Set<BadgeEvent>().Where(be => be.EventID_Event == idEvent);
+            var allBadgeEvent = ctx.Set<BadgeEventSet>().Where(be => be.EventID_Event == idEvent);
 
             foreach(var badgeE in allBadgeEvent)
             {

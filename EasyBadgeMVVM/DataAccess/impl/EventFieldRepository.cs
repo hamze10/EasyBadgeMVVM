@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace EasyBadgeMVVM.DataAccess
 {
-    public class EventFieldRepository : BaseRepository<EventField>, IEventFieldRepository
+    public class EventFieldRepository : BaseRepository<EventFieldSet>, IEventFieldRepository
     {
-        public EventFieldRepository(EasyModelContext dbContext) : base(dbContext)
+        public EventFieldRepository(EasyBadgeModelContext dbContext) : base(dbContext)
         {
 
         }

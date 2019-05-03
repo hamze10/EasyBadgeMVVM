@@ -8,18 +8,18 @@ namespace EasyBadgeMVVM.ViewModels
 {
     public interface IMainWindow
     {
-        ObservableCollection<EventFieldUser> MainFields { get; }
+        ObservableCollection<EventFieldUserSet> MainFields { get; }
         string MachineName { get; }
         string Search { get; set; }
-        EventFieldUser SelectedUserEvent { get; set; }
+        EventFieldUserSet SelectedUserEvent { get; set; }
         void LoadFromImport(string content);
         ObservableCollection<ExportDataDTO> GetExportData();
         void SetDeleteButton(bool value);
-        List<EventFieldUser> GetEventFieldUserByValues(List<string> values);
-        List<EventFieldUser> GetAllFieldsOfEvent(int idEvent);
-        ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
-        ObservableCollection<EventFieldUser> RefreshMainsFields();
-        List<PrintBadge> GetAllPrintBadge();
+        List<EventFieldUserSet> GetEventFieldUserByValues(List<string> values);
+        List<EventFieldUserSet> GetAllFieldsOfEvent(int idEvent);
+        ObservableCollection<EventFieldSet> GetEventFieldByEvent(int idEvent);
+        ObservableCollection<EventFieldUserSet> RefreshMainsFields();
+        List<PrintBadgeSet> GetAllPrintBadge();
     }
 
     public class ExportDataDTO

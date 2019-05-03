@@ -13,10 +13,10 @@ namespace EasyBadgeMVVM.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class EasyModelContext : DbContext
+    public partial class EasyBadgeModelContext : DbContext
     {
-        public EasyModelContext()
-            : base("name=EasyModelContext")
+        public EasyBadgeModelContext()
+            : base("name=EasyBadgeModelContext")
         {
         }
     
@@ -25,17 +25,17 @@ namespace EasyBadgeMVVM.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<User> UserSet { get; set; }
-        public virtual DbSet<Event> EventSet { get; set; }
-        public virtual DbSet<Field> FieldSet { get; set; }
-        public virtual DbSet<EventFieldUser> EventFieldUserSet { get; set; }
-        public virtual DbSet<PrintBadge> PrintBadgeSet { get; set; }
-        public virtual DbSet<Badge> BadgeSet { get; set; }
-        public virtual DbSet<EventField> EventFieldSet { get; set; }
-        public virtual DbSet<Position> PositionSet { get; set; }
-        public virtual DbSet<BadgeEvent> BadgeEventSet { get; set; }
-        public virtual DbSet<Filter> FilterSet { get; set; }
-        public virtual DbSet<Rule> RuleSet { get; set; }
-        public virtual DbSet<Target> TargetSet { get; set; }
+        public virtual DbSet<BadgeEventSet> BadgeEventSets { get; set; }
+        public virtual DbSet<BadgeSet> BadgeSets { get; set; }
+        public virtual DbSet<EventFieldSet> EventFieldSets { get; set; }
+        public virtual DbSet<EventFieldUserSet> EventFieldUserSets { get; set; }
+        public virtual DbSet<EventSet> EventSets { get; set; }
+        public virtual DbSet<FieldSet> FieldSets { get; set; }
+        public virtual DbSet<FilterSet> FilterSets { get; set; }
+        public virtual DbSet<PositionSet> PositionSets { get; set; }
+        public virtual DbSet<PrintBadgeSet> PrintBadgeSets { get; set; }
+        public virtual DbSet<RuleSet> RuleSets { get; set; }
+        public virtual DbSet<TargetSet> TargetSets { get; set; }
+        public virtual DbSet<UserSet> UserSets { get; set; }
     }
 }

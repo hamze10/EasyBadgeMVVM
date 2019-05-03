@@ -12,25 +12,26 @@ namespace EasyBadgeMVVM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Event
+    public partial class BadgeEventSet
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Event()
+        public BadgeEventSet()
         {
-            this.EventFields = new HashSet<EventField>();
-            this.BadgeEvents = new HashSet<BadgeEvent>();
-            this.PrintBadges = new HashSet<PrintBadge>();
+            this.PositionSets = new HashSet<PositionSet>();
+            this.RuleSets = new HashSet<RuleSet>();
         }
     
-        public int ID_Event { get; set; }
+        public int ID_BadgeEvent { get; set; }
+        public int EventID_Event { get; set; }
+        public int BadgeID_Badge { get; set; }
         public string Name { get; set; }
-        public System.DateTime DateOfEvent { get; set; }
+        public bool DefaultPrint { get; set; }
     
+        public virtual BadgeSet BadgeSet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EventField> EventFields { get; set; }
+        public virtual ICollection<PositionSet> PositionSets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BadgeEvent> BadgeEvents { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PrintBadge> PrintBadges { get; set; }
+        public virtual ICollection<RuleSet> RuleSets { get; set; }
+        public virtual EventSet EventSet { get; set; }
     }
 }

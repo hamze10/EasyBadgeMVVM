@@ -96,11 +96,11 @@ namespace EasyBadgeMVVM.ViewModels
 
         private ObservableCollection<BadgeDTO> LoadBadgesType()
         {
-            ObservableCollection<Badge> listBadge = this._dbEntities.GetAllBadges();
-            ObservableCollection<BadgeEvent> listBadgeEvent = this._dbEntities.GetAllBadgeEvent();
+            ObservableCollection<BadgeSet> listBadge = this._dbEntities.GetAllBadges();
+            ObservableCollection<BadgeEventSet> listBadgeEvent = this._dbEntities.GetAllBadgeEvent();
             List<BadgeDTO> badgeDTOs = new List<BadgeDTO>();
 
-            foreach (Badge b in listBadge)
+            foreach (BadgeSet b in listBadge)
             {
                 var myBadgeEvent = listBadgeEvent.Where(bEv => bEv.BadgeID_Badge == b.ID_Badge);
 
@@ -115,7 +115,7 @@ namespace EasyBadgeMVVM.ViewModels
                 bdto.Template = string.Empty;
                 badgeDTOs.Add(bdto);
 
-                foreach (BadgeEvent be in myBadgeEvent)
+                foreach (BadgeEventSet be in myBadgeEvent)
                 {
                     BadgeDTO bdto2 = new BadgeDTO();
                     bdto2.ID_BadgeEvent = be.ID_BadgeEvent;
@@ -147,45 +147,45 @@ namespace EasyBadgeMVVM.ViewModels
 
         public List<string> GetAllFields()
         {
-            return this._dbEntities.GetAllFieldsOfEvent(this._idEvent).Select(f => f.EventField.Field.Name).ToList();
+            return this._dbEntities.GetAllFieldsOfEvent(this._idEvent).Select(f => f.EventFieldSet.FieldSet.Name).ToList();
         }
 
-        public Field GetFieldByName(string name)
+        public FieldSet GetFieldByName(string name)
         {
-            return this._dbEntities.GetAllFieldsOfEvent(this._idEvent).FirstOrDefault(f => f.EventField.Field.Name.Equals(name)).EventField.Field;
+            return this._dbEntities.GetAllFieldsOfEvent(this._idEvent).FirstOrDefault(f => f.EventFieldSet.FieldSet.Name.Equals(name)).EventFieldSet.FieldSet;
         }
 
-        public BadgeEvent GetBadgeEvent()
+        public BadgeEventSet GetBadgeEvent()
         {
             return this._dbEntities.GetBadgeEvent(this.SelectedBadge.ID, this._idEvent);
         }
 
-        public BadgeEvent GetById(int idBadgeEvent)
+        public BadgeEventSet GetById(int idBadgeEvent)
         {
             return this._dbEntities.GetBadgeEventById(idBadgeEvent);
         }
 
-        public List<Position> GetPositions(int idBadge, int idEvent, string templateName)
+        public List<PositionSet> GetPositions(int idBadge, int idEvent, string templateName)
         {
             return this._dbEntities.GetPositions(idBadge, idEvent, templateName);
         }
 
-        public BadgeEvent GetDefaultBadge()
+        public BadgeEventSet GetDefaultBadge()
         {
             return this._dbEntities.GetDefaultBadgeEvent();
         }
 
-        public BadgeEvent SaveOnBadgeEvent(string templateName)
+        public BadgeEventSet SaveOnBadgeEvent(string templateName)
         {
             return this._dbEntities.InsertInBadgeEvent(this.SelectedBadge.ID, this._idEvent, templateName);
         }
 
-        public void SaveOnPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize)
+        public void SaveOnPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize)
         {
             this._dbEntities.InsertInPosition(be, f, posX, posY, fontFamily, fontSize);
         }
 
-        public void SaveOnPrintBadge(PrintBadge pb)
+        public void SaveOnPrintBadge(PrintBadgeSet pb)
         {
             this._dbEntities.InsertInPrintBadge(pb);
         }

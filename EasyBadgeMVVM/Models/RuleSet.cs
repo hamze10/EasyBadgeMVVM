@@ -12,16 +12,16 @@ namespace EasyBadgeMVVM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PrintBadge
+    public partial class RuleSet
     {
-        public int ID_PrintBadge { get; set; }
-        public System.DateTime PrintDate { get; set; }
-        public string PrintBy { get; set; }
-        public string Comment { get; set; }
-        public int UserID_User { get; set; }
-        public int EventID_Event { get; set; }
+        public int ID_Rule { get; set; }
+        public int FilterID_Filter { get; set; }
+        public string HexaCode { get; set; }
+        public int TargetID_Target { get; set; }
+        public int BadgeEventID_BadgeEvent { get; set; }
     
-        public virtual User User { get; set; }
-        public virtual Event Event { get; set; }
+        public virtual BadgeEventSet BadgeEventSet { get; set; }
+        public virtual FilterSet FilterSet { get; set; }
+        public virtual TargetSet TargetSet { get; set; }
     }
 }

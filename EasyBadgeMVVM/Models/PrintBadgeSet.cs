@@ -12,18 +12,16 @@ namespace EasyBadgeMVVM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Position
+    public partial class PrintBadgeSet
     {
-        public int ID_Position { get; set; }
-        public int FieldID_Field { get; set; }
-        public int BadgeEventID_BadgeEvent { get; set; }
-        public double Position_X { get; set; }
-        public double Position_Y { get; set; }
-        public string FontFamily { get; set; }
-        public double FontSize { get; set; }
-        public string FontStyle { get; set; }
+        public int ID_PrintBadge { get; set; }
+        public System.DateTime PrintDate { get; set; }
+        public string PrintBy { get; set; }
+        public string Comment { get; set; }
+        public int UserID_User { get; set; }
+        public int EventID_Event { get; set; }
     
-        public virtual Field Field { get; set; }
-        public virtual BadgeEvent BadgeEvent { get; set; }
+        public virtual EventSet EventSet { get; set; }
+        public virtual UserSet UserSet { get; set; }
     }
 }

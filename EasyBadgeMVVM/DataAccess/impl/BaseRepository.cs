@@ -13,7 +13,7 @@ namespace EasyBadgeMVVM.DataAccess
 
         protected readonly DbContext _dbContext;
 
-        public BaseRepository(EasyModelContext dbContext)
+        public BaseRepository(EasyBadgeModelContext dbContext)
         {
             this._dbContext = dbContext;
         }

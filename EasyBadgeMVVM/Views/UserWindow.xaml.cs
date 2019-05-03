@@ -35,7 +35,7 @@ namespace EasyBadgeMVVM.Views
     {
         private IUserVM _userVM;
         private IBadgeVM _badgeVM;
-        private List<EventFieldUser> _currentUser;
+        private List<EventFieldUserSet> _currentUser;
         private bool _isNew;
         private int _idEvent;
 
@@ -53,7 +53,7 @@ namespace EasyBadgeMVVM.Views
 
         private SolidColorBrush[] brushes = new SolidColorBrush[2] { System.Windows.Media.Brushes.White, System.Windows.Media.Brushes.WhiteSmoke};
 
-        public UserWindow(bool isNew, List<EventFieldUser> list, int idEvent)
+        public UserWindow(bool isNew, List<EventFieldUserSet> list, int idEvent)
         {
             this._isNew = isNew;
             this._idEvent = idEvent;
@@ -138,7 +138,7 @@ namespace EasyBadgeMVVM.Views
 
             Label label = new Label();
             label.Name = LABELFIELDNAME + i;
-            label.Content = this._currentUser[(i - 1)].EventField.Field.Name + " : ";
+            label.Content = this._currentUser[(i - 1)].EventFieldSet.FieldSet.Name + " : ";
             label.FontSize = FONTSIZELABEL;
             label.VerticalAlignment = VerticalAlignment.Center;
             grid.Children.Add(label);
@@ -210,7 +210,7 @@ namespace EasyBadgeMVVM.Views
             pdi.DesktopLocation = new System.Drawing.Point(29, 29);
             pdi.Name = "PrintPreviewDialog1";
 
-            BadgeEvent defaultBadge = this._badgeVM.GetDefaultBadge();
+            BadgeEventSet defaultBadge = this._badgeVM.GetDefaultBadge();
 
             if (defaultBadge == null)
             {
@@ -220,17 +220,17 @@ namespace EasyBadgeMVVM.Views
 
             PrintDocument printDocument = new PrintDocument();
             printDocument.DefaultPageSettings.PaperSize = new PaperSize("PVC", 
-                                                                        Convert.ToInt32(defaultBadge.Badge.Dimension_X * MM_PX), 
-                                                                        Convert.ToInt32(defaultBadge.Badge.Dimension_Y * MM_PX));
+                                                                        Convert.ToInt32(defaultBadge.BadgeSet.Dimension_X * MM_PX), 
+                                                                        Convert.ToInt32(defaultBadge.BadgeSet.Dimension_Y * MM_PX));
 
             printDocument.PrintPage += (sender2, e2) => document_PrintPage(sender2, e2, defaultBadge); // new PrintPageEventHandler(document_PrintPage);
             pdi.Document = printDocument;
             if (pdi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 //INSERT IN PRINTBADGE
-                PrintBadge pbadge = new PrintBadge();
-                pbadge.User = this._currentUser[0].User;
-                pbadge.Event = this._userVM.GetEventById(this._idEvent);
+                PrintBadgeSet pbadge = new PrintBadgeSet();
+                pbadge.UserSet = this._currentUser[0].UserSet;
+                pbadge.EventSet = this._userVM.GetEventById(this._idEvent);
                 pbadge.PrintDate = DateTime.Now;
                 pbadge.PrintBy = Environment.MachineName;
                 this._badgeVM.SaveOnPrintBadge(pbadge);
@@ -239,7 +239,7 @@ namespace EasyBadgeMVVM.Views
             }
         }
 
-        private void document_PrintPage(object sender, PrintPageEventArgs e, BadgeEvent defaultBadge)
+        private void document_PrintPage(object sender, PrintPageEventArgs e, BadgeEventSet defaultBadge)
         {
             //retrieve positions
             //retrieve selected user value
@@ -248,15 +248,15 @@ namespace EasyBadgeMVVM.Views
             //Font printFont = new Font("FontFamily", "FontSize (a calculer)", FontStyle.Regular)
             //e.Graphics.DrawString(text, printfont, Brushes.Black, Position_X, Position_Y)
 
-            List<Position> positions = this._badgeVM.GetPositions(defaultBadge.BadgeID_Badge, defaultBadge.EventID_Event, defaultBadge.Name);
+            List<PositionSet> positions = this._badgeVM.GetPositions(defaultBadge.BadgeID_Badge, defaultBadge.EventID_Event, defaultBadge.Name);
 
-            foreach (Position p in positions)
+            foreach (PositionSet p in positions)
             {
-                string text = this._currentUser.Find(efu => efu.EventField.Field.Name.Equals(p.Field.Name)).Value;
+                string text = this._currentUser.Find(efu => efu.EventFieldSet.FieldSet.Name.Equals(p.FieldSet.Name)).Value;
                 Font printFont = new Font(p.FontFamily, (float) p.FontSize, System.Drawing.FontStyle.Regular);
                 float computedSize = 
                     GetNewFontSize(e.Graphics.MeasureString(text, printFont), 
-                                   defaultBadge.Badge.Dimension_Y * MM_PX, 
+                                   defaultBadge.BadgeSet.Dimension_Y * MM_PX, 
                                    printFont.Size, 
                                    e, 
                                    text, 

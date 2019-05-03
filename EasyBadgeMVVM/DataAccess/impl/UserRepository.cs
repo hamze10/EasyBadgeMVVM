@@ -8,28 +8,28 @@ using System.Threading.Tasks;
 
 namespace EasyBadgeMVVM.DataAccess
 {
-    public class UserRepository : BaseRepository<User>, IUserRepository
+    public class UserRepository : BaseRepository<UserSet>, IUserRepository
     {
-        public UserRepository(EasyModelContext dbContext) : base(dbContext)
+        public UserRepository(EasyBadgeModelContext dbContext) : base(dbContext)
         {
 
         }
 
-        public User GetLastUser()
+        public UserSet GetLastUser()
         {
-            return this._dbContext.Set<User>().OrderByDescending(u => u.Barcode).FirstOrDefault();
+            return this._dbContext.Set<UserSet>().OrderByDescending(u => u.Barcode).FirstOrDefault();
         }
 
-        public User GetUserByBarcode(string barcode)
+        public UserSet GetUserByBarcode(string barcode)
         {
-            return this._dbContext.Set<User>().Where(u => u.Barcode.Equals(barcode)).SingleOrDefault();
+            return this._dbContext.Set<UserSet>().Where(u => u.Barcode.Equals(barcode)).SingleOrDefault();
         }
 
         public void SetAllUserInactive()
         {
-            List<User> myList = this._dbContext.Set<User>().ToList();
+            List<UserSet> myList = this._dbContext.Set<UserSet>().ToList();
             int i = 0;
-            foreach (User u in myList)
+            foreach (UserSet u in myList)
             {
                 if (!u.Active) continue;
                 u.Active = false;

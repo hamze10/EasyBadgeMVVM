@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace EasyBadgeMVVM.DataAccess
 {
-    public class PositionRepository : BaseRepository<Position>, IPositionRepository
+    public class PositionRepository : BaseRepository<PositionSet>, IPositionRepository
     {
-        public PositionRepository(EasyModelContext dbContext) : base(dbContext)
+        public PositionRepository(EasyBadgeModelContext dbContext) : base(dbContext)
         {
 
         }
@@ -18,12 +18,12 @@ namespace EasyBadgeMVVM.DataAccess
         public void RemoveRows(int idBadge, int idEvent, string templateName)
         {
             var ctx = this._dbContext;
-            var setPos = ctx.Set<Position>();
-            List<Position> result = setPos
-                .Where(pos => pos.BadgeEvent.BadgeID_Badge == idBadge && pos.BadgeEvent.EventID_Event == idEvent && pos.BadgeEvent.Name.Equals(templateName))
+            var setPos = ctx.Set<PositionSet>();
+            List<PositionSet> result = setPos
+                .Where(pos => pos.BadgeEventSet.BadgeID_Badge == idBadge && pos.BadgeEventSet.EventID_Event == idEvent && pos.BadgeEventSet.Name.Equals(templateName))
                 .ToList();
 
-            foreach (Position p in result)
+            foreach (PositionSet p in result)
             {
                 setPos.Remove(p);
                 ctx.SaveChanges();

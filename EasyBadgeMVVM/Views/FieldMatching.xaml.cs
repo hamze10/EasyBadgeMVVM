@@ -26,8 +26,8 @@ namespace EasyBadgeMVVM.Views
     {
         private IFieldVM _fieldVM;
 
-        private ObservableCollection<Field> _fieldsImported;
-        private ObservableCollection<Field> _fieldsInDb;
+        private ObservableCollection<FieldSet> _fieldsImported;
+        private ObservableCollection<FieldSet> _fieldsInDb;
         public Dictionary<string, string> FieldsAccepted { get; set; }
         public HashSet<string> FieldsToShow { get; set; }
 
@@ -35,7 +35,7 @@ namespace EasyBadgeMVVM.Views
         private const string CHECKBOX_NAME = "checkboxField";
         private const string COMBOBOX_NAME = "comboboxField";
 
-        public FieldMatching(ObservableCollection<Field> fieldsDB, ObservableCollection<Field> fieldsImport)
+        public FieldMatching(ObservableCollection<FieldSet> fieldsDB, ObservableCollection<FieldSet> fieldsImport)
         {
             this._fieldVM = new FieldVM();
             this._fieldsInDb = fieldsDB;
@@ -48,7 +48,7 @@ namespace EasyBadgeMVVM.Views
         public void CreateMessages()
         {
             int i = 1;
-            foreach(Field myField in this._fieldsImported)
+            foreach(FieldSet myField in this._fieldsImported)
             {
                 RowDefinition rowDefinition = new RowDefinition();
                 rowDefinition.Height = new GridLength(60);
@@ -135,7 +135,7 @@ namespace EasyBadgeMVVM.Views
         {
             for(int i = 1; i <= this._fieldsImported.Count; i++)
             {
-                Field fieldChoice = (Field)((ComboBox)this.FindName(COMBOBOX_NAME + i)).SelectedItem;
+                FieldSet fieldChoice = (FieldSet)((ComboBox)this.FindName(COMBOBOX_NAME + i)).SelectedItem;
                 string choice = string.Empty;
                 if (fieldChoice != null)
                 {

@@ -147,11 +147,11 @@ namespace EasyBadgeMVVM.Views
             this._badgeVM.SelectedTemplate = selected.Template;
 
             //CHECK IN THE DB IF A BADGE IN POSITION NOT ALREADY EXISTS, IF EXISTS SHOW IT
-            List<Position> myPositions = this._badgeVM.GetPositions(selected.ID, this._idEvent, selected.Template);
-            foreach(Position p in myPositions)
+            List<PositionSet> myPositions = this._badgeVM.GetPositions(selected.ID, this._idEvent, selected.Template);
+            foreach(PositionSet p in myPositions)
             {
                 Label label = new Label();
-                label.Content = p.Field.Name;
+                label.Content = p.FieldSet.Name;
                 label.FontFamily = ALLFONTS.Where(font => font.ToString().Equals(p.FontFamily)).FirstOrDefault();
                 label.FontSize = p.FontSize;
                 label.MouseMove += new MouseEventHandler(Label_MouseMove);
@@ -258,7 +258,7 @@ namespace EasyBadgeMVVM.Views
             }
 
             //Save on BadgeEvent
-            BadgeEvent insertedBe = this._badgeVM.SaveOnBadgeEvent(templateName);
+            BadgeEventSet insertedBe = this._badgeVM.SaveOnBadgeEvent(templateName);
 
             //Save on Position
             //But first delete if there are updates
@@ -271,7 +271,7 @@ namespace EasyBadgeMVVM.Views
                 int fontSize = Convert.ToInt32(label.FontSize); //FontSize
                 double posY = (double)child.GetValue(Canvas.TopProperty); //Pos_Y
                 double posX = (double)child.GetValue(Canvas.LeftProperty); //Pos_X
-                Field field = this._badgeVM.GetFieldByName(label.Content.ToString()); //Field
+                FieldSet field = this._badgeVM.GetFieldByName(label.Content.ToString()); //Field
 
                 this._badgeVM.SaveOnPosition(insertedBe, field, posX, posY, fontFamily, fontSize);
             }

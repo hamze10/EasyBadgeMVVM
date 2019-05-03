@@ -8,6 +8,6 @@ namespace EasyBadgeMVVM.ViewModels
     {
         int IdEvent { get; }
         void InsertNewUser(Dictionary<string, string> values);
-        Event GetEventById(int idEvent);
+        EventSet GetEventById(int idEvent);
     }
 }

@@ -104,40 +104,55 @@
     <Compile Include="DataAccess\interfaces\IRepository.cs" />
     <Compile Include="DataAccess\interfaces\IUserRepository.cs" />
     <Compile Include="DataAccess\impl\UserRepository.cs" />
-    <Compile Include="Models\Badge.cs">
+    <Compile Include="Models\BadgeEventSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BadgeEvent.cs">
+    <Compile Include="Models\BadgeSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Event.cs">
+    <Compile Include="Models\EasyModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EasyModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EasyModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EventField.cs">
+    <Compile Include="Models\EasyModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EasyModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EventFieldSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EventFieldUser.cs">
+    <Compile Include="Models\EventFieldUserSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Field.cs">
+    <Compile Include="Models\EventSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Filter.cs">
+    <Compile Include="Models\FieldSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Position.cs">
+    <Compile Include="Models\FilterSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PrintBadge.cs">
+    <Compile Include="Models\PositionSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Rule.cs">
+    <Compile Include="Models\PrintBadgeSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Target.cs">
+    <Compile Include="Models\RuleSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\User.cs">
+    <Compile Include="Models\TargetSet.cs">
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\impl\BadgeVM.cs" />
@@ -203,21 +218,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\EasyModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EasyModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EasyModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EasyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EasyModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EasyModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -263,20 +263,22 @@
     <Resource Include="asset\images\Capture.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Models\EasyModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EasyModel.Context.cs</LastGenOutput>
       <DependentUpon>EasyModel.edmx</DependentUpon>
+      <LastGenOutput>EasyModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\EasyModel.edmx.sql" />
     <Content Include="Models\EasyModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EasyModel.cs</LastGenOutput>
       <DependentUpon>EasyModel.edmx</DependentUpon>
+      <LastGenOutput>EasyModel.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

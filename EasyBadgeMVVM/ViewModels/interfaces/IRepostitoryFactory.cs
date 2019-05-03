@@ -5,14 +5,14 @@ namespace EasyBadgeMVVM.ViewModels
 {
     public interface IRepostitoryFactory
     {
-        EventRepository GetEventRepository(EasyModelContext model);
-        FieldRepository GetFieldRepository(EasyModelContext model);
-        UserRepository GetUserRepository(EasyModelContext model);
-        PrintBadgeRepository GetPrintBadgeRepository(EasyModelContext model);
-        EventFieldRepository GetEventFieldRepository(EasyModelContext model);
-        EventFieldUserRepository GetEventFieldUserRepository(EasyModelContext model);
-        BadgeRepository GetBadgeRepository(EasyModelContext model);
-        BadgeEventRepository GetBadgeEventRepository(EasyModelContext model);
-        PositionRepository GetPositionRepository(EasyModelContext model);
+        EventRepository GetEventRepository(EasyBadgeModelContext model);
+        FieldRepository GetFieldRepository(EasyBadgeModelContext model);
+        UserRepository GetUserRepository(EasyBadgeModelContext model);
+        PrintBadgeRepository GetPrintBadgeRepository(EasyBadgeModelContext model);
+        EventFieldRepository GetEventFieldRepository(EasyBadgeModelContext model);
+        EventFieldUserRepository GetEventFieldUserRepository(EasyBadgeModelContext model);
+        BadgeRepository GetBadgeRepository(EasyBadgeModelContext model);
+        BadgeEventRepository GetBadgeEventRepository(EasyBadgeModelContext model);
+        PositionRepository GetPositionRepository(EasyBadgeModelContext model);
     }
 }

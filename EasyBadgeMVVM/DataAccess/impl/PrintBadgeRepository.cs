@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace EasyBadgeMVVM.DataAccess
 {
-    public class PrintBadgeRepository : BaseRepository<PrintBadge>, IPrintBadgeRepository
+    public class PrintBadgeRepository : BaseRepository<PrintBadgeSet>, IPrintBadgeRepository
     {
-        public PrintBadgeRepository(EasyModelContext dbContext) : base(dbContext)
+        public PrintBadgeRepository(EasyBadgeModelContext dbContext) : base(dbContext)
         {
 
         }

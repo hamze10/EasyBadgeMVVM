@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace EasyBadgeMVVM.DataAccess
 {
-    public class EventRepository : BaseRepository<Event>, IEventRepository
+    public class EventRepository : BaseRepository<EventSet>, IEventRepository
     {
 
-        public EventRepository(EasyModelContext dbContext) : base(dbContext)
+        public EventRepository(EasyBadgeModelContext dbContext) : base(dbContext)
         {
 
         }
 
-        public Event GetLastEvent()
+        public EventSet GetLastEvent()
         {
-            return this._dbContext.Set<Event>().OrderByDescending(e => e.ID_Event).FirstOrDefault();
+            return this._dbContext.Set<EventSet>().OrderByDescending(e => e.ID_Event).FirstOrDefault();
         }
     }
 }

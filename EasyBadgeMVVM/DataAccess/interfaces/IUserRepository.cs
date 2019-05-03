@@ -4,8 +4,8 @@ namespace EasyBadgeMVVM.DataAccess
 {
     public interface IUserRepository
     {
-        User GetLastUser();
-        User GetUserByBarcode(string barcode);
+        UserSet GetLastUser();
+        UserSet GetUserByBarcode(string barcode);
         void SetAllUserInactive();
     }
 }

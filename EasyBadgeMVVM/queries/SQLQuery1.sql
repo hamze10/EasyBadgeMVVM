@@ -1,24 +1,21 @@
-SELECT * FROM EventFieldSet ORDER BY EventID_Event;
-SELECT * FROM EventFieldUserSet 
+SELECT * FROM EventFieldSets ORDER BY EventID_Event;
+SELECT * FROM EventFieldUserSets 
 
-SELECT efs.UserID_User, COUNT(UserID_User) FROM EventFieldUserSet efs 
-WHERE (efs.Value = 'Mueller' OR efs.Value = 'Jeanine' OR efs.Value = 'Comstruct') AND efs.EventFieldEventID_Event = 1 
-GROUP BY efs.UserID_User
-
-
-SELECT * FROM FieldSet;
-SELECT * FROM UserSet;
-SELECT * FROM EventSet;
+SELECT * FROM FieldSets;
+SELECT * FROM UserSets;
+SELECT * FROM EventSets;
 
 SELECT * FROM BadgeSet
-INSERT INTO BadgeSet VALUES(97,86, 'A5', 'Butterfly');
-INSERT INTO BadgeSet VALUES(97,116,'XL', 'Butterfly');
-INSERT INTO BadgeSet VALUES(97,148,'A6', 'Butterfly');
-INSERT INTO BadgeSet VALUES(86,54,'PVC', 'PVC');
+INSERT INTO BadgeSets VALUES(97,86, 'A5', 'Butterfly');
+INSERT INTO BadgeSets VALUES(97,116,'XL', 'Butterfly');
+INSERT INTO BadgeSets VALUES(97,148,'A6', 'Butterfly');
+INSERT INTO BadgeSets VALUES(86,54,'PVC', 'PVC');
 
-SELECT * FROM BadgeEventSet;
-SELECT * FROM PrintBadgeSet;
+SELECT * FROM BadgeEventSets;
+SELECT * FROM PrintBadgeSets;
 
-SELECT * FROM PositionSet p 
-WHERE p.BadgeEventID_BadgeEvent = (SELECT ID_BadgeEvent FROM BadgeEventSet be WHERE be.BadgeID_Badge = 4)
+INSERT INTO PrintBadgeSets(PrintDate, PrintBy, Comment, UserID_User, EventID_Event)
+VALUES (CURRENT_TIMESTAMP, 'PC4', NULL, 8, 1);
+
+SELECT * FROM PositionSets
 

@@ -10,8 +10,8 @@ namespace EasyBadgeMVVM.ViewModels
 {
     public interface IEventVM
     {
-        Event InsertEvent(Event ev);
+        EventSet InsertEvent(EventSet ev);
         int SelectedEvent { get; set; }
-        Event GetEventById(int idEvent);
+        EventSet GetEventById(int idEvent);
     }
 }

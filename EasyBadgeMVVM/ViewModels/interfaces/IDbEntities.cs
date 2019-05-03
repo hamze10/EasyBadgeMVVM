@@ -14,34 +14,34 @@ namespace EasyBadgeMVVM.ViewModels
 {
     public interface IDbEntities
     {
-        ObservableCollection<EventFieldUser> GetAllUsers();
+        ObservableCollection<EventFieldUserSet> GetAllUsers();
         void InsertNewField(string field);
         void InsertNewUser(int index, string field, string data, bool visiblity);
         void SetIdEvent(int idEvent);
         void SaveAllChanges();
         HashSet<string> FieldsToShow { get; set; }
-        List<EventFieldUser> GetAllFieldsOfEvent(int idEvent);
+        List<EventFieldUserSet> GetAllFieldsOfEvent(int idEvent);
         bool CheckIfAlreadyExists(List<string> allFields, HashSet<string> fieldToShow, string datas);
         void Clear();
-        ObservableCollection<Event> GetEvents();
-        Event GetEventById(int idEvent);
-        Event SearchFor(Expression<Func<Event, bool>> predicate);
-        bool InsertInEventTable(Event ev);
-        List<EventFieldUser> GetEventFieldUserByValues(List<string> values);
-        ObservableCollection<Field> GetAllFields();
-        ObservableCollection<EventField> GetEventFieldByEvent(int idEvent);
+        ObservableCollection<EventSet> GetEvents();
+        EventSet GetEventById(int idEvent);
+        EventSet SearchFor(Expression<Func<EventSet, bool>> predicate);
+        bool InsertInEventTable(EventSet ev);
+        List<EventFieldUserSet> GetEventFieldUserByValues(List<string> values);
+        ObservableCollection<FieldSet> GetAllFields();
+        ObservableCollection<EventFieldSet> GetEventFieldByEvent(int idEvent);
         bool GetVisibilityField(string field);
-        ObservableCollection<Badge> GetAllBadges();
-        BadgeEvent InsertInBadgeEvent(int idBadge, int idEvent, string templateName);
-        void InsertInPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize);
-        BadgeEvent GetBadgeEvent(int idBadge, int idEvent);
+        ObservableCollection<BadgeSet> GetAllBadges();
+        BadgeEventSet InsertInBadgeEvent(int idBadge, int idEvent, string templateName);
+        void InsertInPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize);
+        BadgeEventSet GetBadgeEvent(int idBadge, int idEvent);
         void DeleteRowPosition(int idBadge, int idEvent, string templateName);
-        List<Position> GetPositions(int idBadge, int idEvent, string templateName);
-        ObservableCollection<BadgeEvent> GetAllBadgeEvent();
-        BadgeEvent GetBadgeEventById(int idBadgeEvent);
+        List<PositionSet> GetPositions(int idBadge, int idEvent, string templateName);
+        ObservableCollection<BadgeEventSet> GetAllBadgeEvent();
+        BadgeEventSet GetBadgeEventById(int idBadgeEvent);
         void UpdateDefaultPrint(int idBadgeEvent);
-        BadgeEvent GetDefaultBadgeEvent();
-        void InsertInPrintBadge(PrintBadge pb);
-        List<PrintBadge> GetAllPrintBadge();
+        BadgeEventSet GetDefaultBadgeEvent();
+        void InsertInPrintBadge(PrintBadgeSet pb);
+        List<PrintBadgeSet> GetAllPrintBadge();
     }
 }

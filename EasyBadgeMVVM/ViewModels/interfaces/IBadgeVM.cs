@@ -13,17 +13,17 @@ namespace EasyBadgeMVVM.ViewModels
         string SelectedTemplate { get; set; }
         int SelectedBadgeEvent { get; set; }
         List<string> GetAllFields();
-        Field GetFieldByName(string name);
-        BadgeEvent SaveOnBadgeEvent(string templateName);
-        void SaveOnPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize);
-        BadgeEvent GetBadgeEvent();
+        FieldSet GetFieldByName(string name);
+        BadgeEventSet SaveOnBadgeEvent(string templateName);
+        void SaveOnPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize);
+        BadgeEventSet GetBadgeEvent();
         void RemoveRowsPosition(string templateName);
-        List<Position> GetPositions(int idBadge, int idEvent, string templateName);
+        List<PositionSet> GetPositions(int idBadge, int idEvent, string templateName);
         void RefreshListBadgeType();
-        BadgeEvent GetById(int idBadgeEvent);
+        BadgeEventSet GetById(int idBadgeEvent);
         void UpdateDefaultPrint();
-        BadgeEvent GetDefaultBadge();
-        void SaveOnPrintBadge(PrintBadge pb);
+        BadgeEventSet GetDefaultBadge();
+        void SaveOnPrintBadge(PrintBadgeSet pb);
     }
 
     public class BadgeDTO

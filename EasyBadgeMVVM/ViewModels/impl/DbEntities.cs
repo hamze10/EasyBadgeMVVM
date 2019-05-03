@@ -19,7 +19,7 @@ namespace EasyBadgeMVVM.ViewModels
         private const string EVENTFIELD = "eventfield";
         private const string EVENTFIELDUSER = "eventfielduser";
 
-        private EasyModelContext _dbContext = new EasyModelContext();
+        private EasyBadgeModelContext _dbContext = new EasyBadgeModelContext();
         private int _idEvent;
         private IRepostitoryFactory _repostitoryFactory = new RepostitoryFactory();
         private IDictionary<string, List<object>> _myUsers;
@@ -41,40 +41,40 @@ namespace EasyBadgeMVVM.ViewModels
         /*********** GETTERS *************/
         /*********************************************************************************************************************************************************************/
 
-        public ObservableCollection<EventFieldUser> GetAllUsers()
+        public ObservableCollection<EventFieldUserSet> GetAllUsers()
         {
-            return new ObservableCollection<EventFieldUser>(
+            return new ObservableCollection<EventFieldUserSet>(
                 this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SearchFor(x => x.EventFieldEventID_Event == this._idEvent)
             );
         }
 
-        public ObservableCollection<Event> GetEvents()
+        public ObservableCollection<EventSet> GetEvents()
         {
-            return new ObservableCollection<Event>(this._repostitoryFactory.GetEventRepository(this._dbContext).GetAll());
+            return new ObservableCollection<EventSet>(this._repostitoryFactory.GetEventRepository(this._dbContext).GetAll());
         }
 
-        public Event GetEventById(int idEvent)
+        public EventSet GetEventById(int idEvent)
         {
             return this._repostitoryFactory.GetEventRepository(this._dbContext).GetById(idEvent);
         }
 
-        public Event SearchFor(Expression<Func<Event, bool>> predicate)
+        public EventSet SearchFor(Expression<Func<EventSet, bool>> predicate)
         {
             return this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(predicate).FirstOrDefault();
         }
 
-        public ObservableCollection<Field> GetAllFields()
+        public ObservableCollection<FieldSet> GetAllFields()
         {
-            return new ObservableCollection<Field>(this._repostitoryFactory.GetFieldRepository(this._dbContext).GetAll());
+            return new ObservableCollection<FieldSet>(this._repostitoryFactory.GetFieldRepository(this._dbContext).GetAll());
         }
 
-        public List<EventFieldUser> GetEventFieldUserByValues(List<string> values)
+        public List<EventFieldUserSet> GetEventFieldUserByValues(List<string> values)
         {
             Dictionary<int, int> usersWithVal = new Dictionary<int, int>();
 
             foreach(string val in values)
             {
-                var users = from efu in this._dbContext.EventFieldUserSet
+                var users = from efu in this._dbContext.EventFieldUserSets
                             where efu.EventFieldEventID_Event == this._idEvent && efu.Value.Equals(val)
                             select efu.UserID_User;
 
@@ -94,61 +94,61 @@ namespace EasyBadgeMVVM.ViewModels
 
             int userOk = usersWithVal.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
 
-            List<EventFieldUser> toSend = (from efu in this._dbContext.EventFieldUserSet
+            List<EventFieldUserSet> toSend = (from efu in this._dbContext.EventFieldUserSets
                                            where efu.EventFieldEventID_Event == this._idEvent && efu.UserID_User == userOk
                                            select efu).ToList();
 
             return toSend;
         }
 
-        public List<EventFieldUser> GetAllFieldsOfEvent(int idEvent)
+        public List<EventFieldUserSet> GetAllFieldsOfEvent(int idEvent)
         {
             return this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext)
                         .SearchFor(efu => efu.EventFieldEventID_Event == idEvent)
-                        .GroupBy(efu => efu.EventField.Field.Name)
+                        .GroupBy(efu => efu.EventFieldSet.FieldSet.Name)
                         .Select(efu => efu.FirstOrDefault())
                         .ToList();
         }
 
-        public ObservableCollection<EventField> GetEventFieldByEvent(int idEvent)
+        public ObservableCollection<EventFieldSet> GetEventFieldByEvent(int idEvent)
         {
-            return new ObservableCollection<EventField>(this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SearchFor(eu => eu.EventID_Event == idEvent));
+            return new ObservableCollection<EventFieldSet>(this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SearchFor(eu => eu.EventID_Event == idEvent));
         }
 
-        public ObservableCollection<Badge> GetAllBadges()
+        public ObservableCollection<BadgeSet> GetAllBadges()
         {
-            return new ObservableCollection<Badge>(this._repostitoryFactory.GetBadgeRepository(this._dbContext).GetAll());
+            return new ObservableCollection<BadgeSet>(this._repostitoryFactory.GetBadgeRepository(this._dbContext).GetAll());
         }
 
-        public ObservableCollection<BadgeEvent> GetAllBadgeEvent()
+        public ObservableCollection<BadgeEventSet> GetAllBadgeEvent()
         {
-            return new ObservableCollection<BadgeEvent>(
+            return new ObservableCollection<BadgeEventSet>(
                 this._repostitoryFactory.GetBadgeEventRepository(this._dbContext)
                 .SearchFor(be => be.EventID_Event == this._idEvent)
             );
         }
 
-        public BadgeEvent GetBadgeEvent(int idBadge, int idEvent)
+        public BadgeEventSet GetBadgeEvent(int idBadge, int idEvent)
         {
             return this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).SearchFor(be => be.BadgeID_Badge == idBadge && be.EventID_Event == idEvent).FirstOrDefault();
         }
 
-        public List<Position> GetPositions(int idBadge, int idEvent, string templateName)
+        public List<PositionSet> GetPositions(int idBadge, int idEvent, string templateName)
         {
             return this._repostitoryFactory
                         .GetPositionRepository(this._dbContext)
-                        .SearchFor(p => p.BadgeEvent.BadgeID_Badge == idBadge && p.BadgeEvent.EventID_Event == idEvent && p.BadgeEvent.Name.Equals(templateName))
+                        .SearchFor(p => p.BadgeEventSet.BadgeID_Badge == idBadge && p.BadgeEventSet.EventID_Event == idEvent && p.BadgeEventSet.Name.Equals(templateName))
                         .ToList();
         }
 
-        public BadgeEvent GetBadgeEventById(int idBadgeEvent)
+        public BadgeEventSet GetBadgeEventById(int idBadgeEvent)
         {
             return this._repostitoryFactory
                         .GetBadgeEventRepository(this._dbContext)
                         .GetById(idBadgeEvent);
         }
 
-        public BadgeEvent GetDefaultBadgeEvent()
+        public BadgeEventSet GetDefaultBadgeEvent()
         {
             return this._repostitoryFactory
                         .GetBadgeEventRepository(this._dbContext)
@@ -160,12 +160,12 @@ namespace EasyBadgeMVVM.ViewModels
         public bool GetVisibilityField(string field)
         {
             return this._repostitoryFactory.GetEventFieldRepository(this._dbContext)
-                    .SearchFor(ef => ef.EventID_Event == this._idEvent && ef.Field.Name.Equals(field))
+                    .SearchFor(ef => ef.EventID_Event == this._idEvent && ef.FieldSet.Name.Equals(field))
                     .FirstOrDefault().Visibility;
 
         }
 
-        public List<PrintBadge> GetAllPrintBadge()
+        public List<PrintBadgeSet> GetAllPrintBadge()
         {
             return this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext).SearchFor(p => p.EventID_Event == this._idEvent).ToList();
         }
@@ -179,23 +179,23 @@ namespace EasyBadgeMVVM.ViewModels
         {
             string test = datas.Split(',')[0];
 
-            var firstQuery = from efuu in this._dbContext.EventFieldUserSet
-                             where efuu.EventField.EventID_Event == this._idEvent && efuu.Value.Equals(test)
+            var firstQuery = from efuu in this._dbContext.EventFieldUserSets
+                             where efuu.EventFieldSet.EventID_Event == this._idEvent && efuu.Value.Equals(test)
                              select efuu.UserID_User;
 
-            var defQuery = (from efu in this._dbContext.EventFieldUserSet
+            var defQuery = (from efu in this._dbContext.EventFieldUserSets
                            where firstQuery.Contains(efu.UserID_User)
                            select efu).ToList();
 
-            ObservableCollection<EventFieldUser> toCheck = new ObservableCollection<EventFieldUser>(defQuery);
+            ObservableCollection<EventFieldUserSet> toCheck = new ObservableCollection<EventFieldUserSet>(defQuery);
 
             int i = 1;
             HashSet<bool> toContains = new HashSet<bool>();
             List<string> myDatas = new List<string>(datas.Split(','));
 
-            foreach(EventFieldUser uu in toCheck)
+            foreach(EventFieldUserSet uu in toCheck)
             {
-                if (!fieldToShow.Contains(uu.EventField.Field.Name)) continue;
+                if (!fieldToShow.Contains(uu.EventFieldSet.FieldSet.Name)) continue;
 
                 if (i == FieldsToShow.Count)
                 {
@@ -222,7 +222,7 @@ namespace EasyBadgeMVVM.ViewModels
 
         public void InsertNewField(string field)
         {
-            Field f = new Field();
+            FieldSet f = new FieldSet();
             f.Name = field;
             InsertInFieldTable(f);
         }
@@ -230,7 +230,7 @@ namespace EasyBadgeMVVM.ViewModels
         public void InsertNewUser(int index, string field, string data, bool visibility)
         {
             //INSERT IN USER TABLE
-            User user = new User();
+            UserSet user = new UserSet();
             if (index == 0)
             {
                 user.Active = true;
@@ -243,19 +243,19 @@ namespace EasyBadgeMVVM.ViewModels
                 else
                 {
                     //CHECK IN THE DB THE LASTBARCODE
-                    User userDb = this._repostitoryFactory.GetUserRepository(this._dbContext).GetLastUser();
+                    UserSet userDb = this._repostitoryFactory.GetUserRepository(this._dbContext).GetLastUser();
                     if (userDb == null)
                     {
                         //IF THE DB IS EMPTY AND THE MAP DOESN'T CONTAINS SOMEONE, START WITH 100000
                         user.Barcode = !this._myUsers.ContainsKey(USER)
                                        ? "100000"
-                                       : (Int32.Parse(this._myUsers[USER].Cast<User>().OrderByDescending(u => u.Barcode).FirstOrDefault().Barcode) + 1).ToString();
+                                       : (Int32.Parse(this._myUsers[USER].Cast<UserSet>().OrderByDescending(u => u.Barcode).FirstOrDefault().Barcode) + 1).ToString();
                     }
                     else
                     {
                         
                         user.Barcode = this._myUsers.ContainsKey(USER) 
-                                       ? (Int32.Parse(this._myUsers[USER].Cast<User>().OrderByDescending(u => u.Barcode).FirstOrDefault().Barcode) + 1).ToString() 
+                                       ? (Int32.Parse(this._myUsers[USER].Cast<UserSet>().OrderByDescending(u => u.Barcode).FirstOrDefault().Barcode) + 1).ToString() 
                                        : (Int32.Parse(userDb.Barcode) + 1).ToString();
                     }
                 }
@@ -265,49 +265,49 @@ namespace EasyBadgeMVVM.ViewModels
             }
             else
             {
-                user = this._myUsers[USER].Cast<User>().OrderByDescending(u => u.Barcode).FirstOrDefault();
+                user = this._myUsers[USER].Cast<UserSet>().OrderByDescending(u => u.Barcode).FirstOrDefault();
             }
 
             //INSERT IN EVENTFIELD
-            Event ev = this._repostitoryFactory.GetEventRepository(this._dbContext).GetById(this._idEvent);
+            EventSet ev = this._repostitoryFactory.GetEventRepository(this._dbContext).GetById(this._idEvent);
 
             bool inDico = this._myUsers.ContainsKey(FIELD);
-            Field fieldDb = inDico 
-                ? this._myUsers[FIELD].Cast<Field>().Where(f2 => f2.Name.ToLower().Equals(field.ToLower())).FirstOrDefault()
+            FieldSet fieldDb = inDico 
+                ? this._myUsers[FIELD].Cast<FieldSet>().Where(f2 => f2.Name.ToLower().Equals(field.ToLower())).FirstOrDefault()
                         ?? this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault()
                 : this._repostitoryFactory.GetFieldRepository(this._dbContext).SearchFor(f => f.Name.ToLower().Equals(field.ToLower())).FirstOrDefault();
 
-            EventField evf = this._repostitoryFactory.GetEventFieldRepository(this._dbContext)
-                                .SearchFor(e => e.Event.Name.Equals(ev.Name) && e.Field.Name.Equals(fieldDb.Name)).FirstOrDefault();
+            EventFieldSet evf = this._repostitoryFactory.GetEventFieldRepository(this._dbContext)
+                                .SearchFor(e => e.EventSet.Name.Equals(ev.Name) && e.FieldSet.Name.Equals(fieldDb.Name)).FirstOrDefault();
             if (evf == null)
             {
                 if (this._myUsers.ContainsKey(EVENTFIELD))
                 {
-                    evf =  this._myUsers[EVENTFIELD].Cast<EventField>().Where(e => e.Event.Name.Equals(ev.Name) && e.Field.Name.Equals(fieldDb.Name)).FirstOrDefault();
+                    evf =  this._myUsers[EVENTFIELD].Cast<EventFieldSet>().Where(e => e.EventSet.Name.Equals(ev.Name) && e.FieldSet.Name.Equals(fieldDb.Name)).FirstOrDefault();
                     
                 }
             }
 
             if (evf == null)
             {
-                evf = new EventField();
-                evf.Event = ev;
-                evf.Field = fieldDb;
+                evf = new EventFieldSet();
+                evf.EventSet = ev;
+                evf.FieldSet = fieldDb;
                 evf.Visibility = visibility;
                 evf.Unique = false;
             }
 
             InsertInEventFieldTable(evf);
 
-            EventFieldUser evfu = new EventFieldUser();
-            evfu.User = user;
-            evfu.EventField = evf;
+            EventFieldUserSet evfu = new EventFieldUserSet();
+            evfu.UserSet = user;
+            evfu.EventFieldSet = evf;
             evfu.Value = data;
 
             InsertInEventFieldUserTable(evfu);
         }
 
-        private bool InsertInUserTable(User user)
+        private bool InsertInUserTable(UserSet user)
         {
             return CheckBeforeInsert(
                 USER, 
@@ -317,7 +317,7 @@ namespace EasyBadgeMVVM.ViewModels
                 this._repostitoryFactory.GetUserRepository(this._dbContext));
         }
 
-        public bool InsertInEventTable(Event ev)
+        public bool InsertInEventTable(EventSet ev)
         {
             if (CheckBeforeInsert(
                 EVENT, 
@@ -334,7 +334,7 @@ namespace EasyBadgeMVVM.ViewModels
             return false;
         }
 
-        private bool InsertInFieldTable(Field field)
+        private bool InsertInFieldTable(FieldSet field)
         {
             return CheckBeforeInsert(
                 FIELD, 
@@ -344,17 +344,17 @@ namespace EasyBadgeMVVM.ViewModels
                 this._repostitoryFactory.GetFieldRepository(this._dbContext));
         }
 
-        private bool InsertInEventFieldTable(EventField eventField)
+        private bool InsertInEventFieldTable(EventFieldSet eventField)
         {
             return CheckBeforeInsert(
                 EVENTFIELD,
-                ef => ef.Event.Name.ToLower().Equals(eventField.Event.Name.ToLower()) && ef.Field.Name.ToLower().Equals(eventField.Field.Name.ToLower()),
-                ef => ef.Event.Name.ToLower().Equals(eventField.Event.Name.ToLower()) && ef.Field.Name.ToLower().Equals(eventField.Field.Name.ToLower()),
+                ef => ef.EventSet.Name.ToLower().Equals(eventField.EventSet.Name.ToLower()) && ef.FieldSet.Name.ToLower().Equals(eventField.FieldSet.Name.ToLower()),
+                ef => ef.EventSet.Name.ToLower().Equals(eventField.EventSet.Name.ToLower()) && ef.FieldSet.Name.ToLower().Equals(eventField.FieldSet.Name.ToLower()),
                 eventField,
                 this._repostitoryFactory.GetEventFieldRepository(this._dbContext));
         }
 
-        private bool InsertInEventFieldUserTable(EventFieldUser eventFieldUser)
+        private bool InsertInEventFieldUserTable(EventFieldUserSet eventFieldUser)
         {
             return CheckBeforeInsert(EVENTFIELDUSER, null, null, eventFieldUser, this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext));
         }
@@ -386,32 +386,32 @@ namespace EasyBadgeMVVM.ViewModels
             return true;
         }
 
-        public BadgeEvent InsertInBadgeEvent(int idBadge, int idEvent, string templateName)
+        public BadgeEventSet InsertInBadgeEvent(int idBadge, int idEvent, string templateName)
         {
             var repo = this._repostitoryFactory.GetBadgeEventRepository(this._dbContext);
-            var badgeEventFound = repo.SearchFor(b => b.Badge.ID_Badge == idBadge && b.Event.ID_Event == idEvent && b.Name.Equals(templateName)).FirstOrDefault();
+            var badgeEventFound = repo.SearchFor(b => b.BadgeSet.ID_Badge == idBadge && b.EventSet.ID_Event == idEvent && b.Name.Equals(templateName)).FirstOrDefault();
 
             if (badgeEventFound != null)
             {
                 return badgeEventFound;
             }
 
-            BadgeEvent be = new BadgeEvent();
-            be.Badge = this._repostitoryFactory.GetBadgeRepository(this._dbContext).SearchFor(badg => badg.ID_Badge == idBadge).FirstOrDefault();
-            be.Event = this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(eve => eve.ID_Event == idEvent).FirstOrDefault();
+            BadgeEventSet be = new BadgeEventSet();
+            be.BadgeSet = this._repostitoryFactory.GetBadgeRepository(this._dbContext).SearchFor(badg => badg.ID_Badge == idBadge).FirstOrDefault();
+            be.EventSet = this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(eve => eve.ID_Event == idEvent).FirstOrDefault();
             be.Name = templateName;
             repo.Insert(be);
             repo.SaveChanges();
 
             
-            return repo.SearchFor(b => b.Badge.ID_Badge == idBadge && b.Event.ID_Event == idEvent && b.Name.Equals(templateName)).FirstOrDefault();
+            return repo.SearchFor(b => b.BadgeSet.ID_Badge == idBadge && b.EventSet.ID_Event == idEvent && b.Name.Equals(templateName)).FirstOrDefault();
         }
 
-        public void InsertInPosition(BadgeEvent be, Field f, double posX, double posY, string fontFamily, int fontSize)
+        public void InsertInPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize)
         {
-            Position p = new Position();
-            p.BadgeEvent = be;
-            p.Field = f;
+            PositionSet p = new PositionSet();
+            p.BadgeEventSet = be;
+            p.FieldSet = f;
             p.Position_X = posX;
             p.Position_Y = posY;
             p.FontFamily = fontFamily;
@@ -423,7 +423,7 @@ namespace EasyBadgeMVVM.ViewModels
             repo.SaveChanges();
         }
 
-        public void InsertInPrintBadge(PrintBadge pb)
+        public void InsertInPrintBadge(PrintBadgeSet pb)
         {
             var repo = this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext);
             repo.Insert(pb);

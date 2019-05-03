@@ -231,7 +231,7 @@ namespace EasyBadgeMVVM
         {
             string toSearch = this.TextSearch.Text;
             this._mainWindowImpl.Search = toSearch;
-            ObservableCollection<EventFieldUser> test = this._mainWindowImpl.DoSearch();
+            ObservableCollection<EventFieldUserSet> test = this._mainWindowImpl.DoSearch();
             CreateRowsDataGrid(test);
         }
 
@@ -303,8 +303,8 @@ namespace EasyBadgeMVVM
                 var tt = this._mainWindowImpl.GetEventFieldByEvent(this._idEvent).Where(e => e.Visibility == true);
                 foreach (var eu in tt)
                 {
-                    this._mainWindowImpl.FieldToShow.Add(eu.Field.Name);
-                    myFields.Add(eu.Field.Name);
+                    this._mainWindowImpl.FieldToShow.Add(eu.FieldSet.Name);
+                    myFields.Add(eu.FieldSet.Name);
                 }
             }
 
@@ -323,9 +323,9 @@ namespace EasyBadgeMVVM
             int i = 0;
             int nbUser = 0;
             var lastObj = new object[size];
-            EventFieldUser lastUser = null;
+            EventFieldUserSet lastUser = null;
             var allPrintBadge = this._mainWindowImpl.GetAllPrintBadge();
-            var list = this._mainWindowImpl.MainFields.Where(e => e.EventField.Visibility == true);
+            var list = this._mainWindowImpl.MainFields.Where(e => e.EventFieldSet.Visibility == true);
 
             foreach (var efu in list)
             {
@@ -348,7 +348,7 @@ namespace EasyBadgeMVVM
             if (lastObj[0] != null)
             {
                 var datePrint2 = allPrintBadge.Where(p => p.UserID_User == lastUser.UserID_User).OrderByDescending(p => p.PrintDate).FirstOrDefault();
-                obj[i] = datePrint2 != null ? datePrint2.ToString() : EMPTY_COLUMN;
+                obj[i] = datePrint2 != null ? datePrint2.PrintDate.ToString() : EMPTY_COLUMN;
                 dt.Rows.Add(lastObj);
             }
 
@@ -358,31 +358,42 @@ namespace EasyBadgeMVVM
             this._dt = dt;
         }
 
-        private void CreateRowsDataGrid(ObservableCollection<EventFieldUser> list)
+        private void CreateRowsDataGrid(ObservableCollection<EventFieldUserSet> list)
         {
             this._dt.Rows.Clear();
-            var obj = new object[this._nbFields];
+            var size = this._nbFields + 1;
+            var obj = new object[size];
             int i = 0;
             int nbUser = 0;
-            var lastObj = new object[this._nbFields];
+            var lastObj = new object[size];
+            var allPrintBadge = this._mainWindowImpl.GetAllPrintBadge();
+            EventFieldUserSet lastUser = null;
 
             foreach (var efu in list)
             {
-                if (!this._mainWindowImpl.FieldToShow.Contains(efu.EventField.Field.Name)) continue;
+                if (!this._mainWindowImpl.FieldToShow.Contains(efu.EventFieldSet.FieldSet.Name)) continue;
                 if (i == this._nbFields)
                 {
+                    var datePrint = allPrintBadge.Where(p => p.UserID_User == lastUser.UserID_User).OrderByDescending(p => p.PrintDate).FirstOrDefault();
+                    obj[i] = datePrint != null ? datePrint.PrintDate.ToString() : EMPTY_COLUMN;
                     this._dt.Rows.Add(obj);
-                    obj = new object[this._nbFields];
+                    obj = new object[size];
                     i = 0;
                     nbUser++;
                 }
                 obj[i] = efu.Value;
                 i++;
                 lastObj = obj;
+                lastUser = efu;
             }
 
-            this._dt.Rows.Add(lastObj);
-            this._mainWindowImpl.NbrUser = ++nbUser;
+            if (lastObj[0] != null)
+            {
+                var datePrint2 = allPrintBadge.Where(p => p.UserID_User == lastUser.UserID_User).OrderByDescending(p => p.PrintDate).FirstOrDefault();
+                obj[i] = datePrint2 != null ? datePrint2.PrintDate.ToString() : EMPTY_COLUMN;
+                this._dt.Rows.Add(lastObj);
+            }
+            this._mainWindowImpl.NbrUser = lastObj[0] != null ? ++nbUser : 0;
             this.DataGridUsers.ItemsSource = this._dt.DefaultView;
         }
     }

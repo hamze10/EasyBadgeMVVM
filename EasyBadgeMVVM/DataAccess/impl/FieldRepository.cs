@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 
 namespace EasyBadgeMVVM.DataAccess
 {
-    public class FieldRepository : BaseRepository<Field>, IFieldRepository
+    public class FieldRepository : BaseRepository<FieldSet>, IFieldRepository
     {
-        public FieldRepository(EasyModelContext dbContext) : base(dbContext)
+        public FieldRepository(EasyBadgeModelContext dbContext) : base(dbContext)
         {
             
         }
 
-        public Field GetFieldByName(string name)
+        public FieldSet GetFieldByName(string name)
         {
-            return this._dbContext.Set<Field>().Where(f => f.Name.ToLower().Equals(name.ToLower())).SingleOrDefault();
+            return this._dbContext.Set<FieldSet>().Where(f => f.Name.ToLower().Equals(name.ToLower())).SingleOrDefault();
         }
 
-        public Field CheckSimilarField(string name)
+        public FieldSet CheckSimilarField(string name)
         {
-            Field f1 = this._dbContext.Set<Field>().Where(f => f.Name.Equals(name)).SingleOrDefault();
-            return f1 ?? this._dbContext.Set<Field>().Where(f => f.Name.ToLower().Contains(name.ToLower())).SingleOrDefault();
+            FieldSet f1 = this._dbContext.Set<FieldSet>().Where(f => f.Name.Equals(name)).SingleOrDefault();
+            return f1 ?? this._dbContext.Set<FieldSet>().Where(f => f.Name.ToLower().Contains(name.ToLower())).SingleOrDefault();
         }
     }
 }

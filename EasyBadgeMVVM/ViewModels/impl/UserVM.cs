@@ -64,7 +64,7 @@ namespace EasyBadgeMVVM.ViewModels
             this._dbEntities.SaveAllChanges();
         }
 
-        public Event GetEventById(int idEvent)
+        public EventSet GetEventById(int idEvent)
         {
             return this._dbEntities.GetEventById(idEvent);
         }

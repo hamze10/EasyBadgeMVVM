@@ -4,7 +4,7 @@ namespace EasyBadgeMVVM.DataAccess
 {
     public interface IFieldRepository
     {
-        Field GetFieldByName(string name);
-        Field CheckSimilarField(string name);
+        FieldSet GetFieldByName(string name);
+        FieldSet CheckSimilarField(string name);
     }
 }

@@ -37,7 +37,7 @@ namespace EasyBadgeMVVM.ViewModels
             this._idEvent = idEvent;
             this._dbEntities = new DbEntities();
             this._dbEntities.SetIdEvent(idEvent);
-            Event thisEvent = this._dbEntities.GetEventById(idEvent);
+            EventSet thisEvent = this._dbEntities.GetEventById(idEvent);
             this.EventTitle = thisEvent.Name + " - " + thisEvent.DateOfEvent.ToString();
         }
 
@@ -67,9 +67,9 @@ namespace EasyBadgeMVVM.ViewModels
         /********** FIELDS ************/
         /*********************************************************************************************************************************************************************/
 
-        private EventFieldUser _selectedUserEvent;
-        private ObservableCollection<EventFieldUser> _mainFields;
-        private ObservableCollection<EventFieldUser> _allUsers;
+        private EventFieldUserSet _selectedUserEvent;
+        private ObservableCollection<EventFieldUserSet> _mainFields;
+        private ObservableCollection<EventFieldUserSet> _allUsers;
         private int _nbrUser;
 
         public int NbrUser
@@ -90,7 +90,7 @@ namespace EasyBadgeMVVM.ViewModels
         //Check if delete button is pressed in search bar
         private bool _isDelete = false;
 
-        public EventFieldUser SelectedUserEvent
+        public EventFieldUserSet SelectedUserEvent
         {
             get
             {
@@ -102,7 +102,7 @@ namespace EasyBadgeMVVM.ViewModels
             }
         }
 
-        public ObservableCollection<EventFieldUser> MainFields
+        public ObservableCollection<EventFieldUserSet> MainFields
         {
             get
             {
@@ -117,7 +117,7 @@ namespace EasyBadgeMVVM.ViewModels
             }
         }
 
-        public ObservableCollection<EventFieldUser> RefreshMainsFields()
+        public ObservableCollection<EventFieldUserSet> RefreshMainsFields()
         {
             this._mainFields = this._dbEntities.GetAllUsers();
             NbrUser = this._mainFields.Count;
@@ -143,7 +143,7 @@ namespace EasyBadgeMVVM.ViewModels
             }
         }
 
-        public ObservableCollection<EventFieldUser> DoSearch()
+        public ObservableCollection<EventFieldUserSet> DoSearch()
         {
             var toSearch = this._search.ToLower();
             if (toSearch.Length == 0 || toSearch.Trim() == "")
@@ -156,18 +156,18 @@ namespace EasyBadgeMVVM.ViewModels
             string[] splitted = toSearch.Split(' ');
             toSearch = splitted.Length <= 1 ? splitted[0] : splitted[splitted.Length - 1];
 
-            Func<EventFieldUser, bool> predicate = ef => ef.EventField.EventID_Event == this._idEvent 
+            Func<EventFieldUserSet, bool> predicate = ef => ef.EventFieldSet.EventID_Event == this._idEvent 
                                                         && ef.Value != null
                                                         && ef.Value.ToLower().Contains(toSearch);
 
-            ObservableCollection<EventFieldUser> toSend = new ObservableCollection<EventFieldUser>();
+            ObservableCollection<EventFieldUserSet> toSend = new ObservableCollection<EventFieldUserSet>();
 
             foreach(var tt in this._mainFields.AsParallel().Where(predicate))
             {
                 var p = this._mainFields.AsParallel().Where(ee => ee.UserID_User == tt.UserID_User);
                 foreach (var tte in p)
                 {
-                    if (this.FieldToShow.Contains(tte.EventField.Field.Name))
+                    if (this.FieldToShow.Contains(tte.EventFieldSet.FieldSet.Name))
                     {
                         toSend.Add(tte);
                     }
@@ -205,12 +205,12 @@ namespace EasyBadgeMVVM.ViewModels
                 {
                     //1 Recupérer tous les champs dans la DB
                     //2 Ouvrir fenetre FieldMatching(list field_import, list field_db) 
-                    ObservableCollection<Field> fieldsDB = this._dbEntities.GetAllFields();
-                    ObservableCollection<Field> fieldsImport = new ObservableCollection<Field>();
+                    ObservableCollection<FieldSet> fieldsDB = this._dbEntities.GetAllFields();
+                    ObservableCollection<FieldSet> fieldsImport = new ObservableCollection<FieldSet>();
 
                     foreach(string field2 in s.Split(','))
                     {
-                        Field f = new Field();
+                        FieldSet f = new FieldSet();
                         f.Name = field2;
                         fieldsImport.Add(f);
                     }
@@ -286,22 +286,22 @@ namespace EasyBadgeMVVM.ViewModels
             return null;
         }
 
-        public List<EventFieldUser> GetEventFieldUserByValues(List<string> values)
+        public List<EventFieldUserSet> GetEventFieldUserByValues(List<string> values)
         {
             return this._dbEntities.GetEventFieldUserByValues(values);
         }
 
-        public List<EventFieldUser> GetAllFieldsOfEvent(int idEvent)
+        public List<EventFieldUserSet> GetAllFieldsOfEvent(int idEvent)
         {
             return this._dbEntities.GetAllFieldsOfEvent(idEvent);
         }
 
-        public ObservableCollection<EventField> GetEventFieldByEvent(int idEvent)
+        public ObservableCollection<EventFieldSet> GetEventFieldByEvent(int idEvent)
         {
             return this._dbEntities.GetEventFieldByEvent(idEvent);
         }
 
-        public List<PrintBadge> GetAllPrintBadge()
+        public List<PrintBadgeSet> GetAllPrintBadge()
         {
             return this._dbEntities.GetAllPrintBadge();
         }
