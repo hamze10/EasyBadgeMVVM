@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyBadgeMVVM.Views"
         mc:Ignorable="d"
-        Title="Add a new user" Height="730" Width="1400" WindowStartupLocation="CenterScreen"
+        Title="Add a new user" Height="1080" Width="1920" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <ScrollViewer>
         <Grid Name="UserWindowGrid">
@@ -16,11 +16,33 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="90" />
+                <RowDefinition Height="100" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid Name="TitleBar" Background="#0a3d62" Grid.ColumnSpan="3">
-                <Label Content="USER INFORMATIONS" Canvas.Left="487" Height="70" Width="407" FontSize="40" Foreground="White" />
+                <Label Content="USER INFORMATIONS" Height="70" Width="407" FontSize="40" Foreground="White" />
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.Row="1">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3" UniformCornerRadius="6" Height="526" Margin="42,64,-308,0" Padding="10">
+                    <ScrollViewer Margin="0,19,0,0">
+                        <Grid Name="MyCard">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Grid.ColumnSpan="3">
+                                <Image Source="pack://application:,,,/asset/images/pin-icon.png" HorizontalAlignment="Left" />
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+                </materialDesign:Card>
             </Grid>
         </Grid>
     </ScrollViewer>

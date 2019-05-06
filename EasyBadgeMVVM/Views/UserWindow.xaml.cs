@@ -41,7 +41,7 @@ namespace EasyBadgeMVVM.Views
 
         private const int FONTSIZELABEL = 16;
         private const double GRIDLENGTHHEIGHT = 60;
-        private const int COLUMNPROPS = 2;
+        private const int COLUMNPROPS = 1;
         private const double MM_PX = 3.779528;
         private const int MAXFONT = 17;
 
@@ -74,31 +74,15 @@ namespace EasyBadgeMVVM.Views
 
         private void ShowUser()
         {
-            for (int i = 1; i <= this._currentUser.Count; i++)
-            {
-                CreateFields(i);
-
-                Grid grid2 = new Grid();
-                grid2.Background = this.brushes[i % this.brushes.Length];
-                grid2.SetValue(Grid.RowProperty, i);
-                grid2.SetValue(Grid.ColumnProperty, COLUMNPROPS);
-
-                Label label2 = new Label();
-                label2.Name = SHOWNAME + i;
-                label2.Content = this._currentUser[(i - 1)].Value;
-                label2.VerticalAlignment = VerticalAlignment.Center;
-                label2.FontSize = FONTSIZELABEL;
-                grid2.Children.Add(label2);
-
-                this.UserWindowGrid.Children.Add(grid2);
-
-                RegisterName(SHOWNAME + i, label2);
-            }
-
-            CreateButton(BUTTON_PRINTBADGE, this._currentUser.Count + 1);
+            CreateUserUI(SHOWNAME, true, BUTTON_PRINTBADGE);
         }
 
         private void NewUser()
+        {
+            CreateUserUI(NEWNAME, false, BUTTON_CONFIRM);
+        }
+
+        private void CreateUserUI(string name, bool text, string buttonName)
         {
             for (int i = 1; i <= this._currentUser.Count; i++)
             {
@@ -109,27 +93,28 @@ namespace EasyBadgeMVVM.Views
                 grid2.SetValue(Grid.RowProperty, i);
                 grid2.SetValue(Grid.ColumnProperty, COLUMNPROPS);
 
-                TextBox textBox = new TextBox();
-                textBox.Name = NEWNAME + i;
-                textBox.Width = 500;
-                textBox.FontSize = FONTSIZELABEL;
-                textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                textBox.VerticalAlignment = VerticalAlignment.Center;
-                grid2.Children.Add(textBox);
+                TextBox textbox2 = new TextBox();
+                textbox2.Name = name + i;
+                textbox2.Width = 500;
+                textbox2.Text = text ? this._currentUser[(i - 1)].Value : string.Empty; //DatePicker ??
+                textbox2.VerticalAlignment = VerticalAlignment.Center;
+                textbox2.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                textbox2.FontSize = FONTSIZELABEL;
+                grid2.Children.Add(textbox2);
 
-                this.UserWindowGrid.Children.Add(grid2);
+                this.MyCard.Children.Add(grid2);
 
-                RegisterName(NEWNAME + i, textBox);
+                RegisterName(name + i, textbox2);
             }
 
-            CreateButton(BUTTON_CONFIRM, this._currentUser.Count + 1);
+            CreateButton(buttonName, this._currentUser.Count + 1);
         }
 
         private void CreateFields(int i)
         {
             RowDefinition rowDefinition = new RowDefinition();
             rowDefinition.Height = new GridLength(GRIDLENGTHHEIGHT);
-            this.UserWindowGrid.RowDefinitions.Add(rowDefinition);
+            this.MyCard.RowDefinitions.Add(rowDefinition);
 
             Grid grid = new Grid();
             grid.Background = this.brushes[i % this.brushes.Length];
@@ -141,9 +126,10 @@ namespace EasyBadgeMVVM.Views
             label.Content = this._currentUser[(i - 1)].EventFieldSet.FieldSet.Name + " : ";
             label.FontSize = FONTSIZELABEL;
             label.VerticalAlignment = VerticalAlignment.Center;
+            label.FontWeight = FontWeights.Bold;
             grid.Children.Add(label);
 
-            this.UserWindowGrid.Children.Add(grid);
+            this.MyCard.Children.Add(grid);
 
             RegisterName(LABELFIELDNAME + i, label);
         }
@@ -156,7 +142,7 @@ namespace EasyBadgeMVVM.Views
 
             Grid grid = new Grid();
             grid.SetValue(Grid.RowProperty, i);
-            grid.SetValue(Grid.ColumnProperty, COLUMNPROPS - 1);
+            grid.SetValue(Grid.ColumnProperty, COLUMNPROPS);
 
             Button button = new Button();
             button.Content = content;

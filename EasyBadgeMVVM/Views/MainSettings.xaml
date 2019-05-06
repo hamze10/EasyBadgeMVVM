@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyBadgeMVVM.Views"
         mc:Ignorable="d"
-        Title="MainSettings" Height="720" Width="1024"
+        Title="MainSettings" Height="720" Width="1024" WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Grid>
