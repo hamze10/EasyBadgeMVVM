@@ -19,9 +19,10 @@ namespace EasyBadgeMVVM.Models
         public string HexaCode { get; set; }
         public int TargetID_Target { get; set; }
         public int BadgeEventID_BadgeEvent { get; set; }
+        public Nullable<int> BadgeEventSetID_BadgeEvent { get; set; }
     
-        public virtual BadgeEventSet BadgeEventSet { get; set; }
         public virtual FilterSet FilterSet { get; set; }
         public virtual TargetSet TargetSet { get; set; }
+        public virtual BadgeEventSet BadgeEventSet { get; set; }
     }
 }

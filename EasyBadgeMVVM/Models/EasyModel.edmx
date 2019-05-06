@@ -379,8 +379,8 @@
           <Property Name="DefaultPrint" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="BadgeSet" Relationship="Self.FK_BadgeBadgeEvent" FromRole="BadgeEventSet" ToRole="BadgeSet" />
           <NavigationProperty Name="PositionSets" Relationship="Self.FK_BadgeEventPosition" FromRole="BadgeEventSet" ToRole="PositionSet" />
-          <NavigationProperty Name="RuleSets" Relationship="Self.FK_BadgeEventRule" FromRole="BadgeEventSet" ToRole="RuleSet" />
           <NavigationProperty Name="EventSet" Relationship="Self.FK_EventBadgeEvent" FromRole="BadgeEventSet" ToRole="EventSet" />
+          <NavigationProperty Name="RuleSets" Relationship="EasyBadge2019Model.BadgeEventSetRuleSet" FromRole="BadgeEventSet" ToRole="RuleSet" />
         </EntityType>
         <EntityType Name="BadgeSet">
           <Key>
@@ -490,9 +490,10 @@
           <Property Name="HexaCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TargetID_Target" Type="Int32" Nullable="false" />
           <Property Name="BadgeEventID_BadgeEvent" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="BadgeEventSet" Relationship="Self.FK_BadgeEventRule" FromRole="RuleSet" ToRole="BadgeEventSet" />
           <NavigationProperty Name="FilterSet" Relationship="Self.FK_FilterRule" FromRole="RuleSet" ToRole="FilterSet" />
           <NavigationProperty Name="TargetSet" Relationship="Self.FK_TargetRule" FromRole="RuleSet" ToRole="TargetSet" />
+          <NavigationProperty Name="BadgeEventSet" Relationship="EasyBadge2019Model.BadgeEventSetRuleSet" FromRole="RuleSet" ToRole="BadgeEventSet" />
+          <Property Name="BadgeEventSetID_BadgeEvent" Type="Int32" Nullable="true" />
         </EntityType>
         <EntityType Name="TargetSet">
           <Key>
@@ -533,18 +534,6 @@
               <PropertyRef Name="ID_BadgeEvent" />
             </Principal>
             <Dependent Role="PositionSet">
-              <PropertyRef Name="BadgeEventID_BadgeEvent" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BadgeEventRule">
-          <End Role="BadgeEventSet" Type="Self.BadgeEventSet" Multiplicity="1" />
-          <End Role="RuleSet" Type="Self.RuleSet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BadgeEventSet">
-              <PropertyRef Name="ID_BadgeEvent" />
-            </Principal>
-            <Dependent Role="RuleSet">
               <PropertyRef Name="BadgeEventID_BadgeEvent" />
             </Dependent>
           </ReferentialConstraint>
@@ -706,10 +695,6 @@
             <End Role="BadgeEventSet" EntitySet="BadgeEventSets" />
             <End Role="PositionSet" EntitySet="PositionSets" />
           </AssociationSet>
-          <AssociationSet Name="FK_BadgeEventRule" Association="Self.FK_BadgeEventRule">
-            <End Role="BadgeEventSet" EntitySet="BadgeEventSets" />
-            <End Role="RuleSet" EntitySet="RuleSets" />
-          </AssociationSet>
           <AssociationSet Name="FK_EventBadgeEvent" Association="Self.FK_EventBadgeEvent">
             <End Role="EventSet" EntitySet="EventSets" />
             <End Role="BadgeEventSet" EntitySet="BadgeEventSets" />
@@ -754,7 +739,23 @@
             <End Role="TargetSet" EntitySet="TargetSets" />
             <End Role="RuleSet" EntitySet="RuleSets" />
           </AssociationSet>
+          <AssociationSet Name="BadgeEventSetRuleSet" Association="EasyBadge2019Model.BadgeEventSetRuleSet">
+            <End Role="BadgeEventSet" EntitySet="BadgeEventSets" />
+            <End Role="RuleSet" EntitySet="RuleSets" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="BadgeEventSetRuleSet">
+          <End Type="EasyBadge2019Model.BadgeEventSet" Role="BadgeEventSet" Multiplicity="0..1" />
+          <End Type="EasyBadge2019Model.RuleSet" Role="RuleSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BadgeEventSet">
+              <PropertyRef Name="ID_BadgeEvent" />
+            </Principal>
+            <Dependent Role="RuleSet">
+              <PropertyRef Name="BadgeEventSetID_BadgeEvent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
