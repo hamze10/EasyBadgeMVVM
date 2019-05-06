@@ -31,6 +31,7 @@ namespace EasyBadgeMVVM.ViewModels
         ObservableCollection<FieldSet> GetAllFields();
         ObservableCollection<EventFieldSet> GetEventFieldByEvent(int idEvent);
         bool GetVisibilityField(string field);
+
         ObservableCollection<BadgeSet> GetAllBadges();
         BadgeEventSet InsertInBadgeEvent(int idBadge, int idEvent, string templateName);
         void InsertInPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize);
@@ -43,5 +44,23 @@ namespace EasyBadgeMVVM.ViewModels
         BadgeEventSet GetDefaultBadgeEvent();
         void InsertInPrintBadge(PrintBadgeSet pb);
         List<PrintBadgeSet> GetAllPrintBadge();
+
+
+        ObservableCollection<FilterSet> GetAllFilters();
+        ObservableCollection<FilterSet> GetAllFilters(int eventId);
+        void InsertNewFilter(FilterSet newFilter);
+        void UpdateFilter(int filterId, FilterSet updatedFilter);
+        void DeleteFilter(int filterId);
+
+        ObservableCollection<RuleSet> GetAllRules(int filterId);
+        void InsertNewRule(RuleSet newRule);
+        void UpdateRule(int ruleId, RuleSet updatedRule);
+        void DeleteRule(int ruleId);
+
+        ObservableCollection<TargetSet> GetAllTargets();
+        void InsertNewTarget(TargetSet newTarget);
+
+        ObservableCollection<BadgeEventSet> GetAllBadgeEvent(int eventId);
+
     }
 }

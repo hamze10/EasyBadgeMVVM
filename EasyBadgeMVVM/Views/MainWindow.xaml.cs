@@ -235,15 +235,6 @@ namespace EasyBadgeMVVM
             CreateRowsDataGrid(test);
         }
 
-        private void SettingsButton(object sender, RoutedEventArgs e)
-        {
-            ConfigBadge configBadge = new ConfigBadge(this._idEvent);
-            configBadge.Show();
-
-            /*MainSettings mainSettings = new MainSettings();
-            mainSettings.Show();*/
-        }
-
         /*********************************************************************************************************************************************************************/
         /*********** BACKGROUNDWORKERS *************/
         /*********************************************************************************************************************************************************************/
@@ -396,5 +387,17 @@ namespace EasyBadgeMVVM
             this._mainWindowImpl.NbrUser = lastObj[0] != null ? ++nbUser : 0;
             this.DataGridUsers.ItemsSource = this._dt.DefaultView;
         }
+
+        private void SettingsButton(object sender, RoutedEventArgs e)
+        {
+            /*ConfigBadge configBadge = new ConfigBadge(this._idEvent);
+            configBadge.Show();*/
+            FiltersWindow filtersWindow = new FiltersWindow(this._idEvent);
+            filtersWindow.Show();
+
+            /*MainSettings mainSettings = new MainSettings();
+            mainSettings.Show();*/
+        }
+
     }
 }

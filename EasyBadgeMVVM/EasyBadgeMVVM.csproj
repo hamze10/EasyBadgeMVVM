@@ -78,6 +78,21 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -91,17 +106,23 @@
     <Compile Include="DataAccess\impl\EventFieldUserRepository.cs" />
     <Compile Include="DataAccess\impl\EventRepository.cs" />
     <Compile Include="DataAccess\impl\FieldRepository.cs" />
+    <Compile Include="DataAccess\impl\FilterRepository.cs" />
     <Compile Include="DataAccess\impl\PositionRepository.cs" />
     <Compile Include="DataAccess\impl\PrintBadgeRepository.cs" />
+    <Compile Include="DataAccess\impl\RuleRepository.cs" />
+    <Compile Include="DataAccess\impl\TargetRepository.cs" />
     <Compile Include="DataAccess\interfaces\IBadgeEventRepository.cs" />
     <Compile Include="DataAccess\interfaces\IBadgeRepository.cs" />
     <Compile Include="DataAccess\interfaces\IEventFieldRepository.cs" />
     <Compile Include="DataAccess\interfaces\IEventFieldUserRepository.cs" />
     <Compile Include="DataAccess\interfaces\IEventRepository.cs" />
     <Compile Include="DataAccess\interfaces\IFieldRepository.cs" />
+    <Compile Include="DataAccess\interfaces\IFilterRepository.cs" />
     <Compile Include="DataAccess\interfaces\IPositionRepository.cs" />
     <Compile Include="DataAccess\interfaces\IPrintBadgeRepository.cs" />
     <Compile Include="DataAccess\interfaces\IRepository.cs" />
+    <Compile Include="DataAccess\interfaces\IRuleRepository.cs" />
+    <Compile Include="DataAccess\interfaces\ITargetRepository.cs" />
     <Compile Include="DataAccess\interfaces\IUserRepository.cs" />
     <Compile Include="DataAccess\impl\UserRepository.cs" />
     <Compile Include="Models\BadgeEventSet.cs">
@@ -159,8 +180,12 @@
     <Compile Include="ViewModels\impl\DbEntities.cs" />
     <Compile Include="ViewModels\impl\EventVM.cs" />
     <Compile Include="ViewModels\impl\FieldVM.cs" />
+    <Compile Include="ViewModels\impl\FilterVM.cs" />
+    <Compile Include="ViewModels\impl\RuleVM.cs" />
     <Compile Include="ViewModels\interfaces\IBadgeVM.cs" />
     <Compile Include="ViewModels\interfaces\IFieldVM.cs" />
+    <Compile Include="ViewModels\interfaces\IFilterVM.cs" />
+    <Compile Include="ViewModels\interfaces\IRuleVM.cs" />
     <Compile Include="ViewModels\interfaces\IUserVM.cs" />
     <Compile Include="ViewModels\impl\UserVM.cs" />
     <Compile Include="ViewModels\interfaces\IDbEntities.cs" />
@@ -175,8 +200,14 @@
     <Compile Include="Views\ConfigBadge.xaml.cs">
       <DependentUpon>ConfigBadge.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FiltersWindow.xaml.cs">
+      <DependentUpon>FiltersWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainSettings.xaml.cs">
       <DependentUpon>MainSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RulesWindow.xaml.cs">
+      <DependentUpon>RulesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserWindow.xaml.cs">
       <DependentUpon>UserWindow.xaml</DependentUpon>
@@ -185,6 +216,10 @@
       <DependentUpon>SelectEvent.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\FieldMatching.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FiltersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -205,6 +240,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ConfigBadge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RulesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

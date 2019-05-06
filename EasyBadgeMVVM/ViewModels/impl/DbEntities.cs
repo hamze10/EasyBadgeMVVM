@@ -128,6 +128,18 @@ namespace EasyBadgeMVVM.ViewModels
             );
         }
 
+        public ObservableCollection<BadgeEventSet> GetAllBadgeEvent(int eventId)
+        {
+            ObservableCollection<BadgeEventSet> all = new ObservableCollection<BadgeEventSet>(this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).GetAll());
+            List<BadgeEventSet> result = all.Where(be => be.EventID_Event == eventId).ToList();
+            ObservableCollection<BadgeEventSet> toReturn = new ObservableCollection<BadgeEventSet>();
+            foreach (BadgeEventSet item in result)
+            {
+                toReturn.Add(item);
+            }
+            return toReturn;
+        }
+
         public BadgeEventSet GetBadgeEvent(int idBadge, int idEvent)
         {
             return this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).SearchFor(be => be.BadgeID_Badge == idBadge && be.EventID_Event == idEvent).FirstOrDefault();
@@ -164,9 +176,44 @@ namespace EasyBadgeMVVM.ViewModels
 
         }
 
+
         public List<PrintBadgeSet> GetAllPrintBadge()
         {
             return this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext).SearchFor(p => p.EventID_Event == this._idEvent).ToList();
+        }
+
+        public ObservableCollection<FilterSet> GetAllFilters()
+        {
+            return new ObservableCollection<FilterSet>(this._repostitoryFactory.GetFilterRepository(this._dbContext).GetAll());
+        }
+
+        public ObservableCollection<FilterSet> GetAllFilters(int eventId)
+        {
+            ObservableCollection<FilterSet> all = new ObservableCollection<FilterSet>(this._repostitoryFactory.GetFilterRepository(this._dbContext).GetAll());
+            List<FilterSet> result = all.Where(f => f.EventFieldEventID_Event == eventId).ToList();
+            ObservableCollection<FilterSet> toReturn = new ObservableCollection<FilterSet>();
+            foreach(FilterSet item in result)
+            {
+                toReturn.Add(item);
+            }
+            return toReturn;
+        }
+
+        public ObservableCollection<RuleSet> GetAllRules(int filterId)
+        {
+            ObservableCollection<RuleSet> all = new ObservableCollection<RuleSet>(this._repostitoryFactory.GetRuleRepository(this._dbContext).GetAll());
+            List<RuleSet> result = all.Where(r => r.FilterID_Filter == filterId).ToList();
+            ObservableCollection<RuleSet> toReturn = new ObservableCollection<RuleSet>();
+            foreach (RuleSet item in result)
+            {
+                toReturn.Add(item);
+            }
+            return toReturn;
+        }
+
+        public ObservableCollection<TargetSet> GetAllTargets()
+        {
+            return new ObservableCollection<TargetSet>(this._repostitoryFactory.GetTargetRepository(this._dbContext).GetAll());
         }
 
         /*********************************************************************************************************************************************************************/
@@ -440,6 +487,50 @@ namespace EasyBadgeMVVM.ViewModels
                 .UpdateDefaultPrint(idBadgeEvent, this._idEvent);
         }
 
+        public void InsertNewFilter(FilterSet newFilter)
+        {
+            this._repostitoryFactory.GetFilterRepository(this._dbContext).Insert(newFilter);
+        }
+
+        public void UpdateFilter(int filterId, FilterSet updatedFilter)
+        {
+            this._repostitoryFactory.GetFilterRepository(this._dbContext).UpdateFilter(filterId, updatedFilter);
+        }
+
+        public void DeleteFilter(int filterId)
+        {
+            FilterSet filterToDelete = this._repostitoryFactory.GetFilterRepository(this._dbContext).GetById(filterId);
+            List<RuleSet> rulesToDelete = this._repostitoryFactory.GetRuleRepository(this._dbContext).GetAll()
+                .Where(r => r.FilterID_Filter == filterToDelete.ID_Filter).ToList();
+            foreach(RuleSet item in rulesToDelete)
+            {
+                DeleteRule(item.ID_Rule);
+            }
+            this._repostitoryFactory.GetFilterRepository(this._dbContext).Delete(filterToDelete);
+        }
+
+        public void InsertNewRule(RuleSet newRule)
+        {
+            this._repostitoryFactory.GetRuleRepository(this._dbContext).Insert(newRule);
+        }
+
+        public void UpdateRule(int ruleId, RuleSet updatedRule)
+        {
+            this._repostitoryFactory.GetRuleRepository(this._dbContext).UpdateRule(ruleId, updatedRule);
+        }
+
+        public void DeleteRule(int ruleId)
+        {
+            RuleSet ruleToDelete = this._repostitoryFactory.GetRuleRepository(this._dbContext).GetById(ruleId);
+            this._repostitoryFactory.GetRuleRepository(this._dbContext).Delete(ruleToDelete);
+        }
+
+        public void InsertNewTarget(TargetSet newTarget)
+        {
+            this._repostitoryFactory.GetTargetRepository(this._dbContext).Insert(newTarget);
+        }
+
+
         /*********************************************************************************************************************************************************************/
         /*********** OTHER *************/
         /*********************************************************************************************************************************************************************/
@@ -452,6 +543,9 @@ namespace EasyBadgeMVVM.ViewModels
             this._repostitoryFactory.GetEventFieldRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).SaveChanges();
             this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext).SaveChanges();
+            this._repostitoryFactory.GetFilterRepository(this._dbContext).SaveChanges();
+            this._repostitoryFactory.GetRuleRepository(this._dbContext).SaveChanges();
+            this._repostitoryFactory.GetTargetRepository(this._dbContext).SaveChanges();
         }
 
         public void Clear()
