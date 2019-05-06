@@ -184,6 +184,7 @@
     <Property Name="HexaCode" Type="nvarchar(max)" Nullable="false" />
     <Property Name="TargetID_Target" Type="int" Nullable="false" />
     <Property Name="BadgeEventID_BadgeEvent" Type="int" Nullable="false" />
+    <Property Name="BadgeEvent_ID_BadgeEvent" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="TargetSet">
     <Key>
@@ -353,14 +354,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="BadgeEventRule">
-    <End Role="BadgeEvent" Type="EasyModel.Store.BadgeEventSet" Multiplicity="1" />
+    <End Role="BadgeEvent" Type="EasyModel.Store.BadgeEventSet" Multiplicity="0..1" />
     <End Role="Rule" Type="EasyModel.Store.RuleSet" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="BadgeEvent">
         <PropertyRef Name="ID_BadgeEvent" />
       </Principal>
       <Dependent Role="Rule">
-        <PropertyRef Name="BadgeEventID_BadgeEvent" />
+        <PropertyRef Name="BadgeEvent_ID_BadgeEvent" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -621,8 +622,8 @@
           <Property Name="BadgeID_Badge" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Positions" Relationship="EasyModel.BadgeEventPosition" FromRole="BadgeEvent" ToRole="Position" />
-          <NavigationProperty Name="Rules" Relationship="EasyModel.BadgeEventRule" FromRole="BadgeEvent" ToRole="Rule" />
           <Property Name="DefaultPrint" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Rules" Relationship="EasyModel.BadgeEventRule" FromRole="BadgeEvent" ToRole="Rule" />
         </EntityType>
         <Association Name="EventBadgeEvent">
           <End Type="EasyModel.Event" Role="Event" Multiplicity="1" />
@@ -680,8 +681,8 @@
           <NavigationProperty Name="EventField" Relationship="EasyModel.EventFieldFilter" FromRole="Filter" ToRole="EventField" />
           <Property Name="EventFieldFieldID_Field" Type="Int32" Nullable="false" />
           <Property Name="EventFieldEventID_Event" Type="Int32" Nullable="false" />
-          <Property Name="LogicalOperator" Type="String" Nullable="false" />
-          <Property Name="Value" Type="String" Nullable="false" />
+          <Property Name="LogicalOperator" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Rules" Relationship="EasyModel.FilterRule" FromRole="Filter" ToRole="Rule" />
         </EntityType>
         <Association Name="EventFieldFilter">
@@ -705,11 +706,11 @@
           <Property Name="ID_Rule" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Filter" Relationship="EasyModel.FilterRule" FromRole="Rule" ToRole="Filter" />
           <Property Name="FilterID_Filter" Type="Int32" Nullable="false" />
-          <Property Name="HexaCode" Type="String" Nullable="false" />
+          <Property Name="HexaCode" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Target" Relationship="EasyModel.TargetRule" FromRole="Rule" ToRole="Target" />
           <Property Name="TargetID_Target" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="BadgeEvent" Relationship="EasyModel.BadgeEventRule" FromRole="Rule" ToRole="BadgeEvent" />
           <Property Name="BadgeEventID_BadgeEvent" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BadgeEvent" Relationship="EasyModel.BadgeEventRule" FromRole="Rule" ToRole="BadgeEvent" />
         </EntityType>
         <Association Name="FilterRule">
           <End Type="EasyModel.Filter" Role="Filter" Multiplicity="1" />
@@ -728,7 +729,7 @@
             <PropertyRef Name="ID_Target" />
           </Key>
           <Property Name="ID_Target" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Rules" Relationship="EasyModel.TargetRule" FromRole="Target" ToRole="Rule" />
         </EntityType>
         <Association Name="TargetRule">
@@ -744,16 +745,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="BadgeEventRule">
-          <End Type="EasyModel.BadgeEvent" Role="BadgeEvent" Multiplicity="1" />
+          <End Type="EasyModel.BadgeEvent" Role="BadgeEvent" Multiplicity="0..1" />
           <End Type="EasyModel.Rule" Role="Rule" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BadgeEvent">
-              <PropertyRef Name="ID_BadgeEvent" />
-            </Principal>
-            <Dependent Role="Rule">
-              <PropertyRef Name="BadgeEventID_BadgeEvent" />
-            </Dependent>
-          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -886,6 +879,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <AssociationSetMapping Name="BadgeEventRule" TypeName="EasyModel.BadgeEventRule" StoreEntitySet="RuleSet">
+      <EndProperty Name="BadgeEvent">
+        <ScalarProperty Name="ID_BadgeEvent" ColumnName="BadgeEvent_ID_BadgeEvent" />
+      </EndProperty>
+      <EndProperty Name="Rule">
+        <ScalarProperty Name="ID_Rule" ColumnName="ID_Rule" />
+      </EndProperty>
+      <Condition ColumnName="BadgeEvent_ID_BadgeEvent" IsNull="false" />
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

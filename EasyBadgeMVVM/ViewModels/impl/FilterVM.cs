@@ -66,5 +66,14 @@ namespace EasyBadgeMVVM.ViewModels.impl
             }
             dbEntities.SaveAllChanges();
         }
+
+        /// <summary>
+        /// Delete the filter with the given Filter_ID
+        /// </summary>
+        public void DeleteFilter(int filterId)
+        {
+            dbEntities.DeleteFilter(filterId);
+            dbEntities.SaveAllChanges();
+        }
     }    
 }

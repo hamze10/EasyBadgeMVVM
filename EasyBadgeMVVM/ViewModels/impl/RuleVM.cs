@@ -12,8 +12,8 @@ namespace EasyBadgeMVVM.ViewModels.impl
     public class RuleVM : IRuleVM
     {
         private int filterId;
-        private Filter filter;  // filter
-        private Field field;    // field choosen for the filter
+        private Filter currentFilter;
+        private Field field;
         private ObservableCollection<Target> targets;
         private ObservableCollection<BadgeEvent> badgeEvents;
 
@@ -24,6 +24,38 @@ namespace EasyBadgeMVVM.ViewModels.impl
         {
             this.filterId = filterId;
             this.dbEntities = new DbEntities();
+        }
+
+        /// <summary>
+        /// Insert the new rule to the collection (+ DB)
+        /// </summary>
+        public Rule SaveNewRule(Rule newRule)
+        {
+            dbEntities.InsertNewRule(newRule);
+            dbEntities.SaveAllChanges();
+            rules.Add(newRule);
+            return dbEntities.GetAllRules(filterId).OrderBy(r => r.ID_Rule).Last();
+        }
+
+        /// <summary>
+        /// Update all rules of the collection
+        /// </summary>
+        public void UpdateAllRules()
+        {
+            foreach (Rule item in rules)
+            {
+                dbEntities.UpdateRule(item.ID_Rule, item);
+            }
+            dbEntities.SaveAllChanges();
+        }
+
+        /// <summary>
+        /// Delete the rule with the given Rule_ID
+        /// </summary>
+        public void DeleteRule(int ruleId)
+        {
+            dbEntities.DeleteRule(ruleId);
+            dbEntities.SaveAllChanges();
         }
 
         public ObservableCollection<Rule> Rules
@@ -40,9 +72,9 @@ namespace EasyBadgeMVVM.ViewModels.impl
         {
             get
             {
-                if (filter == null)
-                    filter = dbEntities.GetAllFilters().FirstOrDefault(f => f.ID_Filter == filterId);
-                return filter;
+                if (currentFilter == null)
+                    currentFilter = dbEntities.GetAllFilters().FirstOrDefault(f => f.ID_Filter == filterId);
+                return currentFilter;
             }
         }
 
@@ -74,8 +106,31 @@ namespace EasyBadgeMVVM.ViewModels.impl
         {
             get
             {
-                //if (badgeEvents == null)
-                    //badgeEvents = dbEntities.GetAllBadgeEvent(idEvent);
+                if (badgeEvents == null)
+                {
+                    badgeEvents = dbEntities.GetAllBadgeEvent();
+                    /*
+                    badgeEvents = new ObservableCollection<BadgeEvent>
+                    {
+                        new BadgeEvent
+                        {
+                            ID_BadgeEvent = 1,
+                            EventID_Event = 1,
+                            BadgeID_Badge = -1,
+                            Name = "BadgeEventName1",
+                            DefaultPrint = true
+                        },
+                        new BadgeEvent
+                        {
+                            ID_BadgeEvent = 2,
+                            EventID_Event = 1,
+                            BadgeID_Badge = -1,
+                            Name = "BadgeEventName2",
+                            DefaultPrint = false
+                        },
+                    };
+                    */
+                }
                 return badgeEvents;
             }
         }

@@ -19,6 +19,7 @@ namespace EasyBadgeMVVM.DataAccess.impl
         public void UpdateFilter(int filterId, Filter updatedFilter)
         {
             Filter toUpdate = this._dbContext.Set<Filter>().FirstOrDefault(f => f.ID_Filter == filterId);
+            if (toUpdate == null) return;
             toUpdate.EventFieldFieldID_Field = updatedFilter.EventFieldFieldID_Field;
             toUpdate.LogicalOperator = updatedFilter.LogicalOperator;
             toUpdate.Value = updatedFilter.Value;

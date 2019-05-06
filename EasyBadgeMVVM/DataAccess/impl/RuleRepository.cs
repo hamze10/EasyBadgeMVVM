@@ -19,6 +19,7 @@ namespace EasyBadgeMVVM.DataAccess.impl
         public void UpdateRule(int ruleId, Rule updatedRule)
         {
             Rule toUpdate = this._dbContext.Set<Rule>().FirstOrDefault(r => r.ID_Rule == ruleId);
+            if (toUpdate == null) return;
             toUpdate.HexaCode = updatedRule.HexaCode;
             toUpdate.TargetID_Target = updatedRule.TargetID_Target;
             toUpdate.BadgeEventID_BadgeEvent = updatedRule.BadgeEventID_BadgeEvent;

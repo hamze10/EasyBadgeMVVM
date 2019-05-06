@@ -15,16 +15,20 @@ namespace EasyBadgeMVVM.Views
     /// </summary>
     public partial class FiltersWindow : Window
     {
-        private SolidColorBrush[] brushes = new SolidColorBrush[2] { System.Windows.Media.Brushes.White, System.Windows.Media.Brushes.WhiteSmoke };
         Dictionary<string, bool> stopProcessSelectionChanged;
         Dictionary<int, int> filterIds;
         private static readonly IEnumerable<string> LOGICAL_OPERATORS = new string[] {
-            "<", "<=", "=", ">=", ">", "starts with", "contains", "<>"
+            "<", "<=", "=", ">=", ">",
+            "length <", "length <=", "length =", "length >=", "length >", "length <>",
+            "starts with", "contains", "<>"
         };
         public static readonly string FILTER_FIELDSLIST_NAME = "filterfieldslist";
         public static readonly string FILTER_LOGICALOPERATORLIST_NAME = "filterlogicaloperatorlist";
         public static readonly string FILTER_VALUE_NAME = "filtervalue";
         public static readonly string RULES_BUTTON_NAME = "rulesbuttonname_";
+        HashSet<int> deletedFilters;  // name ids
+        public static readonly string FILTER_DELETE_FILTER_NAME = "filterdelete_";
+        public static readonly string FILTER_ID = "filter_id_";
 
         private FilterVM filterVM;
         private int eventId;
@@ -39,6 +43,7 @@ namespace EasyBadgeMVVM.Views
             this.newFilter = null;
             this.filterIds = new Dictionary<int, int>();
             this.stopProcessSelectionChanged = new Dictionary<string, bool>();
+            this.deletedFilters = new HashSet<int>();
             InitializeComponent();
             InitializeFilterScreen();
         }
@@ -143,6 +148,18 @@ namespace EasyBadgeMVVM.Views
             RegisterName(RULES_BUTTON_NAME + lastRowNumber, configureRulesButton);
             this.FiltersGrid.Children.Add(configureRulesButton);
 
+            Button deleteFilter = new Button();
+            deleteFilter.Content = "X";
+            deleteFilter.IsEnabled = false;
+            deleteFilter.Name = FILTER_DELETE_FILTER_NAME + lastRowNumber;
+            deleteFilter.SetValue(Grid.ColumnProperty, 5);
+            deleteFilter.Width = 50;
+            deleteFilter.SetValue(Grid.RowProperty, lastRowNumber);
+            deleteFilter.VerticalAlignment = VerticalAlignment.Top;
+            deleteFilter.Click += new RoutedEventHandler(OnClick_DeleteFilter);
+            RegisterName(FILTER_DELETE_FILTER_NAME + lastRowNumber, deleteFilter);
+            this.FiltersGrid.Children.Add(deleteFilter);
+
             newFilterRulesButton = configureRulesButton;
         }
 
@@ -156,6 +173,15 @@ namespace EasyBadgeMVVM.Views
             RowDefinition rowDefinition = new RowDefinition();
             rowDefinition.Height = new GridLength(80);
             this.FiltersGrid.RowDefinitions.Add(rowDefinition);
+
+            TextBox filterId = new TextBox();
+            filterId.Name = FILTER_ID + lastRowNumber;
+            filterId.Text = filter.ID_Filter.ToString();
+            filterId.SetValue(Grid.ColumnProperty, 0);
+            filterId.SetValue(Grid.RowProperty, lastRowNumber);
+            filterId.Visibility = Visibility.Hidden;
+            RegisterName(FILTER_ID + lastRowNumber, filterId);
+            this.FiltersGrid.Children.Add(filterId);
 
             ComboBox fieldsList = new ComboBox();
             fieldsList.Name = FILTER_FIELDSLIST_NAME + lastRowNumber;
@@ -204,11 +230,44 @@ namespace EasyBadgeMVVM.Views
             RegisterName(RULES_BUTTON_NAME + lastRowNumber, configureRulesButton);
             this.FiltersGrid.Children.Add(configureRulesButton);
 
+            Button deleteFilter = new Button();
+            deleteFilter.Content = "X";
+            deleteFilter.Name = FILTER_DELETE_FILTER_NAME + lastRowNumber;
+            deleteFilter.SetValue(Grid.ColumnProperty, 5);
+            deleteFilter.Width = 50;
+            deleteFilter.SetValue(Grid.RowProperty, lastRowNumber);
+            deleteFilter.VerticalAlignment = VerticalAlignment.Top;
+            deleteFilter.Click += new RoutedEventHandler(OnClick_DeleteFilter);
+            RegisterName(FILTER_DELETE_FILTER_NAME + lastRowNumber, deleteFilter);
+            this.FiltersGrid.Children.Add(deleteFilter);
+
             this.filterIds.Add(lastRowNumber, filter.ID_Filter);
         }
 
 
         /************ LISTENERS ************/
+
+        private void OnClick_DeleteFilter(object sender, RoutedEventArgs e)
+        {
+            Button clicked = e.Source as Button;
+            int rowNumber = Convert.ToInt32(clicked.Name.Substring(FILTER_DELETE_FILTER_NAME.Length));
+
+            TextBox filterId = FindName(FILTER_ID + rowNumber) as TextBox;
+            if (filterId == null) return; // not yet persisted
+
+            ComboBox fields = FindName(FILTER_FIELDSLIST_NAME + rowNumber) as ComboBox;
+            ComboBox logicalOperators = FindName(FILTER_LOGICALOPERATORLIST_NAME + rowNumber) as ComboBox;
+            TextBox value = FindName(FILTER_VALUE_NAME + rowNumber) as TextBox;
+            Button deleteButton = FindName(FILTER_DELETE_FILTER_NAME + rowNumber) as Button;
+            Button configureRulesButton = FindName(RULES_BUTTON_NAME + rowNumber) as Button;
+            this.FiltersGrid.Children.Remove(fields);
+            this.FiltersGrid.Children.Remove(logicalOperators);
+            this.FiltersGrid.Children.Remove(value);
+            this.FiltersGrid.Children.Remove(deleteButton);
+            this.FiltersGrid.Children.Remove(configureRulesButton);
+            filterVM.DeleteFilter(Convert.ToInt32(filterId.Text));
+            deletedFilters.Add(rowNumber);
+        }
 
         private void OnClick_AddFilter(object sender, RoutedEventArgs e)
         {
@@ -244,7 +303,19 @@ namespace EasyBadgeMVVM.Views
                 newFilter = null;
                 AddFilterButton.IsEnabled = true;
                 newFilterRulesButton.IsEnabled = true;
-                
+
+                Button deleteButton = FindName(FILTER_DELETE_FILTER_NAME + lastRowNumber) as Button;
+                deleteButton.IsEnabled = true;
+
+                TextBox filterId = new TextBox();
+                filterId.Name = FILTER_ID + lastRowNumber;
+                filterId.Text = newF.ID_Filter.ToString();
+                filterId.SetValue(Grid.ColumnProperty, 0);
+                filterId.SetValue(Grid.RowProperty, lastRowNumber);
+                filterId.Visibility = Visibility.Hidden;
+                RegisterName(FILTER_ID + lastRowNumber, filterId);
+                this.FiltersGrid.Children.Add(filterId);
+
                 this.filterIds.Add(lastRowNumber, newF.ID_Filter);
             }
 
@@ -252,6 +323,12 @@ namespace EasyBadgeMVVM.Views
             int id_filter_name = 2;
             foreach (Filter item in filterVM.Filters)
             {
+                if (deletedFilters.Contains(id_filter_name))
+                {
+                    id_filter_name += 1;
+                    continue;
+                };
+
                 ComboBox fields = FindName(FILTER_FIELDSLIST_NAME + id_filter_name) as ComboBox;
                 int current_field_id = (fields.SelectedValue as Field).ID_Field;
                 ComboBox logicalOperators = FindName(FILTER_LOGICALOPERATORLIST_NAME + id_filter_name) as ComboBox;

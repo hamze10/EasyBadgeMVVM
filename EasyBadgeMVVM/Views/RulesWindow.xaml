@@ -10,10 +10,12 @@
     <ScrollViewer>
         <Grid Name="RulesGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -21,7 +23,7 @@
                 <RowDefinition Height="90" />
             </Grid.RowDefinitions>
 
-            <Grid Name="TitleBar" Background="#0a3d62" Grid.ColumnSpan="4">
+            <Grid Name="TitleBar" Background="#0a3d62" Grid.ColumnSpan="5">
                 <Label Name="TitleBarLabel" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="28" Foreground="White" />
             </Grid>
 
@@ -32,7 +34,7 @@
             <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                     Name="SaveButton"
                     Click="OnClick_Save"
-                    Background="#30336b" Width="120" Grid.Row="1" Grid.Column="2">SAVE</Button>
+                    Background="#30336b" Width="120" Grid.Row="1" Grid.Column="3">SAVE</Button>
         </Grid>
     </ScrollViewer>
 </Window>

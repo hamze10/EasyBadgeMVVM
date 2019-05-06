@@ -125,6 +125,18 @@ namespace EasyBadgeMVVM.ViewModels
             return new ObservableCollection<BadgeEvent>(this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).GetAll());
         }
 
+        public ObservableCollection<BadgeEvent> GetAllBadgeEvent(int eventId)
+        {
+            ObservableCollection<BadgeEvent> all = new ObservableCollection<BadgeEvent>(this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).GetAll());
+            List<BadgeEvent> result = all.Where(be => be.EventID_Event == eventId).ToList();
+            ObservableCollection<BadgeEvent> toReturn = new ObservableCollection<BadgeEvent>();
+            foreach (BadgeEvent item in result)
+            {
+                toReturn.Add(item);
+            }
+            return toReturn;
+        }
+
         public BadgeEvent GetBadgeEvent(int idBadge, int idEvent)
         {
             return this._repostitoryFactory.GetBadgeEventRepository(this._dbContext).SearchFor(be => be.BadgeID_Badge == idBadge && be.EventID_Event == idEvent).FirstOrDefault();
@@ -471,6 +483,18 @@ namespace EasyBadgeMVVM.ViewModels
             this._repostitoryFactory.GetFilterRepository(this._dbContext).UpdateFilter(filterId, updatedFilter);
         }
 
+        public void DeleteFilter(int filterId)
+        {
+            Filter filterToDelete = this._repostitoryFactory.GetFilterRepository(this._dbContext).GetById(filterId);
+            List<Rule> rulesToDelete = this._repostitoryFactory.GetRuleRepository(this._dbContext).GetAll()
+                .Where(r => r.FilterID_Filter == filterToDelete.ID_Filter).ToList();
+            foreach(Rule item in rulesToDelete)
+            {
+                DeleteRule(item.ID_Rule);
+            }
+            this._repostitoryFactory.GetFilterRepository(this._dbContext).Delete(filterToDelete);
+        }
+
         public void InsertNewRule(Rule newRule)
         {
             this._repostitoryFactory.GetRuleRepository(this._dbContext).Insert(newRule);
@@ -479,6 +503,12 @@ namespace EasyBadgeMVVM.ViewModels
         public void UpdateRule(int ruleId, Rule updatedRule)
         {
             this._repostitoryFactory.GetRuleRepository(this._dbContext).UpdateRule(ruleId, updatedRule);
+        }
+
+        public void DeleteRule(int ruleId)
+        {
+            Rule ruleToDelete = this._repostitoryFactory.GetRuleRepository(this._dbContext).GetById(ruleId);
+            this._repostitoryFactory.GetRuleRepository(this._dbContext).Delete(ruleToDelete);
         }
 
         public void InsertNewTarget(Target newTarget)
