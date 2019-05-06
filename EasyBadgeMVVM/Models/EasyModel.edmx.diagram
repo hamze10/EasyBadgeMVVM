@@ -19,7 +19,6 @@
         <EntityTypeShape EntityType="EasyBadge2019Model.UserSet" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
         <AssociationConnector Association="EasyBadge2019Model.FK_BadgeBadgeEvent" ManuallyRouted="false" />
         <AssociationConnector Association="EasyBadge2019Model.FK_BadgeEventPosition" ManuallyRouted="false" />
-        <AssociationConnector Association="EasyBadge2019Model.FK_BadgeEventRule" ManuallyRouted="false" />
         <AssociationConnector Association="EasyBadge2019Model.FK_EventBadgeEvent" ManuallyRouted="false" />
         <AssociationConnector Association="EasyBadge2019Model.FK_EventEventField" ManuallyRouted="false" />
         <AssociationConnector Association="EasyBadge2019Model.FK_EventFieldFieldUser" ManuallyRouted="false" />
@@ -31,6 +30,7 @@
         <AssociationConnector Association="EasyBadge2019Model.FK_FilterRule" ManuallyRouted="false" />
         <AssociationConnector Association="EasyBadge2019Model.FK_UserPrintBadge" ManuallyRouted="false" />
         <AssociationConnector Association="EasyBadge2019Model.FK_TargetRule" ManuallyRouted="false" />
+        <AssociationConnector Association="EasyBadge2019Model.BadgeEventSetRuleSet" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -30,8 +30,8 @@ namespace EasyBadgeMVVM.Models
         public virtual BadgeSet BadgeSet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PositionSet> PositionSets { get; set; }
+        public virtual EventSet EventSet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RuleSet> RuleSets { get; set; }
-        public virtual EventSet EventSet { get; set; }
     }
 }
