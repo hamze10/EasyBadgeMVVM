@@ -96,7 +96,6 @@
                 <RowDefinition Height="80" />
                 <RowDefinition Height="0" />
                 <RowDefinition Height="80" />
-                <RowDefinition Height="0" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="20" />
             </Grid.RowDefinitions>
@@ -160,10 +159,9 @@
                 </Button>
             </Grid>
 
-
-            <Grid Background="#7ed6df" Grid.Row="9" Margin="0,0,124,31">
+            <Grid Background="#7ed6df" Grid.Row="11" Margin="0,0,124,31">
                 <Button Click="RulesButton" Background="#7ed6df" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
-                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-6,87,-28,-162">
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-3,8,-31,-83">
                     <StackPanel Orientation="Horizontal" Width="Auto">
                         <materialDesign:PackIcon Kind="Filter1" Height="Auto" Width="52" Foreground="Black" />
                         <Label Content="RULES" Height="53" Width="148" FontSize="30" Foreground="Black" />
@@ -171,9 +169,8 @@
                 </Button>
             </Grid>
 
-
-            <Grid Grid.Row="14" Margin="-10,254,112,10">
-                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth4" Margin="27,278,27,0" Height="36">
+            <Grid Grid.Row="14" Margin="0,0,102,0">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth4" Margin="27,-19,27,0" Height="36">
                     <TextBlock Text="{Binding NbrUser, UpdateSourceTrigger=PropertyChanged}" FontFamily="MV Boli"
                                TextAlignment="Center" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </materialDesign:Card>
