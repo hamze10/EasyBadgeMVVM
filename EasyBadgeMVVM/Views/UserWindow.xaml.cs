@@ -124,7 +124,6 @@ namespace EasyBadgeMVVM.Views
 
                 RegisterName(name + i, textbox2);
             }
-
         }
 
         private void CreateFields(int i)
