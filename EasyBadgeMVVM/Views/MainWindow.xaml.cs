@@ -88,8 +88,16 @@ namespace EasyBadgeMVVM
                 toSend.Add(dr[dc].ToString());
             }
 
-            UserWindow userWindow = new UserWindow(false, this._mainWindowImpl.GetEventFieldUserByValues(toSend), this._idEvent);
-            userWindow.ShowDialog();
+            var listToSend = this._mainWindowImpl.GetEventFieldUserByValues(toSend);
+            bool badgeAlreadyPrinted = this._mainWindowImpl.GetAllPrintBadge().Where(p => p.UserID_User == listToSend[0].UserID_User).FirstOrDefault() != null;
+
+            UserWindow userWindow = new UserWindow(false, listToSend, this._idEvent, badgeAlreadyPrinted);
+            bool onClose = userWindow.ShowDialog().Value;
+            if (onClose)
+            {
+                this.CreateRowsDataGrid(this._mainWindowImpl.RefreshMainsFields());
+                this.ShowNotification("User modified");
+            }
         }
 
         private void NewUserInfo(object sender, RoutedEventArgs e)

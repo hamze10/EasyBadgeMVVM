@@ -530,6 +530,11 @@ namespace EasyBadgeMVVM.ViewModels
             this._repostitoryFactory.GetTargetRepository(this._dbContext).Insert(newTarget);
         }
 
+        public void UpdateUser(int idUser, Dictionary<string, string> newValues)
+        {
+            this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).Update(idUser, this._idEvent, newValues);
+        }
+
 
         /*********************************************************************************************************************************************************************/
         /*********** OTHER *************/

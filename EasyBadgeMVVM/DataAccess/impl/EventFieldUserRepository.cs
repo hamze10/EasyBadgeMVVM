@@ -15,5 +15,18 @@ namespace EasyBadgeMVVM.DataAccess
 
         }
 
+        public void Update(int idUser, int idEvent, Dictionary<string, string> newValues)
+        {
+            var ctx = this._dbContext;
+            var allEventField = ctx.Set<EventFieldUserSet>().Where(e => e.UserID_User == idUser && e.EventFieldEventID_Event == idEvent);
+
+            foreach(var efu in allEventField)
+            {
+                efu.Value = newValues[efu.EventFieldSet.FieldSet.Name];
+                ctx.Entry(efu).State = System.Data.Entity.EntityState.Modified;
+            }
+
+            ctx.SaveChanges();
+        }
     }
 }

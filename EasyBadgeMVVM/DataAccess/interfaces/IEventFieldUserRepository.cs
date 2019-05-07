@@ -8,5 +8,6 @@ namespace EasyBadgeMVVM.DataAccess
 {
     public interface IEventFieldUserRepository
     {
+        void Update(int idUser, int idEvent, Dictionary<string, string> newValues);
     }
 }

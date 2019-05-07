@@ -64,6 +64,11 @@ namespace EasyBadgeMVVM.ViewModels
             this._dbEntities.SaveAllChanges();
         }
 
+        public void UpdateUser(int idUser, Dictionary<string, string> newValues)
+        {
+            this._dbEntities.UpdateUser(idUser, newValues);
+        }
+
         public EventSet GetEventById(int idEvent)
         {
             return this._dbEntities.GetEventById(idEvent);

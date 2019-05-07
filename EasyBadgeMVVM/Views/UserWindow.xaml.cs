@@ -53,7 +53,7 @@ namespace EasyBadgeMVVM.Views
 
         private SolidColorBrush[] brushes = new SolidColorBrush[2] { System.Windows.Media.Brushes.White, System.Windows.Media.Brushes.WhiteSmoke};
 
-        public UserWindow(bool isNew, List<EventFieldUserSet> list, int idEvent)
+        public UserWindow(bool isNew, List<EventFieldUserSet> list, int idEvent, bool alreadyPrint = false)
         {
             this._isNew = isNew;
             this._idEvent = idEvent;
@@ -68,6 +68,7 @@ namespace EasyBadgeMVVM.Views
             }
             else
             {
+                this.MessageBadgePrinted.Visibility = alreadyPrint ? Visibility.Visible : Visibility.Hidden;
                 ShowUser();
             }
         }
@@ -75,11 +76,28 @@ namespace EasyBadgeMVVM.Views
         private void ShowUser()
         {
             CreateUserUI(SHOWNAME, true, BUTTON_PRINTBADGE);
+
+            Button button = new Button();
+            button.Width = 150;
+            button.Height = 50;
+            button.FontSize = 20;
+            button.Background = this.TitleBar.Background;
+            button.VerticalAlignment = VerticalAlignment.Top;
+            button.Margin = new Thickness(208, 16, -58, 0);
+            button.Content = "Print Badge";
+            button.Click += new RoutedEventHandler(Print_Badge);
+
+            this.ButtonsPlace.Children.Add(button);
+
+            this.ButtonSave.Content = "Update";
+            this.ButtonSave.Click += new RoutedEventHandler(Update_Profile);
         }
 
         private void NewUser()
         {
             CreateUserUI(NEWNAME, false, BUTTON_CONFIRM);
+
+            this.ButtonSave.Click += new RoutedEventHandler(Add_New);
         }
 
         private void CreateUserUI(string name, bool text, string buttonName)
@@ -107,7 +125,6 @@ namespace EasyBadgeMVVM.Views
                 RegisterName(name + i, textbox2);
             }
 
-            CreateButton(buttonName, this._currentUser.Count + 1);
         }
 
         private void CreateFields(int i)
@@ -134,44 +151,6 @@ namespace EasyBadgeMVVM.Views
             RegisterName(LABELFIELDNAME + i, label);
         }
 
-        private void CreateButton(string content, int i)
-        {
-            RowDefinition rowDefinition = new RowDefinition();
-            rowDefinition.Height = new GridLength(GRIDLENGTHHEIGHT);
-            this.UserWindowGrid.RowDefinitions.Add(rowDefinition);
-
-            Grid grid = new Grid();
-            grid.SetValue(Grid.RowProperty, i);
-            grid.SetValue(Grid.ColumnProperty, COLUMNPROPS);
-
-            Button button = new Button();
-            button.Content = content;
-            button.Width = 150;
-            button.Height = 45;
-            button.FontSize = 22;
-            button.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            button.Background = this.TitleBar.Background;
-            button.BorderBrush = this.TitleBar.Background;
-
-            RoutedEventHandler routedEventHandler = null;
-            switch (content)
-            {
-                case BUTTON_CONFIRM:
-                    routedEventHandler = Add_New;
-                    break;
-                case BUTTON_PRINTBADGE:
-                    routedEventHandler = Print_Badge;
-                    break;
-                default:
-                    break;
-            }
-            button.Click += new RoutedEventHandler(routedEventHandler);
-
-            grid.Children.Add(button);
-
-            this.UserWindowGrid.Children.Add(grid);
-        }
-
         private void Add_New(object sender, RoutedEventArgs e)
         {
             Dictionary<string, string> toSend = new Dictionary<string, string>();
@@ -187,6 +166,25 @@ namespace EasyBadgeMVVM.Views
             this._userVM.InsertNewUser(toSend);
             this.DialogResult = true;
             this.Close();
+        }
+
+        private void Update_Profile(object sender, RoutedEventArgs e)
+        {
+            Dictionary<string, string> newUser = new Dictionary<string, string>();
+
+            for (int i = 1; i <= this._currentUser.Count; i++)
+            {
+                string key = ((Label)this.FindName(LABELFIELDNAME + i)).Content.ToString();
+                string value = ((TextBox)this.FindName(SHOWNAME + i)).Text.ToString();
+
+                key = key.Trim().Split(':')[0].Trim();
+                newUser.Add(key, value);
+            }
+
+            this._userVM.UpdateUser(this._currentUser[0].UserID_User, newUser);
+            this.DialogResult = true;
+            this.Close();
+
         }
 
         private void Print_Badge(object sender, RoutedEventArgs e)

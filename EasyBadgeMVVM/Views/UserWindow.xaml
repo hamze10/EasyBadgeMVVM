@@ -18,6 +18,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="100" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid Name="TitleBar" Background="#0a3d62" Grid.ColumnSpan="3">
@@ -25,7 +26,7 @@
             </Grid>
 
             <Grid Grid.Column="1" Grid.Row="1">
-                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3" UniformCornerRadius="6" Height="526" Margin="42,64,-308,0" Padding="10">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3" UniformCornerRadius="6" Height="526" Margin="42,64,-482,0" Padding="10">
                     <ScrollViewer Margin="0,19,0,0">
                         <Grid Name="MyCard">
                             <Grid.ColumnDefinitions>
@@ -37,12 +38,18 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Grid Grid.Row="0" Grid.ColumnSpan="3">
-                                <Image Source="pack://application:,,,/asset/images/pin-icon.png" HorizontalAlignment="Left" />
+                            <Grid Name="MessageBadgePrinted" Grid.Row="0" Grid.ColumnSpan="3" Background="#e74c3c" Visibility="Hidden">
+                                <Image Source="pack://application:,,,/asset/images/danger-icon.png" HorizontalAlignment="Left" Margin="6,0,0,0" Width="39" />
+                                <Label Content="The badge of this user has already been printed !" FontFamily="Agency FB" Foreground="White" FontSize="30" 
+                                       Margin="45,0,0,0" />
                             </Grid>
                         </Grid>
                     </ScrollViewer>
                 </materialDesign:Card>
+            </Grid>
+
+            <Grid Name="ButtonsPlace" Grid.Column="1" Grid.Row="2">
+                <Button Name="ButtonSave" Content="Save" Width="150" Height="50" FontSize="20" VerticalAlignment="Top" Margin="44,16,106,0" Background="#0a3d62" />
             </Grid>
         </Grid>
     </ScrollViewer>

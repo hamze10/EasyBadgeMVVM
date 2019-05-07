@@ -61,6 +61,7 @@ namespace EasyBadgeMVVM.ViewModels
         void InsertNewTarget(TargetSet newTarget);
 
         ObservableCollection<BadgeEventSet> GetAllBadgeEvent(int eventId);
+        void UpdateUser(int idUser, Dictionary<string, string> newValues);
 
     }
 }

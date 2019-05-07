@@ -9,5 +9,6 @@ namespace EasyBadgeMVVM.ViewModels
         int IdEvent { get; }
         void InsertNewUser(Dictionary<string, string> values);
         EventSet GetEventById(int idEvent);
+        void UpdateUser(int idUser, Dictionary<string, string> newValues);
     }
 }
