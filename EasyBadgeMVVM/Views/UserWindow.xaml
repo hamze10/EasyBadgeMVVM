@@ -5,18 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyBadgeMVVM.Views"
         mc:Ignorable="d"
-        Title="Add a new user" Height="1080" Width="1920" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Title="Add a new user" Height="1024" Width="1980" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <ScrollViewer>
         <Grid Name="UserWindowGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10" />
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="800" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="100" />
+                <RowDefinition Height="600" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -25,23 +26,36 @@
                 <Label Content="USER INFORMATIONS" Height="70" Width="407" FontSize="40" Foreground="White" />
             </Grid>
 
-            <Grid Grid.Column="1" Grid.Row="1">
-                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3" UniformCornerRadius="6" Height="526" Margin="42,64,-482,0" Padding="10">
-                    <ScrollViewer Margin="0,19,0,0">
+            <Grid Grid.Column="1" Grid.Row="1" Margin="0,10,0,0">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3" UniformCornerRadius="6" Padding="10" Height="571" Margin="0,10,0,-135">
+                    <ScrollViewer>
                         <Grid Name="MyCard">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="50" />
+                                <RowDefinition Height="60" />
+                                <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Grid Name="MessageBadgePrinted" Grid.Row="0" Grid.ColumnSpan="3" Background="#e74c3c" Visibility="Hidden">
+                            <Grid Name="MessageBadgePrinted" Grid.Row="0" Grid.ColumnSpan="2" Background="#e74c3c" Visibility="Hidden">
                                 <Image Source="pack://application:,,,/asset/images/danger-icon.png" HorizontalAlignment="Left" Margin="6,0,0,0" Width="39" />
                                 <Label Content="The badge of this user has already been printed !" FontFamily="Agency FB" Foreground="White" FontSize="30" 
-                                       Margin="45,0,0,0" />
+                                       Margin="45,0,0,0" VerticalAlignment="Center" />
+                            </Grid>
+
+                            <Grid Name="MessageBadgeNotPrinted" Grid.Row="0" Grid.ColumnSpan="2" Background="#05c46b" Visibility="Hidden">
+                                <Image Source="pack://application:,,,/asset/images/success-icon.png" HorizontalAlignment="Left" Margin="6,0,0,0" Width="39" />
+                                <Label Content="You can print the badge of this user !" FontFamily="Agency FB" Foreground="White" FontSize="30" 
+                                       Margin="45,0,0,0" VerticalAlignment="Center" />
+                            </Grid>
+
+                            <Grid Name="MessageAddNewUser" Grid.Row="0" Grid.ColumnSpan="2" Background="#feca57" Visibility="Hidden">
+                                <Image Source="pack://application:,,,/asset/images/new-icon.png" HorizontalAlignment="Left" Margin="6,0,0,0" Width="39" />
+                                <Label Content="You can add a new user." FontFamily="Agency FB" Foreground="White" FontSize="30" 
+                                       Margin="45,0,0,0" VerticalAlignment="Center" />
                             </Grid>
                         </Grid>
                     </ScrollViewer>
@@ -49,8 +63,21 @@
             </Grid>
 
             <Grid Name="ButtonsPlace" Grid.Column="1" Grid.Row="2">
-                <Button Name="ButtonSave" Content="Save" Width="150" Height="50" FontSize="20" VerticalAlignment="Top" Margin="44,16,106,0" Background="#0a3d62" />
+                <Button Name="ButtonSave" Content="Save" Width="150" Height="50" FontSize="20" VerticalAlignment="Top" Margin="0,10,650,0" Background="#0a3d62" />
             </Grid>
+
+            <Border Name="ProfileBorder" Grid.Column="2" Grid.Row="1" Background="Black" Width="40" HorizontalAlignment="Left" 
+                    Margin="10,21,0,8" CornerRadius="10">
+                <Grid>
+                    <Label Name="ProfileBorderName" Content="Profile" Foreground="White" FontSize="25" FontFamily="Agency FB" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label.LayoutTransform>
+                            <RotateTransform Angle="90" />
+                        </Label.LayoutTransform>
+                    </Label>
+                </Grid>
+            </Border>
+
+
         </Grid>
     </ScrollViewer>
 

@@ -27,7 +27,8 @@ namespace EasyBadgeMVVM.ViewModels
         public string MachineName {
             get {
                 DateTime now = DateTime.Now;
-                string display = now.DayOfWeek + " " + now.Day + Prefix[(now.Day%10) - 1 > 3 ? 3 : (now.Day % 10) - 1] + " " + Months[now.Month - 1] + " " + now.Year;
+                int rest = now.Day;
+                string display = now.DayOfWeek + " " + now.Day + Prefix[rest > 3 ? 3 : rest - 1] + " " + Months[now.Month - 1] + " " + now.Year;
                 return Environment.MachineName + " - " + display;
             }
         }

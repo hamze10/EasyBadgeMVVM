@@ -64,12 +64,51 @@ namespace EasyBadgeMVVM.Views
             InitializeComponent();
             if (this._isNew)
             {
+                this.ProfileBorder.Visibility = Visibility.Hidden;
+                this.MessageAddNewUser.Visibility = Visibility.Visible;
                 NewUser();
             }
             else
             {
                 this.MessageBadgePrinted.Visibility = alreadyPrint ? Visibility.Visible : Visibility.Hidden;
+                this.MessageBadgeNotPrinted.Visibility = alreadyPrint ? Visibility.Hidden : Visibility.Visible;
+                CheckIfColorExists();
                 ShowUser();
+            }
+        }
+
+        private void CheckIfColorExists()
+        {
+            List<string> PotentialColors = new List<string>();
+            string profileName = string.Empty;
+            foreach(var e in this._currentUser)
+            {
+                if (e.Value == string.Empty) continue;
+
+                //CHECK COLOR
+                string capitalizeValue = char.ToUpper(e.Value[0]) + e.Value.Substring(1).ToLower().Trim();
+                if (Color.FromName(capitalizeValue).IsKnownColor)
+                {
+                    PotentialColors.Add(e.Value);
+                }else if (capitalizeValue.StartsWith("#"))
+                {
+                    PotentialColors.Add(e.Value);
+                }
+
+                //CHECK PROFILE
+                string profile = e.EventFieldSet.FieldSet.Name.ToLower().Trim();
+                List<string> differentProfiles = new List<string>(new string[] { "profile", "profiel", "profil"});
+                if (differentProfiles.Contains(profile) && profileName == string.Empty)
+                {
+                    profileName = e.Value;
+                }
+            }
+
+            if (PotentialColors.Count == 1)
+            {
+                System.Windows.Media.Color c = (System.Windows.Media.Color) System.Windows.Media.ColorConverter.ConvertFromString(PotentialColors[0]);
+                this.ProfileBorder.Background = new SolidColorBrush(c);
+                this.ProfileBorderName.Content = profileName;
             }
         }
 
@@ -78,13 +117,13 @@ namespace EasyBadgeMVVM.Views
             CreateUserUI(SHOWNAME, true, BUTTON_PRINTBADGE);
 
             Button button = new Button();
-            button.Width = 150;
+            //button.Width = 150;
             button.Height = 50;
             button.FontSize = 20;
             button.Background = this.TitleBar.Background;
             button.VerticalAlignment = VerticalAlignment.Top;
-            button.Margin = new Thickness(208, 16, -58, 0);
-            button.Content = "Print Badge";
+            button.Margin = new Thickness(161, 10, 450, 0);
+            button.Content = "🖨️ Print Badge";
             button.Click += new RoutedEventHandler(Print_Badge);
 
             this.ButtonsPlace.Children.Add(button);
@@ -113,7 +152,7 @@ namespace EasyBadgeMVVM.Views
 
                 TextBox textbox2 = new TextBox();
                 textbox2.Name = name + i;
-                textbox2.Width = 500;
+                textbox2.Width = 350;
                 textbox2.Text = text ? this._currentUser[(i - 1)].Value : string.Empty; //DatePicker ??
                 textbox2.VerticalAlignment = VerticalAlignment.Center;
                 textbox2.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
