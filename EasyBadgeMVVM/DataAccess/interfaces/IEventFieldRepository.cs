@@ -4,5 +4,6 @@ namespace EasyBadgeMVVM.DataAccess
 {
     public interface IEventFieldRepository
     {
+        void Update(EventFieldSet evf);
     }
 }

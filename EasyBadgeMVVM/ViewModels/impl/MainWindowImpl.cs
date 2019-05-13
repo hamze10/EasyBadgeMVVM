@@ -144,18 +144,35 @@ namespace EasyBadgeMVVM.ViewModels
             }
         }
 
+        private ObservableCollection<EventFieldUserSet> previousLastSearch = null;
+        private ObservableCollection<EventFieldUserSet> lastSearch = null;
+
         public ObservableCollection<EventFieldUserSet> DoSearch()
         {
-            var toSearch = this._search.ToLower();
-            if (toSearch.Length == 0 || toSearch.Trim() == "")
+            if (lastSearch == null)
             {
-                this._mainFields = this._allUsers ?? this._dbEntities.GetAllUsers();
-                this.NbrUser = this._mainFields.Count;
+                lastSearch = this._mainFields;
+            }
+
+            if (previousLastSearch == null)
+            {
+                previousLastSearch = this._mainFields;
+            }
+
+            var toSearch = this._search.ToLower();
+            if (toSearch.Length == 0)
+            {
+                lastSearch = this._mainFields;
                 return this._mainFields;
             }
 
             string[] splitted = toSearch.Split(' ');
             toSearch = splitted.Length <= 1 ? splitted[0] : splitted[splitted.Length - 1];
+            if (toSearch.Trim() == string.Empty)
+            {
+                previousLastSearch = lastSearch;
+                return null;
+            }
 
             Func<EventFieldUserSet, bool> predicate = ef => ef.EventFieldSet.EventID_Event == this._idEvent 
                                                         && ef.Value != null
@@ -163,20 +180,21 @@ namespace EasyBadgeMVVM.ViewModels
 
             ObservableCollection<EventFieldUserSet> toSend = new ObservableCollection<EventFieldUserSet>();
 
-            foreach(var tt in this._mainFields.AsParallel().Where(predicate))
+            foreach(var tt in this._mainFields.Where(predicate))
             {
-                var p = this._mainFields.AsParallel().Where(ee => ee.UserID_User == tt.UserID_User);
+                var p = this._mainFields.Where(ee => ee.UserID_User == tt.UserID_User);
                 foreach (var tte in p)
                 {
-                    if (this.FieldToShow.Contains(tte.EventFieldSet.FieldSet.Name))
+                    var whereSearch = !this._isDelete ? lastSearch : previousLastSearch;
+                    if (this.FieldToShow.Contains(tte.EventFieldSet.FieldSet.Name) && !toSend.Contains(tte) && whereSearch.Contains(tte))
                     {
                         toSend.Add(tte);
                     }
                 }
             }
 
+            lastSearch = toSend;
             return toSend;
- 
         }
 
         public void SetDeleteButton(bool value)
@@ -252,8 +270,15 @@ namespace EasyBadgeMVVM.ViewModels
                 //Data
                 else
                 {
+                    int l = 0;
+                    foreach(string fi in allFields)
+                    {
+                        this._dbEntities.UpdateEventField(fi, fieldsVisiblity.ElementAt(l).Value);
+                        l++;
+                    }
+
                     if (this._dbEntities.CheckIfAlreadyExists(allFields, this.FieldToShow, s)) continue;
-                    
+
                     int j = 0;
                     foreach (string data in s.Split(','))
                     {

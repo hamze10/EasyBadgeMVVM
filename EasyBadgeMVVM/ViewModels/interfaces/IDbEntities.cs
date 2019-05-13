@@ -62,6 +62,8 @@ namespace EasyBadgeMVVM.ViewModels
 
         ObservableCollection<BadgeEventSet> GetAllBadgeEvent(int eventId);
         void UpdateUser(int idUser, Dictionary<string, string> newValues);
+        void UpdateEventField(string field, bool visibility);
+
 
     }
 }

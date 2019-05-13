@@ -86,7 +86,7 @@ namespace EasyBadgeMVVM.Views
                 if (e.Value == string.Empty) continue;
 
                 //CHECK COLOR
-                string capitalizeValue = char.ToUpper(e.Value[0]) + e.Value.Substring(1).ToLower().Trim();
+                string capitalizeValue = char.ToUpper(e.Value.Trim()[0]) + e.Value.Trim().Substring(1).ToLower();
                 if (Color.FromName(capitalizeValue).IsKnownColor)
                 {
                     PotentialColors.Add(e.Value);

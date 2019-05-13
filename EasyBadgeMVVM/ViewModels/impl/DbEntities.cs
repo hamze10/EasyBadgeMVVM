@@ -343,7 +343,8 @@ namespace EasyBadgeMVVM.ViewModels
                 evf.Unique = false;
             }
 
-            InsertInEventFieldTable(evf);
+            bool isInserted = InsertInEventFieldTable(evf);
+            if (!isInserted) this._repostitoryFactory.GetEventFieldRepository(this._dbContext).Update(evf);
 
             EventFieldUserSet evfu = new EventFieldUserSet();
             evfu.UserSet = user;
@@ -533,6 +534,17 @@ namespace EasyBadgeMVVM.ViewModels
         public void UpdateUser(int idUser, Dictionary<string, string> newValues)
         {
             this._repostitoryFactory.GetEventFieldUserRepository(this._dbContext).Update(idUser, this._idEvent, newValues);
+        }
+
+        public void UpdateEventField(string field, bool visibility)
+        {
+            EventFieldSet evf = this._repostitoryFactory
+                                    .GetEventFieldRepository(this._dbContext)
+                                    .SearchFor(e => e.EventID_Event == this._idEvent && e.FieldSet.Name.Equals(field))
+                                    .FirstOrDefault();
+            if (evf == null) return;
+            evf.Visibility = visibility;
+            this._repostitoryFactory.GetEventFieldRepository(this._dbContext).Update(evf);
         }
 
 

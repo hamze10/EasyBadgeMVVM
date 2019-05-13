@@ -132,6 +132,11 @@ namespace EasyBadgeMVVM
             {
                 this._mainWindowImpl.SetDeleteButton(true);
             }
+
+            else
+            {
+                this._mainWindowImpl.SetDeleteButton(false);
+            }
         }
 
         private void ImportUsers(object sender, RoutedEventArgs e)
@@ -240,6 +245,7 @@ namespace EasyBadgeMVVM
             string toSearch = this.TextSearch.Text;
             this._mainWindowImpl.Search = toSearch;
             ObservableCollection<EventFieldUserSet> test = this._mainWindowImpl.DoSearch();
+            if (test == null) return;
             CreateRowsDataGrid(test);
         }
 
