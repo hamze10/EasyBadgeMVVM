@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EasyBadgeMVVM.ViewModels;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,13 +17,20 @@ using System.Windows.Shapes;
 namespace EasyBadgeMVVM.Views
 {
     /// <summary>
-    /// Interaction logic for MainSettings.xaml
+    /// Interaction logic for Statistics.xaml
     /// </summary>
-    public partial class MainSettings : Window
+    public partial class Statistics : Window
     {
-        public MainSettings()
+
+        private IStatVM _statVM;
+
+        public Statistics(int idEvent)
         {
             InitializeComponent();
+            this._statVM = new StatVM(idEvent);
+            this._statVM.AttendancePerDay();
+            this._statVM.AttendancePerProfile();
+            DataContext = this._statVM;
         }
     }
 }

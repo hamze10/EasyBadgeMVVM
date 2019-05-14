@@ -16,7 +16,7 @@ namespace EasyBadgeMVVM.ViewModels
     {
         ObservableCollection<EventFieldUserSet> GetAllUsers();
         void InsertNewField(string field);
-        void InsertNewUser(int index, string field, string data, bool visiblity);
+        void InsertNewUser(int index, string field, string data, bool visiblity, bool onsite = false);
         void SetIdEvent(int idEvent);
         void SaveAllChanges();
         HashSet<string> FieldsToShow { get; set; }
@@ -31,6 +31,7 @@ namespace EasyBadgeMVVM.ViewModels
         ObservableCollection<FieldSet> GetAllFields();
         ObservableCollection<EventFieldSet> GetEventFieldByEvent(int idEvent);
         bool GetVisibilityField(string field);
+        ObservableCollection<UserSet> GetAllUsersSet();
 
         ObservableCollection<BadgeSet> GetAllBadges();
         BadgeEventSet InsertInBadgeEvent(int idBadge, int idEvent, string templateName);

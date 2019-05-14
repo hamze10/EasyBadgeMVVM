@@ -64,6 +64,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -202,10 +208,12 @@
     <Compile Include="ViewModels\impl\FieldVM.cs" />
     <Compile Include="ViewModels\impl\FilterVM.cs" />
     <Compile Include="ViewModels\impl\RuleVM.cs" />
+    <Compile Include="ViewModels\impl\StatVM.cs" />
     <Compile Include="ViewModels\interfaces\IBadgeVM.cs" />
     <Compile Include="ViewModels\interfaces\IFieldVM.cs" />
     <Compile Include="ViewModels\interfaces\IFilterVM.cs" />
     <Compile Include="ViewModels\interfaces\IRuleVM.cs" />
+    <Compile Include="ViewModels\interfaces\IStatVM.cs" />
     <Compile Include="ViewModels\interfaces\IUserVM.cs" />
     <Compile Include="ViewModels\impl\UserVM.cs" />
     <Compile Include="ViewModels\interfaces\IDbEntities.cs" />
@@ -223,11 +231,11 @@
     <Compile Include="Views\FiltersWindow.xaml.cs">
       <DependentUpon>FiltersWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainSettings.xaml.cs">
-      <DependentUpon>MainSettings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\RulesWindow.xaml.cs">
       <DependentUpon>RulesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Statistics.xaml.cs">
+      <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserWindow.xaml.cs">
       <DependentUpon>UserWindow.xaml</DependentUpon>
@@ -240,10 +248,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FiltersWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -264,6 +268,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RulesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Statistics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

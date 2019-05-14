@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/06/2019 14:46:27
+-- Date Created: 05/14/2019 09:51:40
 -- Generated from EDMX file: C:\Users\onetec\Documents\EasyBadgeMVVM\EasyBadgeMVVM\EasyBadgeMVVM\Models\EasyModel.edmx
 -- --------------------------------------------------
 
@@ -22,9 +22,6 @@ IF OBJECT_ID(N'[dbo].[FK_BadgeBadgeEvent]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_BadgeEventPosition]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PositionSets] DROP CONSTRAINT [FK_BadgeEventPosition];
-GO
-IF OBJECT_ID(N'[dbo].[FK_BadgeEventRule]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RuleSets] DROP CONSTRAINT [FK_BadgeEventRule];
 GO
 IF OBJECT_ID(N'[dbo].[FK_EventBadgeEvent]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[BadgeEventSets] DROP CONSTRAINT [FK_EventBadgeEvent];
@@ -58,6 +55,9 @@ IF OBJECT_ID(N'[dbo].[FK_UserPrintBadge]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_TargetRule]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RuleSets] DROP CONSTRAINT [FK_TargetRule];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BadgeEventSetRuleSet]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RuleSets] DROP CONSTRAINT [FK_BadgeEventSetRuleSet];
 GO
 
 -- --------------------------------------------------
@@ -216,7 +216,8 @@ CREATE TABLE [dbo].[UserSets] (
     [ID_User] int IDENTITY(1,1) NOT NULL,
     [CreationDate] datetime  NOT NULL,
     [Active] bit  NOT NULL,
-    [Barcode] nvarchar(max)  NOT NULL
+    [Barcode] nvarchar(max)  NOT NULL,
+    [Onsite] bit  NOT NULL
 );
 GO
 

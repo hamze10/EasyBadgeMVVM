@@ -58,7 +58,7 @@ namespace EasyBadgeMVVM.ViewModels
             foreach(KeyValuePair<string, string> entry in values)
             {
                 string field = entry.Key.Trim().Split(':')[0].Trim();
-                this._dbEntities.InsertNewUser(i, field, entry.Value, this._dbEntities.GetVisibilityField(field));
+                this._dbEntities.InsertNewUser(i, field, entry.Value, this._dbEntities.GetVisibilityField(field), true);
                 i++;
             }
             this._dbEntities.SaveAllChanges();

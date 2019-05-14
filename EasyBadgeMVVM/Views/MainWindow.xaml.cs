@@ -226,6 +226,25 @@ namespace EasyBadgeMVVM
             this.RunMyWorker(arg);
         }
 
+        private void BadgingButton(object sender, RoutedEventArgs e)
+        {
+            ConfigBadge configBadge = new ConfigBadge(this._idEvent);
+            configBadge.Show();
+        }
+
+        private void RulesButton(object sender, RoutedEventArgs e)
+        {
+            FiltersWindow filtersWindow = new FiltersWindow(this._idEvent);
+            filtersWindow.Show();
+        }
+
+        private void Stats(object sender, RoutedEventArgs e)
+        {
+            Statistics stats = new Statistics(this._idEvent);
+            stats.Show();
+        }
+
+
         private void RefreshList(object sender, RoutedEventArgs e)
         {
             this.GridLoading.Visibility = Visibility.Visible;
@@ -400,18 +419,6 @@ namespace EasyBadgeMVVM
             }
             this._mainWindowImpl.NbrUser = lastObj[0] != null ? ++nbUser : 0;
             this.DataGridUsers.ItemsSource = this._dt.DefaultView;
-        }
-
-        private void BadgingButton(object sender, RoutedEventArgs e)
-        {
-            ConfigBadge configBadge = new ConfigBadge(this._idEvent);
-            configBadge.Show();
-        }
-
-        private void RulesButton(object sender, RoutedEventArgs e)
-        {
-            FiltersWindow filtersWindow = new FiltersWindow(this._idEvent);
-            filtersWindow.Show();
         }
     }
 }

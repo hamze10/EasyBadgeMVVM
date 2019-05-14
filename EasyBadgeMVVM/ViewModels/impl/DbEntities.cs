@@ -176,7 +176,6 @@ namespace EasyBadgeMVVM.ViewModels
 
         }
 
-
         public List<PrintBadgeSet> GetAllPrintBadge()
         {
             return this._repostitoryFactory.GetPrintBadgeRepository(this._dbContext).SearchFor(p => p.EventID_Event == this._idEvent).ToList();
@@ -214,6 +213,10 @@ namespace EasyBadgeMVVM.ViewModels
         public ObservableCollection<TargetSet> GetAllTargets()
         {
             return new ObservableCollection<TargetSet>(this._repostitoryFactory.GetTargetRepository(this._dbContext).GetAll());
+        }
+
+        public ObservableCollection<UserSet> GetAllUsersSet() {
+            return new ObservableCollection<UserSet>(this._repostitoryFactory.GetUserRepository(this._dbContext).GetAll());
         }
 
         /*********************************************************************************************************************************************************************/
@@ -273,7 +276,7 @@ namespace EasyBadgeMVVM.ViewModels
             InsertInFieldTable(f);
         }
 
-        public void InsertNewUser(int index, string field, string data, bool visibility)
+        public void InsertNewUser(int index, string field, string data, bool visibility, bool onsite = false)
         {
             //INSERT IN USER TABLE
             UserSet user = new UserSet();
@@ -281,6 +284,7 @@ namespace EasyBadgeMVVM.ViewModels
             {
                 user.Active = true;
                 user.CreationDate = DateTime.Now;
+                user.Onsite = onsite;
 
                 if (field.ToLower().Equals("barcode"))
                 {
