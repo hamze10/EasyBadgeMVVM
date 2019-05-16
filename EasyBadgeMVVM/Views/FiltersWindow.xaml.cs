@@ -1,4 +1,5 @@
-﻿using EasyBadgeMVVM.Models;
+﻿using EasyBadgeMVVM.Filters;
+using EasyBadgeMVVM.Models;
 using EasyBadgeMVVM.ViewModels.impl;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,7 @@ namespace EasyBadgeMVVM.Views
     {
         Dictionary<string, bool> stopProcessSelectionChanged;
         Dictionary<int, int> filterIds;
-        private static readonly IEnumerable<string> LOGICAL_OPERATORS = new string[] {
-            "<", "<=", "=", ">=", ">",
-            "length <", "length <=", "length =", "length >=", "length >", "length <>",
-            "starts with", "contains", "<>"
-        };
+        private static readonly IEnumerable<string> LOGICAL_OPERATORS = FiltersHelper.AllLogicalOperators;
         public static readonly string FILTER_FIELDSLIST_NAME = "filterfieldslist";
         public static readonly string FILTER_LOGICALOPERATORLIST_NAME = "filterlogicaloperatorlist";
         public static readonly string FILTER_VALUE_NAME = "filtervalue";
@@ -138,7 +135,7 @@ namespace EasyBadgeMVVM.Views
 
             Button configureRulesButton = new Button();
             configureRulesButton.IsEnabled = false;
-            configureRulesButton.Content = "Rules";
+            configureRulesButton.Content = "Edit Rules";
             configureRulesButton.Name = RULES_BUTTON_NAME + lastRowNumber;
             configureRulesButton.SetValue(Grid.ColumnProperty, 4);
             configureRulesButton.Width = 120;
@@ -220,7 +217,7 @@ namespace EasyBadgeMVVM.Views
             this.FiltersGrid.Children.Add(valueTextBox);
 
             Button configureRulesButton = new Button();
-            configureRulesButton.Content = "Rules";
+            configureRulesButton.Content = "Edit Rules";
             configureRulesButton.Name = RULES_BUTTON_NAME + lastRowNumber;
             configureRulesButton.SetValue(Grid.ColumnProperty, 4);
             configureRulesButton.Width = 120;

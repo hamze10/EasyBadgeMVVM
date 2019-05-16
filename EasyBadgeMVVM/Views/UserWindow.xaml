@@ -25,7 +25,7 @@
             </Grid>
 
             <Grid Grid.Column="1" Grid.Row="1">
-                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3" UniformCornerRadius="6" Height="526" Margin="42,64,-308,0" Padding="10">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth3" UniformCornerRadius="6" Height="526" Margin="42,64,-308,0" Padding="10" Name="UserWindowCard">
                     <ScrollViewer Margin="0,19,0,0">
                         <Grid Name="MyCard">
                             <Grid.ColumnDefinitions>
