@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace EasyBadgeMVVM.ViewModels
 {
@@ -17,13 +18,18 @@ namespace EasyBadgeMVVM.ViewModels
         private int _nbrUserOnline;
         private int _nbrUserOnsite;
         private int _nbrUniqueAttendance;
+        private string[] _allProfiles;
+        private IDictionary<string, double> _nbrUserPerProfile;
+        private IDictionary<string, double> _printedBadgePerProfile; 
 
         private IDbEntities _dbEntities;
 
+        private IList<string> differentProfiles = Util.differentProfiles;
+
         //FOR CHARTS
         public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels { get; set; }
-        public Func<double, string> YFormatter { get; set; }
+        public int[] Labels { get; set; }
+        public Func<double, string> XFormatter { get; set; }
 
         public SeriesCollection SeriesCollection2 { get; set; }
         public string[] Labels2 { get; set; }
@@ -34,10 +40,18 @@ namespace EasyBadgeMVVM.ViewModels
             this._dbEntities = new DbEntities();
             this._dbEntities.SetIdEvent(idEvent);
             this._idEvent = idEvent;
+
             this._nbrUser = -1;
             this._nbrUserOnline = -1;
             this._nbrUserOnsite = -1;
             this._nbrUniqueAttendance = -1;
+
+            this._allProfiles = this._dbEntities.GetAllUsers()
+                                    .Where(e => differentProfiles.Contains(e.EventFieldSet.FieldSet.Name.ToLower()))
+                                    .Select(f => f.Value).Distinct().ToArray();
+
+            this._nbrUserPerProfile = new Dictionary<string, double>();
+            this._printedBadgePerProfile = new Dictionary<string, double>();
         }
 
         public int NbrUser
@@ -94,69 +108,81 @@ namespace EasyBadgeMVVM.ViewModels
 
         public void AttendancePerDay() //BASIC LINE CHART
         {
-            SeriesCollection = new SeriesCollection
+            SeriesCollection = new SeriesCollection();
+
+            var allPrintedBadge = this._dbEntities.GetAllPrintBadge();
+            var allDays = allPrintedBadge.Select(c => c.PrintDate.Date).Distinct();
+            foreach (var day in allDays)
             {
-                new LineSeries
+                double[] eachHour = new double[24];
+                for(int i = 0; i < 24; i++)
                 {
-                    Title = "Series 1",
-                    Values = new ChartValues<double> { 4, 6, 5, 2 ,4 }
-                },
-                new LineSeries
-                {
-                    Title = "Series 2",
-                    Values = new ChartValues<double> { 6, 7, 3, 4 ,6 },
-                },
-                new LineSeries
-                {
-                    Title = "Series 3",
-                    Values = new ChartValues<double> { 4,2,7,2,7 },
+                    eachHour[i] = allPrintedBadge.Where(c => c.PrintDate.Date.Equals(day) && c.PrintDate.Hour == i).Count();
                 }
-            };
 
-            Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" };
-            YFormatter = value => value.ToString("C");
+                SeriesCollection.Add(new LineSeries
+                {
+                    Title = day.ToShortDateString(),
+                    Values = new ChartValues<double>(eachHour)
+                });
+            }
 
-            //modifying the series collection will animate and update the chart
-            SeriesCollection.Add(new LineSeries
-            {
-                Title = "Series 4",
-                Values = new ChartValues<double> { 5, 3, 2, 4 },
-            });
-
-            //modifying any series values will also animate and update the chart
-            SeriesCollection[3].Values.Add(5d);
+            Labels = Enumerable.Range(0, 24).ToArray();
+            XFormatter = value => value + "h";
         }
 
         public void AttendancePerProfile() //BASIC STACKED
         {
-            SeriesCollection2 = new SeriesCollection
+            var allEventFieldUser = this._dbEntities.GetAllUsers();
+            foreach (var efu in allEventFieldUser)
             {
-                new StackedColumnSeries
+                string profile = efu.EventFieldSet.FieldSet.Name;
+                if (!differentProfiles.Contains(profile.ToLower())) continue;
+                profile = efu.Value;
+                if (this._nbrUserPerProfile.ContainsKey(profile))
                 {
-                    Values = new ChartValues<double> {4, 5, 6, 8},
-                    StackMode = StackMode.Values, // this is not necessary, values is the default stack mode
-                    DataLabels = true
-                },
-                new StackedColumnSeries
-                {
-                    Values = new ChartValues<double> {2, 5, 6, 7},
-                    StackMode = StackMode.Values,
-                    DataLabels = true
+                    this._nbrUserPerProfile[profile] = this._nbrUserPerProfile[profile] + 1;
                 }
-            };
+                else
+                {
+                    this._printedBadgePerProfile.Add(profile, 0);
+                    this._nbrUserPerProfile.Add(profile, 1);
+                }
+            }
 
-            //adding series updates and animates the chart
+            var allPrintedBadge = this._dbEntities.GetAllPrintBadge();
+            HashSet<int> alreadyIdUser = new HashSet<int>();
+            foreach (var printed in allPrintedBadge)
+            {
+                if (alreadyIdUser.Contains(printed.UserID_User)) continue;
+                alreadyIdUser.Add(printed.UserID_User);
+                var profileUser = this._dbEntities.GetAllUsers().Where(e => e.UserID_User == printed.UserID_User).ToList();
+                string profileName = profileUser.Where(e => differentProfiles.Contains(e.EventFieldSet.FieldSet.Name.ToLower())).FirstOrDefault().Value;
+                this._printedBadgePerProfile[profileName] = this._printedBadgePerProfile[profileName] + 1;
+            }
+
+            SeriesCollection2 = new SeriesCollection();
+
             SeriesCollection2.Add(new StackedColumnSeries
             {
-                Values = new ChartValues<double> { 6, 2, 7 },
-                StackMode = StackMode.Values
+                Values = new ChartValues<double>(this._printedBadgePerProfile.Values.ToList()),
+                StackMode = StackMode.Values,
+                DataLabels = true,
+                FontSize = 15,
+                Title = "Printed and/or scanned"
             });
 
-            //adding values also updates and animates
-            SeriesCollection2[2].Values.Add(4d);
+            SeriesCollection2.Add(new StackedColumnSeries
+            {
+                Values = new ChartValues<double>(this._nbrUserPerProfile.Values.ToList()),
+                StackMode = StackMode.Values,
+                DataLabels = true,
+                FontSize = 15,
+                Title = "Registered"
+            });
 
-            Labels2 = new[] { "Chrome", "Mozilla", "Opera", "IE" };
-            Formatter = value => value + " Mill";
+            Labels2 = this._allProfiles;
+            Formatter = value => value + "";
         }
     }
 }

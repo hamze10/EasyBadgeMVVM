@@ -17,8 +17,8 @@ namespace EasyBadgeMVVM.ViewModels
         int NbrUserOnsite { get; }
 
         SeriesCollection SeriesCollection { get; set; }
-        string[] Labels { get; set; }
-        Func<double, string> YFormatter { get; set; }
+        int[] Labels { get; set; }
+        Func<double, string> XFormatter { get; set; }
         SeriesCollection SeriesCollection2 { get; set; }
         string[] Labels2 { get; set; }
         Func<double, string> Formatter { get; set; }

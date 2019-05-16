@@ -97,7 +97,7 @@ namespace EasyBadgeMVVM.Views
 
                 //CHECK PROFILE
                 string profile = e.EventFieldSet.FieldSet.Name.ToLower().Trim();
-                List<string> differentProfiles = new List<string>(new string[] { "profile", "profiel", "profil"});
+                IList<string> differentProfiles = Util.differentProfiles;
                 if (differentProfiles.Contains(profile) && profileName == string.Empty)
                 {
                     profileName = e.Value;
