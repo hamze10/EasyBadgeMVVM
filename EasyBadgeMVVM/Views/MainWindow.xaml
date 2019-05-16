@@ -164,7 +164,7 @@
                             HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-3,8,-31,-83">
                     <StackPanel Orientation="Horizontal" Width="Auto">
                         <materialDesign:PackIcon Kind="Filter1" Height="Auto" Width="52" Foreground="Black" />
-                        <Label Content="RULES" Height="53" Width="148" FontSize="30" Foreground="Black" />
+                        <Label Content="FILTERS" Height="53" Width="148" FontSize="30" Foreground="Black" />
                     </StackPanel>
                 </Button>
             </Grid>

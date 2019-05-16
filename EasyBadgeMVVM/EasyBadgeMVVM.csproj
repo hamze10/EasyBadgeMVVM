@@ -151,6 +151,7 @@
     <Compile Include="DataAccess\interfaces\ITargetRepository.cs" />
     <Compile Include="DataAccess\interfaces\IUserRepository.cs" />
     <Compile Include="DataAccess\impl\UserRepository.cs" />
+    <Compile Include="Filters\FiltersHelper.cs" />
     <Compile Include="Models\BadgeEventSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>

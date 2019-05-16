@@ -1,30 +1,19 @@
-﻿using CsvHelper;
-
+﻿
 using EasyBadgeMVVM.Models;
-using EasyBadgeMVVM.Views;
 using EasyBadgeMVVM.ViewModels;
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.IO;
-using System.Printing;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Forms;
-using System.Windows.Input;
 
 using SolidColorBrush = System.Windows.Media.SolidColorBrush;
 using Label = System.Windows.Controls.Label;
 using TextBox = System.Windows.Controls.TextBox;
 using Button = System.Windows.Controls.Button;
+using MaterialDesignThemes.Wpf;
 
 namespace EasyBadgeMVVM.Views
 {
@@ -72,12 +61,12 @@ namespace EasyBadgeMVVM.Views
             {
                 this.MessageBadgePrinted.Visibility = alreadyPrint ? Visibility.Visible : Visibility.Hidden;
                 this.MessageBadgeNotPrinted.Visibility = alreadyPrint ? Visibility.Hidden : Visibility.Visible;
-                CheckIfColorExists();
+                //CheckIfColorExists();
                 ShowUser();
             }
         }
 
-        private void CheckIfColorExists()
+        /*private void CheckIfColorExists()
         {
             List<string> PotentialColors = new List<string>();
             string profileName = string.Empty;
@@ -110,10 +99,17 @@ namespace EasyBadgeMVVM.Views
                 this.ProfileBorder.Background = new SolidColorBrush(c);
                 this.ProfileBorderName.Content = profileName;
             }
-        }
+        }*/
 
         private void ShowUser()
         {
+            // Color Window card if a filter/rule is defined
+            string color = _userVM.DetermineColorForCard(_currentUser);
+            if (color != null)
+            {
+                Border border = (Border) this.UserWindowGrid.FindName("ProfileBorder");
+                border.Background = (SolidColorBrush)(new System.Windows.Media.BrushConverter().ConvertFrom(color));
+            }
             CreateUserUI(SHOWNAME, true, BUTTON_PRINTBADGE);
 
             Button button = new Button();

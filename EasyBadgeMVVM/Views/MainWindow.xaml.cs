@@ -20,6 +20,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using MessageBox = System.Windows.MessageBox;
 using Binding = System.Windows.Data.Binding;
+using System.Windows.Media;
 
 namespace EasyBadgeMVVM
 {
@@ -66,7 +67,7 @@ namespace EasyBadgeMVVM
             this.bgw.DoWork += myBgw_doWorker;
             this.bgw.RunWorkerCompleted += myBgw_RunWorkerCompleted;
             CreateColumnsDataGrid();
-
+            ColorRows();
         }
 
         private void ToggleClick(object sender, RoutedEventArgs e)
@@ -419,6 +420,24 @@ namespace EasyBadgeMVVM
             }
             this._mainWindowImpl.NbrUser = lastObj[0] != null ? ++nbUser : 0;
             this.DataGridUsers.ItemsSource = this._dt.DefaultView;
+        }
+
+        /// <summary>
+        /// Color the rows where the user match a filter.
+        /// </summary>
+        private void ColorRows()
+        {
+            /*
+            System.Windows.Controls.DataGrid dg = DataGridUsers;
+            for (int i = 0; i < dg.Items.Count; i++)
+            {
+                DataGridRow row = (DataGridRow)dg.ItemContainerGenerator.ContainerFromIndex(i);
+                if (row != null)
+                {
+                    row.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ff0000"));
+                }
+            }
+            */
         }
     }
 }
