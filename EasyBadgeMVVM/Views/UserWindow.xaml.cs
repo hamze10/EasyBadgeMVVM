@@ -237,12 +237,13 @@ namespace EasyBadgeMVVM.Views
             }
 
             PrintDocument printDocument = new PrintDocument();
-            printDocument.DefaultPageSettings.PaperSize = new PaperSize("PVC", 
+            printDocument.DefaultPageSettings.PaperSize = new PaperSize("Template", 
                                                                         Convert.ToInt32(defaultBadge.BadgeSet.Dimension_X * MM_PX), 
                                                                         Convert.ToInt32(defaultBadge.BadgeSet.Dimension_Y * MM_PX));
 
             printDocument.PrintPage += (sender2, e2) => document_PrintPage(sender2, e2, defaultBadge); // new PrintPageEventHandler(document_PrintPage);
             pdi.Document = printDocument;
+            pdi.Document.BeginPrint += new PrintEventHandler(end_print);
             if (pdi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 //INSERT IN PRINTBADGE
@@ -281,6 +282,14 @@ namespace EasyBadgeMVVM.Views
                                    printFont);
                 printFont = new Font(p.FontFamily, computedSize, System.Drawing.FontStyle.Regular);
                 e.Graphics.DrawString(text, printFont, Brushes.Black, (float) p.Position_X, (float) p.Position_Y);
+            }            
+        }
+
+        //CHERCHER UNE SOLUTION POUR CA
+        private void end_print(object sender, PrintEventArgs e) {
+            if (e.PrintAction == PrintAction.PrintToPrinter)
+            {
+                
             }
         }
 

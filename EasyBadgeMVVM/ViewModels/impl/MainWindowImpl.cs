@@ -230,7 +230,7 @@ namespace EasyBadgeMVVM.ViewModels
                     foreach(string field2 in s.Split(','))
                     {
                         FieldSet f = new FieldSet();
-                        f.Name = field2;
+                        f.Name = field2.Trim();
                         fieldsImport.Add(f);
                     }
 

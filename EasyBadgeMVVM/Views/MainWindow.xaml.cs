@@ -161,7 +161,7 @@ namespace EasyBadgeMVVM
                     }
 
                     var filestream = fd.OpenFile();
-                    using (StreamReader reader = new StreamReader(filestream))
+                    using (StreamReader reader = new StreamReader(filestream, Encoding.UTF8))
                     {
                         fileContent = reader.ReadToEnd();
                     }
@@ -367,7 +367,7 @@ namespace EasyBadgeMVVM
                     i = 0;
                     nbUser++;
                 }
-                obj[i] = efu.Value;
+                obj[i] = efu.Value.Trim();
                 i++;
                 lastObj = obj;
                 lastUser = efu;
@@ -409,7 +409,7 @@ namespace EasyBadgeMVVM
                     i = 0;
                     nbUser++;
                 }
-                obj[i] = efu.Value;
+                obj[i] = efu.Value.Trim();
                 i++;
                 lastObj = obj;
                 lastUser = efu;
