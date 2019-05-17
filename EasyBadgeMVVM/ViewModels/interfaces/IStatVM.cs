@@ -11,10 +11,10 @@ namespace EasyBadgeMVVM.ViewModels
 {
     interface IStatVM
     {
-        int NbrUser { get; }
-        int NbrUniqueAttendance { get; }
-        int NbrUserOnline { get; }
-        int NbrUserOnsite { get; }
+        int NbrUser { get; set; }
+        int NbrUniqueAttendance { get; set; }
+        int NbrUserOnline { get; set; }
+        int NbrUserOnsite { get; set; }
 
         SeriesCollection SeriesCollection { get; set; }
         int[] Labels { get; set; }
@@ -25,5 +25,7 @@ namespace EasyBadgeMVVM.ViewModels
 
         void AttendancePerDay();
         void AttendancePerProfile();
+
+        void Refresh(string[] fields);
     }
 }

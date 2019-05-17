@@ -73,7 +73,11 @@ namespace EasyBadgeMVVM.ViewModels.impl
             get
             {
                 if (currentFilter == null)
+                {
                     currentFilter = dbEntities.GetAllFilters().FirstOrDefault(f => f.ID_Filter == filterId);
+                    this.dbEntities.SetIdEvent(currentFilter.EventFieldEventID_Event);
+                }
+
                 return currentFilter;
             }
         }

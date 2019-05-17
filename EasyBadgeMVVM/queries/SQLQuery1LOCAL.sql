@@ -15,7 +15,7 @@ SELECT * FROM BadgeEventSets;
 SELECT * FROM PrintBadgeSets;
 
 INSERT INTO PrintBadgeSets(PrintDate, PrintBy, Comment, UserID_User, EventID_Event)
-VALUES (CURRENT_TIMESTAMP, 'PC4', NULL, 309, 1);
+VALUES (CURRENT_TIMESTAMP, 'PC4', NULL, 80, 1);
 
 SELECT * FROM PositionSets
 

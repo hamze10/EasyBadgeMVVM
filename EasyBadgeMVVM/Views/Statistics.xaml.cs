@@ -32,5 +32,25 @@ namespace EasyBadgeMVVM.Views
             this._statVM.AttendancePerProfile();
             DataContext = this._statVM;
         }
+
+        private void RefreshAttendancePerDay(object sender, MouseButtonEventArgs e)
+        {
+            this._statVM.AttendancePerDay();
+        }
+
+        private void RefreshAttendancePerProfile(object sender, MouseButtonEventArgs e)
+        {
+            this._statVM.AttendancePerProfile();
+        }
+
+        private void RefreshUniqueAttendance(object sender, MouseButtonEventArgs e)
+        {
+            this._statVM.Refresh(new string[] { "NbrUser", "NbrUniqueAttendance" });
+        }
+
+        private void RefreshRegistrationSource(object sender, MouseButtonEventArgs e)
+        {
+            this._statVM.Refresh(new string[] { "NbrUser", "NbrUserOnsite", "NbrUserOnline" });
+        }
     }
 }

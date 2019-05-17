@@ -224,6 +224,9 @@
     <Compile Include="ViewModels\interfaces\IEventVM.cs" />
     <Compile Include="ViewModels\interfaces\IMainWindow.cs" />
     <Compile Include="ViewModels\impl\MainWindowImpl.cs" />
+    <Compile Include="Views\ExportWindow.xaml.cs">
+      <DependentUpon>ExportWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FieldMatching.xaml.cs">
       <DependentUpon>FieldMatching.xaml</DependentUpon>
     </Compile>
@@ -245,6 +248,10 @@
     <Compile Include="Views\SelectEvent.xaml.cs">
       <DependentUpon>SelectEvent.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ExportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FieldMatching.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

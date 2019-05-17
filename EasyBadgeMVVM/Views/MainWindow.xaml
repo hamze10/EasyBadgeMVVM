@@ -120,7 +120,7 @@
                 </Button>
             </Grid>
             <Grid Background="#e74c3c" Grid.Row="4" Margin="0,0,124,31">
-                <Button Click="ExportUsers" Background="#e74c3c" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
+                <Button Click="ExportWindow" Background="#e74c3c" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="75" Width="230"
                             HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-2,-2,-32,-20">
                     <StackPanel Orientation="Horizontal" Width="Auto">
                         <materialDesign:PackIcon Kind="Download" Height="Auto" Width="52" Foreground="Black" />

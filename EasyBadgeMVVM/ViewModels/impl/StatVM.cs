@@ -3,6 +3,7 @@ using LiveCharts.Wpf;
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,23 @@ using System.Windows.Media;
 
 namespace EasyBadgeMVVM.ViewModels
 {
-    public class StatVM : IStatVM
+    public class StatVM : IStatVM, INotifyPropertyChanged
     {
+
+        /*********************************************************************************************************************************************************************/
+        /****** PROPERTY CHANGED ******/
+        /*********************************************************************************************************************************************************************/
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
         private int _idEvent;
 
         private int _nbrUser;
@@ -27,13 +43,13 @@ namespace EasyBadgeMVVM.ViewModels
         private IList<string> differentProfiles = Util.differentProfiles;
 
         //FOR CHARTS
-        public SeriesCollection SeriesCollection { get; set; }
-        public int[] Labels { get; set; }
-        public Func<double, string> XFormatter { get; set; }
+        private SeriesCollection _seriesCollection;
+        private int[] _labels;
+        private Func<double, string> _xFormatter;
 
-        public SeriesCollection SeriesCollection2 { get; set; }
-        public string[] Labels2 { get; set; }
-        public Func<double, string> Formatter { get; set; }
+        private SeriesCollection _seriesCollection2;
+        private string[] _labels2;
+        private Func<double, string> _formatter;
 
         public StatVM(int idEvent)
         {
@@ -54,6 +70,88 @@ namespace EasyBadgeMVVM.ViewModels
             this._printedBadgePerProfile = new Dictionary<string, double>();
         }
 
+        public SeriesCollection SeriesCollection
+        {
+            get
+            {
+                return this._seriesCollection;
+            }
+            set
+            {
+                this._seriesCollection = value;
+                OnPropertyChanged("SeriesCollection");
+            }
+        }
+
+        public int[] Labels
+        {
+            get
+            {
+                return this._labels;
+            }
+
+            set
+            {
+                this._labels = value;
+                OnPropertyChanged("Labels");
+            }
+        }
+
+        public Func<double, string> XFormatter
+        {
+            get
+            {
+                return this._xFormatter;
+            }
+
+            set
+            {
+                this._xFormatter = value;
+                OnPropertyChanged("XFormatter");
+            }
+        }
+
+        public SeriesCollection SeriesCollection2
+        {
+            get
+            {
+                return this._seriesCollection2;
+            }
+            set
+            {
+                this._seriesCollection2 = value;
+                OnPropertyChanged("SeriesCollection2");
+            }
+        }
+
+        public string[] Labels2
+        {
+            get
+            {
+                return this._labels2;
+            }
+
+            set
+            {
+                this._labels2 = value;
+                OnPropertyChanged("Labels2");
+            }
+        }
+
+        public Func<double, string> Formatter
+        {
+            get
+            {
+                return this._formatter;
+            }
+
+            set
+            {
+                this._formatter = value;
+                OnPropertyChanged("Formatter");
+            }
+        }
+
         public int NbrUser
         {
             get
@@ -64,6 +162,12 @@ namespace EasyBadgeMVVM.ViewModels
                 }
 
                 return this._nbrUser;
+            }
+
+            set
+            {
+                this._nbrUser = value;
+                OnPropertyChanged("NbrUser");
             }
         }
 
@@ -78,6 +182,12 @@ namespace EasyBadgeMVVM.ViewModels
 
                 return this._nbrUserOnline;
             }
+
+            set
+            {
+                this._nbrUserOnline = value;
+                OnPropertyChanged("NbrUserOnline");
+            }
         }
 
         public int NbrUserOnsite
@@ -91,6 +201,12 @@ namespace EasyBadgeMVVM.ViewModels
 
                 return this._nbrUserOnsite;
             }
+
+            set
+            {
+                this._nbrUserOnsite = value;
+                OnPropertyChanged("NbrUserOnsite");
+            }
         }
 
         public int NbrUniqueAttendance
@@ -103,6 +219,12 @@ namespace EasyBadgeMVVM.ViewModels
                 }
 
                 return _nbrUniqueAttendance;
+            }
+
+            set
+            {
+                this._nbrUniqueAttendance = value;
+                OnPropertyChanged("NbrUniqueAttendance");
             }
         }
 
@@ -133,6 +255,9 @@ namespace EasyBadgeMVVM.ViewModels
 
         public void AttendancePerProfile() //BASIC STACKED
         {
+            this._nbrUserPerProfile.Clear();
+            this._printedBadgePerProfile.Clear();
+
             var allEventFieldUser = this._dbEntities.GetAllUsers();
             foreach (var efu in allEventFieldUser)
             {
@@ -183,6 +308,31 @@ namespace EasyBadgeMVVM.ViewModels
 
             Labels2 = this._allProfiles;
             Formatter = value => value + "";
+        }
+
+        public void Refresh(string[] fields)
+        {
+            foreach(string f in fields)
+            {
+                Console.WriteLine($"f : {f}");
+                switch (f)
+                {
+                    case "NbrUser":
+                        this.NbrUser = this._dbEntities.GetAllUsers().GroupBy(u => u.UserID_User).Select(v => v.Key).Count();
+                        break;
+                    case "NbrUserOnline":
+                        this.NbrUserOnline = this._dbEntities.GetAllUsers().Where(x => x.UserSet.Onsite == false).GroupBy(u => u.UserID_User).Select(v => v.Key).Count();
+                        break;
+                    case "NbrUserOnsite":
+                        this.NbrUserOnsite = this._dbEntities.GetAllUsers().Where(x => x.UserSet.Onsite == true).GroupBy(u => u.UserID_User).Select(v => v.Key).Count();
+                        break;
+                    case "NbrUniqueAttendance":
+                        this.NbrUniqueAttendance = this._dbEntities.GetAllPrintBadge().Count();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

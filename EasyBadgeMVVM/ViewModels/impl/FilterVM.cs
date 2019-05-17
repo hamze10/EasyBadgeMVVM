@@ -20,6 +20,7 @@ namespace EasyBadgeMVVM.ViewModels.impl
         {
             this.eventId = eventId;
             this.dbEntities = new DbEntities();
+            this.dbEntities.SetIdEvent(eventId);
         }
 
         public ObservableCollection<FieldSet> Fields

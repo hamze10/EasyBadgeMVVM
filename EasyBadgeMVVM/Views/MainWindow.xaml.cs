@@ -178,8 +178,11 @@ namespace EasyBadgeMVVM
             this.RunMyWorker(arg);
         }
 
-        private void ExportUsers(object sender, RoutedEventArgs e)
+        private void ExportWindow(object sender, RoutedEventArgs e)
         {
+            ExportWindow exportWindow = new ExportWindow();
+            exportWindow.Show();
+
             /*this.GridLoading.Visibility = Visibility.Visible;
 
             var filePath = string.Empty;

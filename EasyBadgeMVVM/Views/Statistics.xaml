@@ -23,28 +23,28 @@
 
         <!-- Attendance per day -->
         <Grid Grid.RowSpan="3" Background="White" Margin="30,20">
-            <Label Content="ATTENDANCE PER DAY" FontSize="40" HorizontalContentAlignment="Center" />
-            <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right" Margin="0,50,0,0" >
+            <Label MouseLeftButtonUp="RefreshAttendancePerDay" Content="ATTENDANCE PER DAY ⟳" FontSize="40" HorizontalContentAlignment="Center" />
+            <lvc:CartesianChart Series="{Binding SeriesCollection, UpdateSourceTrigger=PropertyChanged}" LegendLocation="Right" Margin="0,50,0,0" >
                 <lvc:CartesianChart.AxisY>
                     <lvc:Axis></lvc:Axis>
                 </lvc:CartesianChart.AxisY>
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Hours" Labels="{Binding Labels}" LabelFormatter="{Binding XFormatter}"></lvc:Axis>
+                    <lvc:Axis Title="Hours" Labels="{Binding Labels, UpdateSourceTrigger=PropertyChanged}" LabelFormatter="{Binding XFormatter, UpdateSourceTrigger=PropertyChanged}"></lvc:Axis>
                 </lvc:CartesianChart.AxisX>
             </lvc:CartesianChart>
         </Grid>
 
         <!-- Attendance per profile -->
         <Grid Grid.Column="1" Grid.RowSpan="2" Background="White" Margin="20,20,20,0">
-            <Label Content="ATTENDANCE PER PROFILE" FontSize="12" />
-            <lvc:CartesianChart Series="{Binding SeriesCollection2}" LegendLocation="Bottom" Margin="0,25,0,0">
+            <Label MouseLeftButtonUp="RefreshAttendancePerProfile" Content="ATTENDANCE PER PROFILE ⟳" FontSize="12" />
+            <lvc:CartesianChart Series="{Binding SeriesCollection2, UpdateSourceTrigger=PropertyChanged}" LegendLocation="Bottom" Margin="0,25,0,0">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Title="Profiles" 
-                          Labels="{Binding Labels2}" 
+                          Labels="{Binding Labels2, UpdateSourceTrigger=PropertyChanged}" 
                           Separator="{x:Static lvc:DefaultAxes.CleanSeparator}" />
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                    <lvc:Axis LabelFormatter="{Binding Formatter, UpdateSourceTrigger=PropertyChanged}"></lvc:Axis>
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
         </Grid>
@@ -57,8 +57,8 @@
 
             <!-- Registration source (ONLINE/ONSITE) -->
             <Grid Grid.Column="1" Background="#dfe6e9">
-                <Label Content="Registration source" FontSize="12" />
-                <lvc:Gauge Margin="37,0,37,55" From="0" To="{Binding NbrUser}" Value="{Binding NbrUserOnline}" GaugeBackground="#4bcffa">
+                <Label MouseLeftButtonUp="RefreshRegistrationSource" Content="Registration source ⟳" FontSize="12" />
+                <lvc:Gauge Margin="37,0,37,55" From="0" To="{Binding NbrUser, UpdateSourceTrigger=PropertyChanged}" Value="{Binding NbrUserOnline, UpdateSourceTrigger=PropertyChanged}" GaugeBackground="#4bcffa">
                     <lvc:Gauge.GaugeActiveFill>
                         <LinearGradientBrush>
                             <GradientStop Color="#192a56" />
@@ -67,20 +67,20 @@
                 </lvc:Gauge>
                 <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Left">
                     <Label Content="ONLINE" FontSize="35" FontWeight="Bold" Foreground="#192a56" Height="50" />
-                    <Label Content="{Binding NbrUserOnline}" HorizontalContentAlignment="Center" FontSize="15" FontWeight="Bold" />
+                    <Label Content="{Binding NbrUserOnline, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" FontSize="15" FontWeight="Bold" />
                 </StackPanel>
 
                 <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right">
                     <Label Content="ONSITE"  FontSize="35" FontWeight="Bold" Foreground="#4bcffa" Height="50" />
-                    <Label Content="{Binding NbrUserOnsite}" HorizontalContentAlignment="Center" FontSize="15" FontWeight="Bold" />
+                    <Label Content="{Binding NbrUserOnsite, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" FontSize="15" FontWeight="Bold" />
                 </StackPanel>
 
             </Grid>
 
             <!--  Unique attendance -->
             <Grid Background="White">
-                <Label Content="Unique attendance" FontSize="12" />
-                <lvc:Gauge Grid.Row="0" Margin="37,32,37,35" Uses360Mode="True" From="0" To="{Binding NbrUser}" Value="{Binding NbrUniqueAttendance}" GaugeBackground="#fab1a0">
+                <Label MouseLeftButtonUp="RefreshUniqueAttendance" Content="Unique attendance ⟳" FontSize="12" />
+                <lvc:Gauge Grid.Row="0" Margin="37,41,37,35" Uses360Mode="True" From="0" To="{Binding NbrUser, UpdateSourceTrigger=PropertyChanged}" Value="{Binding NbrUniqueAttendance, UpdateSourceTrigger=PropertyChanged}" GaugeBackground="#fab1a0">
                     <lvc:Gauge.GaugeRenderTransform>
                         <TransformGroup>
                             <RotateTransform Angle="90"></RotateTransform>
@@ -95,7 +95,7 @@
                     </lvc:Gauge.GaugeActiveFill>
                 </lvc:Gauge>
 
-                <Label Content="{Binding NbrUser}" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" FontSize="40" FontWeight="Bold" />
+                <Label Content="{Binding NbrUser, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" FontSize="40" FontWeight="Bold" Margin="0,209,0,0" />
             </Grid>
         </Grid>
     </Grid>
