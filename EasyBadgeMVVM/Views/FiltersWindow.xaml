@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyBadgeMVVM.Views"
         mc:Ignorable="d"
-        Title="FiltersWindow" Height="900" Width="1600" WindowStartupLocation="CenterScreen"
+        Title="FiltersWindow" Height="900" Width="1600" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" >
     <ScrollViewer>
         <Grid Name="FiltersGrid">

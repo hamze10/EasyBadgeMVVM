@@ -27,6 +27,7 @@ namespace EasyBadgeMVVM.Views
         private List<EventFieldUserSet> _currentUser;
         private bool _isNew;
         private int _idEvent;
+        private bool isPrinted = false;
 
         private const int FONTSIZELABEL = 16;
         private const double GRIDLENGTHHEIGHT = 60;
@@ -244,16 +245,10 @@ namespace EasyBadgeMVVM.Views
             printDocument.PrintPage += (sender2, e2) => document_PrintPage(sender2, e2, defaultBadge); // new PrintPageEventHandler(document_PrintPage);
             pdi.Document = printDocument;
             pdi.Document.BeginPrint += new PrintEventHandler(end_print);
-            if (pdi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            pdi.ShowDialog();
+            if (isPrinted)
             {
-                //INSERT IN PRINTBADGE
-                PrintBadgeSet pbadge = new PrintBadgeSet();
-                pbadge.UserSet = this._currentUser[0].UserSet;
-                pbadge.EventSet = this._userVM.GetEventById(this._idEvent);
-                pbadge.PrintDate = DateTime.Now;
-                pbadge.PrintBy = Environment.MachineName;
-                this._badgeVM.SaveOnPrintBadge(pbadge);
-
+                this._badgeVM.SaveOnPrintBadge(this._currentUser[0].UserID_User);
                 //TODO Comment : how to allow someone to add comment after print
             }
         }
@@ -285,12 +280,8 @@ namespace EasyBadgeMVVM.Views
             }            
         }
 
-        //CHERCHER UNE SOLUTION POUR CA
         private void end_print(object sender, PrintEventArgs e) {
-            if (e.PrintAction == PrintAction.PrintToPrinter)
-            {
-                
-            }
+            this.isPrinted = e.PrintAction == PrintAction.PrintToPrinter;
         }
 
         //CHECK ALGORITHM (it seems to work well oO)

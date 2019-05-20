@@ -13,7 +13,7 @@ namespace EasyBadgeMVVM.Filters
         public static readonly IEnumerable<string> LogicalOperatorsForCharacters = new List<string>
         {
             "length <", "length <=", "length =", "length >=", "length >", "length <>",
-            "starts with", "contains", "<>"
+            "string starts with", "string contains", "string <>", "string equals"
         };
         public static readonly IEnumerable<string> LogicalOperatorsForNumbers = new List<string>
         {
@@ -22,7 +22,7 @@ namespace EasyBadgeMVVM.Filters
 
         public static readonly IEnumerable<string> AllLogicalOperators = LogicalOperatorsForCharacters
             .Concat(LogicalOperatorsForNumbers).Distinct();
-        
+
 
         // Evaluation methods
 
@@ -42,12 +42,14 @@ namespace EasyBadgeMVVM.Filters
                     return LengthGreater(valueToTest, filterValue);
                 case "length <>":
                     return LengthDifferent(valueToTest, filterValue);
-                case "starts with":
+                case "string starts with":
                     return StartsWith(valueToTest, filterValue);
-                case "contains":
+                case "string contains":
                     return Contains(valueToTest, filterValue);
-                case "<>":
+                case "string <>":
                     return Different(valueToTest, filterValue);
+                case "string equals":
+                    return StringEquals(valueToTest, filterValue);
                 default:
                     return false;
             }
@@ -123,6 +125,11 @@ namespace EasyBadgeMVVM.Filters
         }
 
         private static bool Different(string valueToTest, string filterValue)
+        {
+            return !valueToTest.Equals(filterValue, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static bool StringEquals(string valueToTest, string filterValue)
         {
             return valueToTest.Equals(filterValue, StringComparison.InvariantCultureIgnoreCase);
         }

@@ -14,6 +14,8 @@ INSERT INTO BadgeSets VALUES(86,54,'PVC', 'PVC');
 SELECT * FROM BadgeEventSets;
 SELECT * FROM PrintBadgeSets;
 
+DELETE FROM TargetSets WHERE ID_Target > 3
+
 INSERT INTO PrintBadgeSets(PrintDate, PrintBy, Comment, UserID_User, EventID_Event)
 VALUES (CURRENT_TIMESTAMP, 'PC4', NULL, 3, 1);
 

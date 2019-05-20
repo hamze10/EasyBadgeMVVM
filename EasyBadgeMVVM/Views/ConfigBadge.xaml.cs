@@ -300,6 +300,11 @@ namespace EasyBadgeMVVM.Views
             }
         }
 
+        private void Add_NewBadge(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("gg");
+        }
+
         private void ShowNotification(string message, string color = PRIMARY_COLOR)
         {
             var messageQueue = this.SnackbarBadge.MessageQueue;

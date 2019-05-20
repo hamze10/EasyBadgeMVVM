@@ -185,8 +185,14 @@ namespace EasyBadgeMVVM.ViewModels
             this._dbEntities.InsertInPosition(be, f, posX, posY, fontFamily, fontSize);
         }
 
-        public void SaveOnPrintBadge(PrintBadgeSet pb)
+        public void SaveOnPrintBadge(int idUser)
         {
+            PrintBadgeSet pb = new PrintBadgeSet();
+            pb.UserID_User = idUser;
+            pb.EventID_Event = this._idEvent;
+            pb.PrintDate = DateTime.Now;
+            pb.PrintBy = Environment.MachineName;
+
             this._dbEntities.InsertInPrintBadge(pb);
         }
 

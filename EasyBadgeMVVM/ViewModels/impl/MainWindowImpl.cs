@@ -209,7 +209,9 @@ namespace EasyBadgeMVVM.ViewModels
         public void LoadFromImport(string content)
         {
             string[] splitted = content.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            int nbrForInsertion = splitted.Length >= 500 ? splitted.Length >= 5000 ? splitted.Length/25 : splitted.Length/10 : 200;
+            int nbrForInsertion = splitted.Length >= 400 ? 
+                                  splitted.Length >= 5000 ? splitted.Length/25 : splitted.Length/10 
+                                  : 50;
             int i = 0;
             List<string> allFields = new List<string>();
             Dictionary<int, bool> fieldsVisiblity = new Dictionary<int, bool>();
