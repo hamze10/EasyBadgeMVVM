@@ -44,6 +44,7 @@ namespace EasyBadgeMVVM.ViewModels
         void UpdateDefaultPrint(int idBadgeEvent);
         BadgeEventSet GetDefaultBadgeEvent();
         void InsertInPrintBadge(PrintBadgeSet pb);
+        void InsertInBadge(BadgeSet badge);
         List<PrintBadgeSet> GetAllPrintBadge();
 
 

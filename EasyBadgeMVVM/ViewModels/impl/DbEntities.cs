@@ -481,6 +481,13 @@ namespace EasyBadgeMVVM.ViewModels
             repo.SaveChanges();
         }
 
+        public void InsertInBadge(BadgeSet badge)
+        {
+            var repo = this._repostitoryFactory.GetBadgeRepository(this._dbContext);
+            repo.Insert(badge);
+            repo.SaveChanges();
+        }
+
         public void DeleteRowPosition(int idBadge, int idEvent, string templateName)
         {
             this._repostitoryFactory.GetPositionRepository(this._dbContext).RemoveRows(idBadge, idEvent, templateName);

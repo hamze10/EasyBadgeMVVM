@@ -24,6 +24,7 @@ namespace EasyBadgeMVVM.ViewModels
         void UpdateDefaultPrint();
         BadgeEventSet GetDefaultBadge();
         void SaveOnPrintBadge(int idUser);
+        void SaveOnBadge(string name, string typeBadge, int dimX, int dimY);
     }
 
     public class BadgeDTO

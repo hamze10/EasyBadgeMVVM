@@ -180,6 +180,17 @@ namespace EasyBadgeMVVM.ViewModels
             return this._dbEntities.InsertInBadgeEvent(this.SelectedBadge.ID, this._idEvent, templateName);
         }
 
+        public void SaveOnBadge(string name, string typeBadge, int dimX, int dimY)
+        {
+            BadgeSet b = new BadgeSet();
+            b.Name = name;
+            b.TypeBadge = typeBadge;
+            b.Dimension_X = dimX;
+            b.Dimension_Y = dimY;
+            this._dbEntities.InsertInBadge(b);
+            this.ListBadgeType = LoadBadgesType();
+        }
+
         public void SaveOnPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize)
         {
             this._dbEntities.InsertInPosition(be, f, posX, posY, fontFamily, fontSize);

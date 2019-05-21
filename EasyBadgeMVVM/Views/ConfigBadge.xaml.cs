@@ -302,7 +302,29 @@ namespace EasyBadgeMVVM.Views
 
         private void Add_NewBadge(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("gg");
+            string name = this.NewBadgeName.Text;
+            string typeBadge = this.NewBadgeTypeBadge.Text;
+
+            if (name == string.Empty || typeBadge == string.Empty)
+            {
+                MessageBox.Show("Fields must not be empty");
+                return;
+            }
+
+            int dimensionX = -1;
+            int dimensionY = -1;
+
+            try
+            {
+                dimensionX = Convert.ToInt32(this.NewBadgeDimensionX.Text);
+                dimensionY = Convert.ToInt32(this.NewBadgeDimensionY.Text);
+            }catch(Exception)
+            {
+                MessageBox.Show("Please enter a valid number for dimensionX/dimensionY");
+                return;
+            }
+
+            this._badgeVM.SaveOnBadge(name, typeBadge, dimensionX, dimensionY);
         }
 
         private void ShowNotification(string message, string color = PRIMARY_COLOR)
