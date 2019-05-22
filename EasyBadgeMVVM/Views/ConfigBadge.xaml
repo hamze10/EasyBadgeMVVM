@@ -43,9 +43,11 @@
             </ScrollViewer>
         </Grid>
 
-        <Canvas Name="BadgeScreen" Grid.Row="1" Grid.RowSpan="2">
-            <Image Name="imgCanvas" Stretch="Fill" />
-        </Canvas>
+        <ScrollViewer Grid.Row="2">
+            <Canvas Name="BadgeScreen">
+                <Image Name="imgCanvas" Stretch="Fill" />
+            </Canvas>
+        </ScrollViewer>
 
         <Grid Name="OtherInformation" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" Margin="20,0" Height="133">
             <GroupBox Header="Informations" Background="White" Margin="0,0,0,-20" Style="{DynamicResource MaterialDesignGroupBox}"
@@ -73,8 +75,8 @@
         </GroupBox>
 
         <Grid Grid.Row="3">
-            <Button Click="Save_Positions" Content="Save" FontSize="28" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="45" Width="128"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,5"></Button>
+            <Button Click="Save_Positions" Content="Save" FontSize="24" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="40" Width="119"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="7,5,0,5" />
         </Grid>
 
         <Grid Grid.Row="3" Grid.RowSpan="4" Grid.Column="1">
@@ -162,6 +164,16 @@
                         Style="{StaticResource MaterialDesignFloatingActionButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
                         VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
             </materialDesign:DialogHost>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <TextBlock HorizontalAlignment="Right">
+                <TextBox Name="GridShowX" BorderThickness="0" Text="0" Background="White" Width="30" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                <Label Content="X" />
+                <TextBox Name="GridShowY" BorderThickness="0" Text="0" Background="White" Width="30" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,0,10,0" />
+                <Button Click="Draw_Gridlines" Content="OK" Width="50" Height="30" />
+            </TextBlock>
+
         </Grid>
     </Grid>
 </Window>

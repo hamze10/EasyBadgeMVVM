@@ -62,45 +62,9 @@ namespace EasyBadgeMVVM.Views
             {
                 this.MessageBadgePrinted.Visibility = alreadyPrint ? Visibility.Visible : Visibility.Hidden;
                 this.MessageBadgeNotPrinted.Visibility = alreadyPrint ? Visibility.Hidden : Visibility.Visible;
-                //CheckIfColorExists();
                 ShowUser();
             }
         }
-
-        /*private void CheckIfColorExists()
-        {
-            List<string> PotentialColors = new List<string>();
-            string profileName = string.Empty;
-            foreach(var e in this._currentUser)
-            {
-                if (e.Value == string.Empty) continue;
-
-                //CHECK COLOR
-                string capitalizeValue = char.ToUpper(e.Value.Trim()[0]) + e.Value.Trim().Substring(1).ToLower();
-                if (Color.FromName(capitalizeValue).IsKnownColor)
-                {
-                    PotentialColors.Add(e.Value);
-                }else if (capitalizeValue.StartsWith("#"))
-                {
-                    PotentialColors.Add(e.Value);
-                }
-
-                //CHECK PROFILE
-                string profile = e.EventFieldSet.FieldSet.Name.ToLower().Trim();
-                IList<string> differentProfiles = Util.differentProfiles;
-                if (differentProfiles.Contains(profile) && profileName == string.Empty)
-                {
-                    profileName = e.Value;
-                }
-            }
-
-            if (PotentialColors.Count == 1)
-            {
-                System.Windows.Media.Color c = (System.Windows.Media.Color) System.Windows.Media.ColorConverter.ConvertFromString(PotentialColors[0]);
-                this.ProfileBorder.Background = new SolidColorBrush(c);
-                this.ProfileBorderName.Content = profileName;
-            }
-        }*/
 
         private void ShowUser()
         {
@@ -114,7 +78,6 @@ namespace EasyBadgeMVVM.Views
             CreateUserUI(SHOWNAME, true, BUTTON_PRINTBADGE);
 
             Button button = new Button();
-            //button.Width = 150;
             button.Height = 50;
             button.FontSize = 20;
             button.Background = this.TitleBar.Background;
@@ -242,14 +205,13 @@ namespace EasyBadgeMVVM.Views
                                                                         Convert.ToInt32(defaultBadge.BadgeSet.Dimension_X * MM_PX), 
                                                                         Convert.ToInt32(defaultBadge.BadgeSet.Dimension_Y * MM_PX));
 
-            printDocument.PrintPage += (sender2, e2) => document_PrintPage(sender2, e2, defaultBadge); // new PrintPageEventHandler(document_PrintPage);
+            printDocument.PrintPage += (sender2, e2) => document_PrintPage(sender2, e2, defaultBadge);
             pdi.Document = printDocument;
             pdi.Document.BeginPrint += new PrintEventHandler(end_print);
             pdi.ShowDialog();
             if (isPrinted)
             {
                 this._badgeVM.SaveOnPrintBadge(this._currentUser[0].UserID_User);
-                //TODO Comment : how to allow someone to add comment after print
             }
         }
 
@@ -269,8 +231,10 @@ namespace EasyBadgeMVVM.Views
                 string text = this._currentUser.Find(efu => efu.EventFieldSet.FieldSet.Name.Equals(p.FieldSet.Name)).Value;
                 Font printFont = new Font(p.FontFamily, (float) p.FontSize, System.Drawing.FontStyle.Regular);
                 float computedSize = 
-                    GetNewFontSize(e.Graphics.MeasureString(text, printFont), 
+                    GetNewFontSize(e.Graphics.MeasureString(text,printFont),
                                    defaultBadge.BadgeSet.Dimension_Y * MM_PX, 
+                                   p.Position_X,
+                                   p.Position_Y,
                                    printFont.Size, 
                                    e, 
                                    text, 
@@ -284,25 +248,25 @@ namespace EasyBadgeMVVM.Views
             this.isPrinted = e.PrintAction == PrintAction.PrintToPrinter;
         }
 
-        //CHECK ALGORITHM (it seems to work well oO)
-        private float GetNewFontSize(SizeF measureString, double posY, double fontSize, PrintPageEventArgs ppevent, string text, Font printFont)
+        //CHECK ALGORITHM
+        private float GetNewFontSize(SizeF measureString, double dimY, double posX, double posY, double fontSize, PrintPageEventArgs ppevent, string text, Font printFont)
         {
             float newFontSize = (float)fontSize;
             float firstFontSize = newFontSize;
 
-            while (measureString.Width >= posY)
+            double test = posY + measureString.Height;
+            while (test >= dimY)
             {
-                newFontSize = newFontSize - 1;
+                newFontSize = newFontSize - 2;
                 Font other = new Font(printFont.FontFamily, newFontSize, System.Drawing.FontStyle.Regular);
                 measureString = ppevent.Graphics.MeasureString(text, other);
+                test = posY + measureString.Height;
             }
 
             float result = firstFontSize - newFontSize;
             int minus = result == 0 ? 0 : result < 5 ? 1 : result >= 10 ? 3 : 2;
 
-            newFontSize = newFontSize - minus;
-
-            return newFontSize;
+            return newFontSize - minus;
         }
     }
 }

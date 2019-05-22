@@ -327,33 +327,45 @@ namespace EasyBadgeMVVM.Views
             this._badgeVM.SaveOnBadge(name, typeBadge, dimensionX, dimensionY);
         }
 
+        private void Draw_Gridlines(object sender, RoutedEventArgs e)
+        {
+            if (this.DataGridBadge.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a template before");
+                return;
+            }
+
+            int x = -1;
+            int y = -1;
+
+            try
+            {
+                x = Convert.ToInt32(this.GridShowX.Text);
+                y = Convert.ToInt32(this.GridShowY.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Please enter a valid number for dimensions");
+                return;
+            }
+
+            Line line = new Line();
+            line.X1 = 50;
+            line.X2 = 50;
+            line.Y1 = 250;
+            line.Y2 = 250;
+            line.Stroke = Brushes.Red;
+            line.StrokeThickness = 4;
+
+            this.BadgeScreen.Children.Add(line);
+            
+        }
+
         private void ShowNotification(string message, string color = PRIMARY_COLOR)
         {
             var messageQueue = this.SnackbarBadge.MessageQueue;
             this.SnackbarBadge.Background = (Brush)new BrushConverter().ConvertFrom(color);
             Task.Factory.StartNew(() => messageQueue.Enqueue(message));
         }
-
-        //https://www.wundervisionenvisionthefuture.com/blog/wpf-c-drag-and-drop-icon-adorner
-        /*private class DraggableAdorner : Adorner
-        {
-            Rect renderRect;
-            Brush renderBrush;
-            public Point CenterOffset;
-
-            public DraggableAdorner(ConfigBadge adornedElement) : base(adornedElement)
-            {
-                renderRect = new Rect(new Size(400, 200));
-                this.IsHitTestVisible = false;
-                //Clone so that it can be modified with on modifying the original
-                renderBrush = Brushes.Red;
-                CenterOffset = new Point(-renderRect.Width / 2, -renderRect.Height / 2);
-            }
-
-            protected override void OnRender(DrawingContext drawingContext)
-            {
-                drawingContext.DrawRectangle(renderBrush, null, renderRect);
-            }
-        }*/
     }
 }
