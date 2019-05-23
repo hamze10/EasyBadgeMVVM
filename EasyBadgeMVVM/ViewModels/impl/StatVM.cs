@@ -282,7 +282,16 @@ namespace EasyBadgeMVVM.ViewModels
                 if (alreadyIdUser.Contains(printed.UserID_User)) continue;
                 alreadyIdUser.Add(printed.UserID_User);
                 var profileUser = this._dbEntities.GetAllUsers().Where(e => e.UserID_User == printed.UserID_User).ToList();
-                string profileName = profileUser.Where(e => differentProfiles.Contains(e.EventFieldSet.FieldSet.Name.ToLower())).FirstOrDefault().Value;
+                var profileNameExists = profileUser.Where(e => differentProfiles.Contains(e.EventFieldSet.FieldSet.Name.ToLower())).FirstOrDefault();
+                string profileName = string.Empty;
+                if (profileNameExists != null)
+                {
+                    profileName = profileNameExists.Value;
+                }
+                else
+                {
+                    return;
+                }
                 this._printedBadgePerProfile[profileName] = this._printedBadgePerProfile[profileName] + 1;
             }
 

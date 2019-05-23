@@ -20,7 +20,7 @@
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.ColumnSpan="2" Margin="15" Background="White">
+        <Grid Name="DataGridData" Grid.ColumnSpan="2" Margin="15" Background="White">
             <ScrollViewer>
                 <DataGrid Name="DataGridBadge" ItemsSource="{Binding ListBadgeType, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedBadge}" 
                           CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True">
@@ -43,13 +43,13 @@
             </ScrollViewer>
         </Grid>
 
-        <ScrollViewer Grid.Row="2">
+        <ScrollViewer Name="BadgeScreenGrid" Grid.Row="2">
             <Canvas Name="BadgeScreen">
                 <Image Name="imgCanvas" Stretch="Fill" />
             </Canvas>
         </ScrollViewer>
 
-        <Grid Name="OtherInformation" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" Margin="20,0" Height="133">
+        <Grid Name="OtherInformation" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" Margin="20,0,0,0" Height="133">
             <GroupBox Header="Informations" Background="White" Margin="0,0,0,-20" Style="{DynamicResource MaterialDesignGroupBox}"
                       materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
                 <TextBlock>
@@ -66,7 +66,7 @@
 
         </Grid>
 
-        <GroupBox Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Header="Fields" Background="White" Margin="20,175,20,146" Style="{DynamicResource MaterialDesignGroupBox}"
+        <GroupBox Name="FieldsBadgingGrid" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Header="Fields" Background="White" Margin="20,175,20,146" Style="{DynamicResource MaterialDesignGroupBox}"
                       materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
             <ScrollViewer>
                 <Grid Name="BadgeLabels" >
@@ -79,7 +79,7 @@
                            HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="7,5,0,5" />
         </Grid>
 
-        <Grid Grid.Row="3" Grid.RowSpan="4" Grid.Column="1">
+        <Grid Name="DefaultPrintGrid" Grid.Row="3" Grid.RowSpan="4" Grid.Column="1">
             <GroupBox Header="Default template for print" Background="White" Margin="20,-116,19,82" Style="{DynamicResource MaterialDesignGroupBox}"
                       materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
                 <ComboBox materialDesign:HintAssist.Hint="Choose template"
@@ -106,7 +106,7 @@
               Name="SnackbarBadge" Background="#0a3d62" Width="754" />
         </Grid>
 
-        <Grid Grid.Row="1" Margin="15,-30,0,0">
+        <Grid Name="ButtonAddBadgeGrid" Grid.Row="1" Margin="15,-30,0,0">
             <materialDesign:DialogHost
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
@@ -166,14 +166,17 @@
             </materialDesign:DialogHost>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Name="ButtonGridLinesGrid" Grid.Row="1">
             <TextBlock HorizontalAlignment="Right">
-                <TextBox Name="GridShowX" BorderThickness="0" Text="0" Background="White" Width="30" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                <TextBox Name="GridShowX" BorderThickness="0" Text="1" Background="White" Width="40" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
                 <Label Content="X" />
-                <TextBox Name="GridShowY" BorderThickness="0" Text="0" Background="White" Width="30" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,0,10,0" />
+                <TextBox Name="GridShowY" BorderThickness="0" Text="1" Background="White" Width="40" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,0,10,0" />
                 <Button Click="Draw_Gridlines" Content="OK" Width="50" Height="30" />
             </TextBlock>
+        </Grid>
 
+        <Grid Name="ButtonHideShowGrid" Grid.Row="1" HorizontalAlignment="Center" Margin="0,-8,-10,28">
+            <Button Name="ButtonHideShow" Height="30" FontSize="10" Content="Hide" Click="HideShowDataGrid" />
         </Grid>
     </Grid>
 </Window>

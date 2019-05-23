@@ -5,6 +5,7 @@ using EasyBadgeMVVM.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -32,6 +33,18 @@ namespace EasyBadgeMVVM.Views
         {
             this._eventVm = new EventVM();
             this.DataContext = this._eventVm;
+
+            //TODO
+            //var connectionStrings = ConfigurationManager.ConnectionStrings["EasyBadgeModelContext"];
+            
+            ////change default configuration from readonly to read/write
+            //var fi = typeof(ConfigurationElement).GetField("_bReadOnly", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            //fi.SetValue(connectionStrings, false);
+
+            //connectionStrings.Name = "EasyBadgeModelContext";
+            //connectionStrings.ConnectionString = "metadata=res://*/Models.EasyModel.csdl|res://*/Models.EasyModel.ssdl|res://*/Models.EasyModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=Phoenix.onetec.be;initial catalog=EasyBadge2019;user id=sa;password=6k36nm14.01;MultipleActiveResultSets=True;App=EntityFramework&quot;";
+            //connectionStrings.ProviderName = "System.Data.EntityClient";
+
             InitializeComponent();
         }
 

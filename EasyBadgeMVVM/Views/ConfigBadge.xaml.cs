@@ -41,6 +41,9 @@ namespace EasyBadgeMVVM.Views
         private const string PRIMARY_COLOR = "#0a3d62";
         private const string ERROR_COLOR = "#c0392b";
 
+        private double widthBadge = -1;
+        private double heightBadge = -1;
+
         public ConfigBadge(int idEvent)
         {
             this._idEvent = idEvent;
@@ -131,7 +134,7 @@ namespace EasyBadgeMVVM.Views
             //http://classicalprogrammer.wikidot.com/don-t-delete-an-element-from-collection-in-foreach-loop
             for (int inx = c.Children.Count - 1; inx >= 0; inx--)
             {
-                if (c.Children[inx] is Label) c.Children.Remove(c.Children[inx]);
+                if (c.Children[inx] is Label || c.Children[inx] is Line) c.Children.Remove(c.Children[inx]);
             }
 
             this.imgCanvas.Source = new BitmapImage();
@@ -143,6 +146,9 @@ namespace EasyBadgeMVVM.Views
             this.BadgeScreen.DragEnter += new DragEventHandler(Drag_DragEnter);
             this.BadgeScreen.Width = selected.Width;
             this.BadgeScreen.Height = selected.Height;
+
+            this.widthBadge = selected.Width;
+            this.heightBadge = selected.Height;
 
             this._badgeVM.SelectedTemplate = selected.Template;
 
@@ -349,16 +355,64 @@ namespace EasyBadgeMVVM.Views
                 return;
             }
 
-            Line line = new Line();
-            line.X1 = 50;
-            line.X2 = 50;
-            line.Y1 = 250;
-            line.Y2 = 250;
-            line.Stroke = Brushes.Red;
-            line.StrokeThickness = 4;
+            Canvas c = this.BadgeScreen;
 
-            this.BadgeScreen.Children.Add(line);
-            
+            //http://classicalprogrammer.wikidot.com/don-t-delete-an-element-from-collection-in-foreach-loop
+            for (int inx = c.Children.Count - 1; inx >= 0; inx--)
+            {
+                if (c.Children[inx] is Line) c.Children.Remove(c.Children[inx]);
+            }
+
+            for (double i = 0; i <= this.heightBadge; i+= this.heightBadge / x)
+            {
+                //Horizontal Line
+                Line lineHorizontal = new Line();
+                lineHorizontal.X1 = 0;
+                lineHorizontal.Y1 = i;
+                lineHorizontal.X2 = this.widthBadge;
+                lineHorizontal.Y2 = i;
+                lineHorizontal.Stroke = Brushes.Gray;
+                lineHorizontal.StrokeThickness = 0.5;
+
+                this.BadgeScreen.Children.Add(lineHorizontal);
+            }
+
+            for (double j = 0; j <= this.widthBadge; j += this.widthBadge / y)
+            {
+                //Vertical Line
+                Line lineVertical = new Line();
+                lineVertical.X1 = j;
+                lineVertical.Y1 = 0;
+                lineVertical.X2 = j;
+                lineVertical.Y2 = this.heightBadge;
+                lineVertical.Stroke = Brushes.Gray;
+                lineVertical.StrokeThickness = 0.5;
+
+                this.BadgeScreen.Children.Add(lineVertical);
+            }
+        }
+
+        private bool HideDataGrid = false;
+        private void HideShowDataGrid(object sender, RoutedEventArgs e)
+        {
+            this.HideDataGrid = !this.HideDataGrid;
+            Visibility visibility = this.HideDataGrid ? Visibility.Hidden : Visibility.Visible;
+            this.DataGridData.SetValue(Grid.VisibilityProperty, visibility);
+            int rowProp = this.HideDataGrid ? 0 : 2;
+            this.BadgeScreenGrid.SetValue(Grid.RowProperty, rowProp);
+            this.ButtonAddBadgeGrid.SetValue(Grid.RowProperty, rowProp == 0 ? 0 : 1);
+            this.ButtonGridLinesGrid.SetValue(Grid.RowProperty, rowProp == 0 ? 0 : 1);
+            this.ButtonHideShowGrid.SetValue(Grid.RowProperty, rowProp == 0 ? 0 : 1);
+            this.BadgeScreenGrid.SetValue(Grid.RowSpanProperty, rowProp == 0 ? 3 : 1);
+            this.ButtonAddBadgeGrid.SetValue(Grid.VisibilityProperty, rowProp == 0 ? Visibility.Hidden : Visibility.Visible);
+            this.ButtonGridLinesGrid.SetValue(Grid.MarginProperty, rowProp == 0 ? new Thickness(0, 10, 0, 0) : new Thickness(0, 0, 0, 0));
+            this.ButtonHideShowGrid.SetValue(Grid.MarginProperty, rowProp == 0 ? new Thickness(0, 0, 0, 150) : new Thickness(0, -8, 10, 28));
+            this.BadgeScreenGrid.SetValue(Grid.MarginProperty, rowProp == 0 ? new Thickness(0, 50, 0, 0) : new Thickness(0, 0, 0, 0));
+            this.OtherInformation.SetValue(Grid.RowProperty, rowProp == 0 ? 0 : 1);
+            this.OtherInformation.SetValue(Grid.MarginProperty, rowProp == 0 ? new Thickness(20, 50, 0, 0) : new Thickness(20, 0, 0, 0));
+            this.FieldsBadgingGrid.SetValue(Grid.MarginProperty, rowProp == 0 ? new Thickness(20, 20, 20, 146) : new Thickness(20, 175, 20, 146));
+            this.DefaultPrintGrid.SetValue(Grid.MarginProperty, rowProp == 0 ? new Thickness(0, -10, 0, 0) : new Thickness(0, 0, 0, 0));
+            this.ButtonHideShow.Content = this.HideDataGrid ? "Show" : "Hide";
         }
 
         private void ShowNotification(string message, string color = PRIMARY_COLOR)
