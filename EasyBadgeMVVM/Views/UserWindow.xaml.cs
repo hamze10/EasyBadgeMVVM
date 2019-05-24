@@ -264,7 +264,7 @@ namespace EasyBadgeMVVM.Views
             }
 
             float result = firstFontSize - newFontSize;
-            int minus = result == 0 ? 0 : result < 5 ? 1 : result >= 10 ? 3 : 2;
+            int minus = result == 0 ? 0 : result < 5 ? 1 : result >= 10 ? 5 : 3;
 
             return newFontSize - minus;
         }

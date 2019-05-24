@@ -64,7 +64,7 @@ namespace EasyBadgeMVVM.Views
             }
         }
 
-        private void Export(List<ExportDTO> data)
+        private void ExportAllUsers(object sender, RoutedEventArgs e)
         {
             this.ExportLoading.Visibility = Visibility.Visible;
             this.ButtonEnabled = false;
@@ -84,79 +84,32 @@ namespace EasyBadgeMVVM.Views
                 return;
             }
 
-            DateTime now = DateTime.Now;
-            string nameFile = filePath + '\\' + "export" + now.ToString("ddMMyyyy") + "-" + now.ToString("HHmmsstt") + ".csv";
-            int lastUser = -1;
-            bool firsttime = true;
-            ExportDTO lastDto = new ExportDTO();
-
-            using (var writer = new StreamWriter(nameFile, false, Encoding.UTF8))
-            using (var csvWriter = new CsvWriter(writer))
-            {
-                csvWriter.Configuration.Delimiter = ",";
-
-                //HEADER (Event, barcode, onsite, all differents fields from csv, printdate, printby)
-                foreach (ExportDTO dto in data)
-                {
-                    if (lastUser == -1)
-                    {
-                        lastUser = dto.EventFieldUserExport.UserID_User;
-                        csvWriter.WriteField("Event");
-                        csvWriter.WriteField("Barcode");
-                        csvWriter.WriteField("Onsite");
-                    }
-                    if (lastUser != dto.EventFieldUserExport.UserID_User) break;
-                    csvWriter.WriteField(dto.EventFieldUserExport.EventFieldSet.FieldSet.Name);
-                }
-                csvWriter.WriteField("PrintDate");
-                csvWriter.WriteField("PrintBy");
-                csvWriter.NextRecord();
-
-                //FIELDS
-                foreach (ExportDTO dto in data)
-                {
-                    if (firsttime)
-                    {
-                        lastUser = dto.EventFieldUserExport.UserID_User;
-                        csvWriter.WriteField(dto.EventFieldUserExport.EventFieldSet.EventSet.Name);
-                        csvWriter.WriteField(dto.EventFieldUserExport.UserSet.Barcode);
-                        csvWriter.WriteField(dto.EventFieldUserExport.UserSet.Onsite);
-                        firsttime = false;
-                    }
-
-                    if (lastUser != dto.EventFieldUserExport.UserID_User)
-                    {
-                        csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintDate.ToString());
-                        csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintBy);
-                        csvWriter.NextRecord();
-                        lastUser = dto.EventFieldUserExport.UserID_User;
-                        csvWriter.WriteField(dto.EventFieldUserExport.EventFieldSet.EventSet.Name);
-                        csvWriter.WriteField(dto.EventFieldUserExport.UserSet.Barcode);
-                        csvWriter.WriteField(dto.EventFieldUserExport.UserSet.Onsite);
-                    }
-
-                    csvWriter.WriteField(dto.EventFieldUserExport.Value);
-                    lastDto = dto;
-                }
-
-                csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintDate.ToString());
-                csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintBy);
-                writer.Flush();
-
-            }
-        }
-
-        private void ExportAllUsers(object sender, RoutedEventArgs e)
-        {
-            this.Export(this._exportVM.GetAllUsersToExport());
-            string[] arg = new string[] { EXPORT_ALL };
+            
+            string[] arg = new string[] { EXPORT_ALL, filePath };
             this.RunMyWorker(arg);
         }
 
         private void ExportRegisteredUsers(object sender, RoutedEventArgs e)
         {
-            this.Export(this._exportVM.GetAllRegisteredUserToExport());
-            string[] arg = new string[] { EXPORT_REGISTERED };
+            this.ExportLoading.Visibility = Visibility.Visible;
+            this.ButtonEnabled = false;
+
+            var filePath = string.Empty;
+            using (FolderBrowserDialog fd = new FolderBrowserDialog())
+            {
+                if (fd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    filePath = fd.SelectedPath;
+                }
+            }
+
+            if (filePath.Equals(string.Empty))
+            {
+                this.ExportLoading.Visibility = Visibility.Hidden;
+                return;
+            }
+
+            string[] arg = new string[] { EXPORT_REGISTERED, filePath };
             this.RunMyWorker(arg);
         }
 
@@ -195,10 +148,10 @@ namespace EasyBadgeMVVM.Views
             switch (arguments[0])
             {
                 case EXPORT_ALL:
-                    e.Result = MESSAGE_ALL;
+                    e.Result = new object[] { this._exportVM.GetAllUsersToExport(), arguments[1] };
                     break;
                 case EXPORT_REGISTERED:
-                    e.Result = MESSAGE_REGISTERED;
+                    e.Result = new object[] { this._exportVM.GetAllRegisteredUserToExport(), arguments[1] };
                     break;
                 case EXPORT_STATS:
                     e.Result = MESSAGE_STATS;
@@ -209,8 +162,76 @@ namespace EasyBadgeMVVM.Views
         private void myBgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.ExportLoading.Visibility = Visibility.Hidden;
+            bool isList = false;
+            object[] myResult = e.Result as object[];
+            if (myResult[0] is List<ExportDTO>)
+            {
+                isList = true;
+                var data = (List<ExportDTO>)myResult[0];
+                DateTime now = DateTime.Now;
+                string nameFile = myResult[1] + "\\" +  "export" + now.ToString("ddMMyyyy") + "-" + now.ToString("HHmmsstt") + ".csv";
+                int lastUser = -1;
+                bool firsttime = true;
+                ExportDTO lastDto = new ExportDTO();
+
+                using (var writer = new StreamWriter(nameFile, false, Encoding.UTF8))
+                using (var csvWriter = new CsvWriter(writer))
+                {
+                    csvWriter.Configuration.Delimiter = ",";
+
+                    //HEADER (Event, barcode, onsite, all differents fields from csv, printdate, printby)
+                    foreach (ExportDTO dto in data)
+                    {
+                        if (lastUser == -1)
+                        {
+                            lastUser = dto.EventFieldUserExport.UserID_User;
+                            csvWriter.WriteField("Event");
+                            csvWriter.WriteField("Barcode");
+                            csvWriter.WriteField("Onsite");
+                        }
+                        if (lastUser != dto.EventFieldUserExport.UserID_User) break;
+                        csvWriter.WriteField(dto.EventFieldUserExport.EventFieldSet.FieldSet.Name);
+                    }
+                    csvWriter.WriteField("PrintDate");
+                    csvWriter.WriteField("PrintBy");
+                    csvWriter.NextRecord();
+
+                    //FIELDS
+                    foreach (ExportDTO dto in data)
+                    {
+                        if (firsttime)
+                        {
+                            lastUser = dto.EventFieldUserExport.UserID_User;
+                            csvWriter.WriteField(dto.EventFieldUserExport.EventFieldSet.EventSet.Name);
+                            csvWriter.WriteField(dto.EventFieldUserExport.UserSet.Barcode);
+                            csvWriter.WriteField(dto.EventFieldUserExport.UserSet.Onsite);
+                            firsttime = false;
+                        }
+
+                        if (lastUser != dto.EventFieldUserExport.UserID_User)
+                        {
+                            csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintDate.ToString());
+                            csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintBy);
+                            csvWriter.NextRecord();
+                            lastUser = dto.EventFieldUserExport.UserID_User;
+                            csvWriter.WriteField(dto.EventFieldUserExport.EventFieldSet.EventSet.Name);
+                            csvWriter.WriteField(dto.EventFieldUserExport.UserSet.Barcode);
+                            csvWriter.WriteField(dto.EventFieldUserExport.UserSet.Onsite);
+                        }
+
+                        csvWriter.WriteField(dto.EventFieldUserExport.Value);
+                        lastDto = dto;
+                    }
+
+                    csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintDate.ToString());
+                    csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintBy);
+                    writer.Flush();
+
+                }
+            }
+
             this.ButtonEnabled = true;
-            this.ShowNotification((string) e.Result);
+            this.ShowNotification(isList ? MESSAGE_ALL : (string) e.Result);
         }
 
         /*********************************************************************************************************************************************************************/
