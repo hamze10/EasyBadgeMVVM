@@ -237,11 +237,13 @@
     <Compile Include="ViewModels\impl\BadgeVM.cs" />
     <Compile Include="ViewModels\impl\DbEntities.cs" />
     <Compile Include="ViewModels\impl\EventVM.cs" />
+    <Compile Include="ViewModels\impl\ExportVM.cs" />
     <Compile Include="ViewModels\impl\FieldVM.cs" />
     <Compile Include="ViewModels\impl\FilterVM.cs" />
     <Compile Include="ViewModels\impl\RuleVM.cs" />
     <Compile Include="ViewModels\impl\StatVM.cs" />
     <Compile Include="ViewModels\interfaces\IBadgeVM.cs" />
+    <Compile Include="ViewModels\interfaces\IExportVM.cs" />
     <Compile Include="ViewModels\interfaces\IFieldVM.cs" />
     <Compile Include="ViewModels\interfaces\IFilterVM.cs" />
     <Compile Include="ViewModels\interfaces\IRuleVM.cs" />

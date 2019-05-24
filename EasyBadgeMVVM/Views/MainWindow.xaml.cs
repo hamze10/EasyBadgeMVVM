@@ -180,7 +180,7 @@ namespace EasyBadgeMVVM
 
         private void ExportWindow(object sender, RoutedEventArgs e)
         {
-            ExportWindow exportWindow = new ExportWindow();
+            ExportWindow exportWindow = new ExportWindow(this._idEvent);
             exportWindow.Show();
 
             /*this.GridLoading.Visibility = Visibility.Visible;

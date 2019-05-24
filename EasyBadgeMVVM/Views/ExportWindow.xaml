@@ -5,10 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyBadgeMVVM.Views"
         mc:Ignorable="d"
-        Title="Exports" Height="{x:Static SystemParameters.PrimaryScreenHeight}" Width="{x:Static SystemParameters.PrimaryScreenWidth}"
-        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Title="Exports" Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-    <Grid>
+    <Grid Name="ExportGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Background="#0a3d62" Grid.ColumnSpan="3">
+            <Label Content="EXPORTS" Foreground="White" FontSize="70" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Button IsEnabled="{Binding ButtonEnabled}" Content="Export all users" Width="200" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"
+                    Click="ExportAllUsers"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Button IsEnabled="{Binding ButtonEnabled}" Content="Export registered users" Width="200" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"
+                    Click="ExportRegisteredUsers" />
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Button IsEnabled="{Binding ButtonEnabled}" Content="Export statistics" Width="200" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"
+                    Click="ExportStatistics" />
+        </Grid>
+
+        <Grid Name="ExportLoading" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="7" Visibility="Hidden">
+            <ProgressBar
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Name="ProgressLoading"
+                IsIndeterminate="true"
+                Value="0"
+                Width="100"
+                Height="100"
+                />
+        </Grid>
         
+        <Grid Grid.ColumnSpan="3" Grid.Row="9">
+            <materialDesign:Snackbar
+              MessageQueue="{materialDesign:MessageQueue}"
+              Name="ExportNotification" Background="#0a3d62" Width="Auto" />
+        </Grid>
+
     </Grid>
 </Window>
