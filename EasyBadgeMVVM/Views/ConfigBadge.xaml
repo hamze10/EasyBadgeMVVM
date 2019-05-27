@@ -50,7 +50,7 @@
         </ScrollViewer>
 
         <Grid Name="OtherInformation" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" Margin="20,0,0,0" Height="133">
-            <GroupBox Header="Informations" Background="White" Margin="0,0,0,-20" Style="{DynamicResource MaterialDesignGroupBox}"
+            <GroupBox Header="Informations" Background="White" Margin="0,0,20,-20" Style="{DynamicResource MaterialDesignGroupBox}"
                       materialDesign:ShadowAssist.ShadowDepth="Depth3" BorderThickness="0">
                 <TextBlock>
                     <Label Content="Name of this template : " FontSize="16" VerticalAlignment="Center" /> 
