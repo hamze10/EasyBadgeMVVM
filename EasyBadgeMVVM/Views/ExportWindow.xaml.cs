@@ -141,10 +141,7 @@ namespace EasyBadgeMVVM.Views
         private void myBgw_doWorker(object sender, DoWorkEventArgs e)
         {
             string[] arguments = e.Argument as string[];
-
-            //SIMULATE LONG LOADING
-            for(long i = 0; i < 500000000; i++) { }
-
+    
             switch (arguments[0])
             {
                 case EXPORT_ALL:
@@ -226,7 +223,6 @@ namespace EasyBadgeMVVM.Views
                     csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintDate.ToString());
                     csvWriter.WriteField(lastDto.PrintBadgeExport == null ? "//" : lastDto.PrintBadgeExport.PrintBy);
                     writer.Flush();
-
                 }
             }
 

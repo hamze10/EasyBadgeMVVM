@@ -347,7 +347,6 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EasyModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="EasyBadgeMVVM_TemporaryKey.pfx" />
     <None Include="Models\EasyModel.edmx.diagram">
       <DependentUpon>EasyModel.edmx</DependentUpon>
     </None>

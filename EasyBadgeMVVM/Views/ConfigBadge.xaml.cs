@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
+using System.Windows.Media.Animation;
 
 namespace EasyBadgeMVVM.Views
 {
@@ -206,6 +207,7 @@ namespace EasyBadgeMVVM.Views
                         l.FontFamily = la1.FontFamily;
                         l.FontSize = la1.FontSize;
                         l.Content = la1.Content;
+                        l.LayoutTransform = la1.LayoutTransform;
                         l.MouseMove += new MouseEventHandler(Label_MouseMove);
                         l.PreviewMouseRightButtonDown += new MouseButtonEventHandler(Label_RightClick);
                         l.AllowDrop = true;

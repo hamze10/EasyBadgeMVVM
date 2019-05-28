@@ -182,45 +182,6 @@ namespace EasyBadgeMVVM
         {
             ExportWindow exportWindow = new ExportWindow(this._idEvent);
             exportWindow.Show();
-
-            /*this.GridLoading.Visibility = Visibility.Visible;
-
-            var filePath = string.Empty;
-            using (FolderBrowserDialog fd = new FolderBrowserDialog())
-            {
-                if (fd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    filePath = fd.SelectedPath;
-                }
-            }
-
-            if (filePath.Equals(string.Empty))
-            {
-                this.GridLoading.Visibility = Visibility.Hidden;
-                return;
-            }
-
-            ObservableCollection<EventFieldUser> data = this._mainWindowImpl.MainFields;
-            DateTime now = DateTime.Now;
-            string nameFile = filePath + '\\' + "users" + now.ToString("ddMMyyyy") + "-" + now.ToString("HHmmsstt") + ".csv";
-
-            using (var writer = new StreamWriter(nameFile, false, Encoding.UTF8))
-            using (var csvWriter = new CsvWriter(writer))
-            {
-                csvWriter.Configuration.Delimiter = DELIMITER;
-                csvWriter.Configuration.HasHeaderRecord = true;
-                csvWriter.Configuration.AutoMap<EventFieldUser>();
-
-                csvWriter.WriteHeader<EventFieldUser>();
-                csvWriter.NextRecord();
-                csvWriter.WriteRecords(data);
-
-                writer.Flush();
-
-            }
-
-            string[] arg = new string[] { WORKER_EXPORT, nameFile};
-            this.RunMyWorker(arg);*/
         }
 
         private void SyncUsers(object sender, RoutedEventArgs e)
