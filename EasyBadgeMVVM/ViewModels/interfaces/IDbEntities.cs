@@ -34,8 +34,8 @@ namespace EasyBadgeMVVM.ViewModels
         ObservableCollection<UserSet> GetAllUsersSet();
 
         ObservableCollection<BadgeSet> GetAllBadges();
-        BadgeEventSet InsertInBadgeEvent(int idBadge, int idEvent, string templateName);
-        void InsertInPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize);
+        BadgeEventSet InsertInBadgeEvent(int idBadge, int idEvent, string templateName, System.Windows.Media.Imaging.BitmapSource imageSrc);
+        void InsertInPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize, double layoutTransform);
         BadgeEventSet GetBadgeEvent(int idBadge, int idEvent);
         void DeleteRowPosition(int idBadge, int idEvent, string templateName);
         List<PositionSet> GetPositions(int idBadge, int idEvent, string templateName);

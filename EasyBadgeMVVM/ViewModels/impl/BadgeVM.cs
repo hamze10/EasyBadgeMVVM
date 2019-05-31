@@ -175,9 +175,9 @@ namespace EasyBadgeMVVM.ViewModels
             return this._dbEntities.GetDefaultBadgeEvent();
         }
 
-        public BadgeEventSet SaveOnBadgeEvent(string templateName)
+        public BadgeEventSet SaveOnBadgeEvent(string templateName, System.Windows.Media.Imaging.BitmapSource imageSrc)
         {
-            return this._dbEntities.InsertInBadgeEvent(this.SelectedBadge.ID, this._idEvent, templateName);
+            return this._dbEntities.InsertInBadgeEvent(this.SelectedBadge.ID, this._idEvent, templateName, imageSrc);
         }
 
         public void SaveOnBadge(string name, string typeBadge, int dimX, int dimY)
@@ -191,9 +191,9 @@ namespace EasyBadgeMVVM.ViewModels
             this.ListBadgeType = LoadBadgesType();
         }
 
-        public void SaveOnPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize)
+        public void SaveOnPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize, double layoutTransform)
         {
-            this._dbEntities.InsertInPosition(be, f, posX, posY, fontFamily, fontSize);
+            this._dbEntities.InsertInPosition(be, f, posX, posY, fontFamily, fontSize, layoutTransform);
         }
 
         public void SaveOnPrintBadge(int idUser)

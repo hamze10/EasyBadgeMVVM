@@ -203,6 +203,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EasyModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\EasyModel2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EasyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EventFieldSet.cs">
       <DependentUpon>EasyModel.tt</DependentUpon>
     </Compile>
@@ -390,7 +395,7 @@
     <Content Include="Models\EasyModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EasyModel.edmx</DependentUpon>
-      <LastGenOutput>EasyModel.cs</LastGenOutput>
+      <LastGenOutput>EasyModel2.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

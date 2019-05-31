@@ -9,5 +9,6 @@ namespace EasyBadgeMVVM.DataAccess
     public interface IBadgeEventRepository
     {
         void UpdateDefaultPrint(int idBadgeEvent, int idEvent);
+        void UpdateWithBackground(EasyBadgeMVVM.Models.BadgeEventSet be);
     }
 }

@@ -84,6 +84,7 @@
     <Property Name="BadgeID_Badge" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DefaultPrint" Type="bit" Nullable="false" />
+    <Property Name="BackgroundImage" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="BadgeSets">
     <Key>
@@ -154,6 +155,7 @@
     <Property Name="FontFamily" Type="nvarchar(max)" Nullable="false" />
     <Property Name="FontSize" Type="float" Nullable="false" />
     <Property Name="FontStyle" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AngleRotation" Type="float" Nullable="true" />
   </EntityType>
   <EntityType Name="PrintBadgeSets">
     <Key>
@@ -383,6 +385,7 @@
           <NavigationProperty Name="PositionSets" Relationship="Self.FK_BadgeEventPosition" FromRole="BadgeEventSet" ToRole="PositionSet" />
           <NavigationProperty Name="EventSet" Relationship="Self.FK_EventBadgeEvent" FromRole="BadgeEventSet" ToRole="EventSet" />
           <NavigationProperty Name="RuleSets" Relationship="EasyBadge2019Model.BadgeEventSetRuleSet" FromRole="BadgeEventSet" ToRole="RuleSet" />
+          <Property Name="BackgroundImage" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="BadgeSet">
           <Key>
@@ -469,6 +472,7 @@
           <Property Name="FontStyle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="BadgeEventSet" Relationship="Self.FK_BadgeEventPosition" FromRole="PositionSet" ToRole="BadgeEventSet" />
           <NavigationProperty Name="FieldSet" Relationship="Self.FK_FieldPosition" FromRole="PositionSet" ToRole="FieldSet" />
+          <Property Name="AngleRotation" Type="Double" Nullable="true" />
         </EntityType>
         <EntityType Name="PrintBadgeSet">
           <Key>
@@ -773,6 +777,7 @@
           <ScalarProperty Name="BadgeID_Badge" ColumnName="BadgeID_Badge" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="DefaultPrint" ColumnName="DefaultPrint" />
+          <ScalarProperty Name="BackgroundImage" ColumnName="BackgroundImage" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -847,6 +852,7 @@
           <ScalarProperty Name="FontFamily" ColumnName="FontFamily" />
           <ScalarProperty Name="FontSize" ColumnName="FontSize" />
           <ScalarProperty Name="FontStyle" ColumnName="FontStyle" />
+          <ScalarProperty Name="AngleRotation" ColumnName="AngleRotation" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

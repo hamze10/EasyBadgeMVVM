@@ -22,6 +22,7 @@ namespace EasyBadgeMVVM.Models
         public string FontFamily { get; set; }
         public double FontSize { get; set; }
         public string FontStyle { get; set; }
+        public Nullable<double> AngleRotation { get; set; }
     
         public virtual BadgeEventSet BadgeEventSet { get; set; }
         public virtual FieldSet FieldSet { get; set; }

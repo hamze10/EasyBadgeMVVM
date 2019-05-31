@@ -27,5 +27,14 @@ namespace EasyBadgeMVVM.DataAccess
             }
             ctx.SaveChanges();
         }
+
+        public void UpdateWithBackground(BadgeEventSet be)
+        {
+            var ctx = this._dbContext;
+            BadgeEventSet be1 = ctx.Set<BadgeEventSet>().Where(b => b.BadgeID_Badge == be.BadgeID_Badge).FirstOrDefault();
+            be1.BackgroundImage = be.BackgroundImage;
+            ctx.Entry(be1).State = System.Data.Entity.EntityState.Modified;
+            ctx.SaveChanges();
+        }
     }
 }

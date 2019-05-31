@@ -38,6 +38,9 @@ namespace EasyBadgeMVVM.Views
         private const string COMBOBOXFONTFAMILYNAME = "comboboxfontfamilyname";
         private const string COMBOBOXFONTSIZENAME = "comboboxfontsizename";
         private const string GRIDLABEL = "grindlabel";
+        private const string ANGLEPLUS = "anglePlus";
+        private const string ANGLEMINUS = "angleMinus";
+        private const string LABELDROP = "labelDrop";
 
         private const string PRIMARY_COLOR = "#0a3d62";
         private const string ERROR_COLOR = "#c0392b";
@@ -45,30 +48,54 @@ namespace EasyBadgeMVVM.Views
         private double widthBadge = -1;
         private double heightBadge = -1;
 
+        private IDictionary<string, double> angleOfLabel; //USED FOR ANGLE ROTATION
+
         public ConfigBadge(int idEvent)
         {
             this._idEvent = idEvent;
             this._badgeVM = new BadgeVM(idEvent);
             this.DataContext = this._badgeVM;
+            this.angleOfLabel = new Dictionary<string, double>();
             InitializeComponent();
             CreateLabels();
         }
 
         private void CreateLabels()
         {
+            this.angleOfLabel.Clear();
             List<string> listFields = this._badgeVM.GetAllFields();
             for (int i = 0; i < listFields.Count; i++)
             {
+
+                DockPanel dockPanel = new DockPanel();
+
+                Label angleMinus = new Label();
+                angleMinus.Name = ANGLEMINUS + i;
+                angleMinus.Content = "-";
+                angleMinus.MouseLeftButtonUp += new MouseButtonEventHandler(DecrementRotation);
+                RegisterName(ANGLEMINUS + i, angleMinus);
+
                 Label l = new Label();
                 l.Content = listFields.ElementAt(i);
-                l.VerticalAlignment = VerticalAlignment.Center;
-                l.VerticalContentAlignment = VerticalAlignment.Center;
-                l.HorizontalAlignment = HorizontalAlignment.Left;
-                l.HorizontalContentAlignment = HorizontalAlignment.Center;
                 l.Name = LABELFIELDNAME + i;
                 l.MouseMove += new MouseEventHandler(Label_MouseMove);
+                /*Binding binding = new Binding("RotationAngle");
+                RotateTransform rotateTransform = new RotateTransform();
+                BindingOperations.SetBinding(rotateTransform, RotateTransform.AngleProperty, binding);
+                l.LayoutTransform = rotateTransform;*/
                 RegisterName(LABELFIELDNAME + i, l);
 
+                this.angleOfLabel.Add(l.Name, 0);
+
+                Label anglePlus = new Label();
+                anglePlus.Name = ANGLEPLUS + i;
+                anglePlus.Content = "+";
+                anglePlus.MouseLeftButtonUp += new MouseButtonEventHandler(IncrementRotation);
+                RegisterName(ANGLEPLUS + i, anglePlus);
+
+                dockPanel.Children.Add(angleMinus);
+                dockPanel.Children.Add(l);
+                dockPanel.Children.Add(anglePlus);
 
                 ComboBox comboBoxFontFamily = new ComboBox();
                 comboBoxFontFamily.Width = 200;
@@ -101,7 +128,7 @@ namespace EasyBadgeMVVM.Views
                 Grid grid = new Grid();
                 grid.SetValue(Grid.RowProperty, i);
                 grid.Margin = new Thickness(10, 0, 10, 0);
-                grid.Children.Add(l);
+                grid.Children.Add(dockPanel);
                 grid.Children.Add(comboBoxFontFamily);
                 grid.Children.Add(comboxBoxFontSize);
                 grid.Name = GRIDLABEL + i;
@@ -109,6 +136,22 @@ namespace EasyBadgeMVVM.Views
 
                 this.BadgeLabels.Children.Add(grid);
             }
+        }
+
+        private void IncrementRotation(object sender, MouseButtonEventArgs e)
+        {
+            string name = (sender as Label).Name.Split(new string[] { ANGLEPLUS }, StringSplitOptions.None)[1];
+            Label labelName = (Label) (this.FindName(LABELFIELDNAME + name) as Label);
+            ++this.angleOfLabel[labelName.Name];
+            labelName.LayoutTransform = new RotateTransform(this.angleOfLabel[labelName.Name]);
+        }
+
+        private void DecrementRotation(object sender, MouseButtonEventArgs e)
+        {
+            string name = (sender as Label).Name.Split(new string[] { ANGLEMINUS }, StringSplitOptions.None)[1];
+            Label labelName = (Label)(this.FindName(LABELFIELDNAME + name) as Label);
+            --this.angleOfLabel[labelName.Name];
+            labelName.LayoutTransform = new RotateTransform(this.angleOfLabel[labelName.Name]);
         }
 
         private void FamilySelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -161,6 +204,7 @@ namespace EasyBadgeMVVM.Views
                 label.Content = p.FieldSet.Name;
                 label.FontFamily = ALLFONTS.Where(font => font.ToString().Equals(p.FontFamily)).FirstOrDefault();
                 label.FontSize = p.FontSize;
+                label.LayoutTransform = new RotateTransform(p.AngleRotation.Value);
                 label.MouseMove += new MouseEventHandler(Label_MouseMove);
                 label.PreviewMouseRightButtonDown += new MouseButtonEventHandler(Label_RightClick);
                 label.AllowDrop = true;
@@ -203,7 +247,7 @@ namespace EasyBadgeMVVM.Views
                     {
                         Label la1 = dataObj.GetData(typeof(Label)) as Label;
                         Label l = new Label();
-                        l.Name = "labelDrop" + i++;
+                        l.Name = LABELDROP + i++;
                         l.FontFamily = la1.FontFamily;
                         l.FontSize = la1.FontSize;
                         l.Content = la1.Content;
@@ -266,11 +310,13 @@ namespace EasyBadgeMVVM.Views
             }
 
             //Save on BadgeEvent
-            BadgeEventSet insertedBe = this._badgeVM.SaveOnBadgeEvent(templateName);
+            BitmapSource imageSrc = this.BackgroundChecked.IsChecked.Value ? ((TransformedBitmap)this.imgCanvas.Source).Source : null;
+            BadgeEventSet insertedBe = this._badgeVM.SaveOnBadgeEvent(templateName, imageSrc);
 
             //Save on Position
             //But first delete if there are updates
             this._badgeVM.RemoveRowsPosition(templateName);
+
             foreach (FrameworkElement child in this.BadgeScreen.Children)
             {
                 Label label = child as Label;
@@ -280,8 +326,10 @@ namespace EasyBadgeMVVM.Views
                 double posY = (double)child.GetValue(Canvas.TopProperty); //Pos_Y
                 double posX = (double)child.GetValue(Canvas.LeftProperty); //Pos_X
                 FieldSet field = this._badgeVM.GetFieldByName(label.Content.ToString()); //Field
+                Label getLabel = (Label) this.FindName(LABELFIELDNAME + label.Name.Split(new string[] { LABELDROP, LABELFIELDNAME }, StringSplitOptions.None)[1]); 
+                double layoutTransform = this.angleOfLabel[getLabel.Name];
 
-                this._badgeVM.SaveOnPosition(insertedBe, field, posX, posY, fontFamily, fontSize);
+                this._badgeVM.SaveOnPosition(insertedBe, field, posX, posY, fontFamily, fontSize, layoutTransform);
             }
 
             this._badgeVM.RefreshListBadgeType();

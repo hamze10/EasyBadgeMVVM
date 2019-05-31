@@ -26,6 +26,7 @@ namespace EasyBadgeMVVM.Models
         public int BadgeID_Badge { get; set; }
         public string Name { get; set; }
         public bool DefaultPrint { get; set; }
+        public string BackgroundImage { get; set; }
     
         public virtual BadgeSet BadgeSet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -14,8 +14,8 @@ namespace EasyBadgeMVVM.ViewModels
         int SelectedBadgeEvent { get; set; }
         List<string> GetAllFields();
         FieldSet GetFieldByName(string name);
-        BadgeEventSet SaveOnBadgeEvent(string templateName);
-        void SaveOnPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize);
+        BadgeEventSet SaveOnBadgeEvent(string templateName, System.Windows.Media.Imaging.BitmapSource imageSrc);
+        void SaveOnPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize, double layoutTransform);
         BadgeEventSet GetBadgeEvent();
         void RemoveRowsPosition(string templateName);
         List<PositionSet> GetPositions(int idBadge, int idEvent, string templateName);

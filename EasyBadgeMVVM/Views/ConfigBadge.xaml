@@ -64,6 +64,10 @@
                 </TextBlock>
             </GroupBox>
 
+            <CheckBox Style="{StaticResource MaterialDesignCheckBox}" Margin="287,96,571,0" Name="BackgroundChecked">
+                <Label Content="Print the background" FontSize="16" Height="38"/>
+            </CheckBox>
+            
         </Grid>
 
         <GroupBox Name="FieldsBadgingGrid" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Header="Fields" Background="White" Margin="20,175,20,146" Style="{DynamicResource MaterialDesignGroupBox}"

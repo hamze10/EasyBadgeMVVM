@@ -437,7 +437,7 @@ namespace EasyBadgeMVVM.ViewModels
             return true;
         }
 
-        public BadgeEventSet InsertInBadgeEvent(int idBadge, int idEvent, string templateName)
+        public BadgeEventSet InsertInBadgeEvent(int idBadge, int idEvent, string templateName, System.Windows.Media.Imaging.BitmapSource imageSrc)
         {
             var repo = this._repostitoryFactory.GetBadgeEventRepository(this._dbContext);
             var badgeEventFound = repo.SearchFor(b => b.BadgeSet.ID_Badge == idBadge && b.EventSet.ID_Event == idEvent && b.Name.Equals(templateName)).FirstOrDefault();
@@ -451,14 +451,15 @@ namespace EasyBadgeMVVM.ViewModels
             be.BadgeSet = this._repostitoryFactory.GetBadgeRepository(this._dbContext).SearchFor(badg => badg.ID_Badge == idBadge).FirstOrDefault();
             be.EventSet = this._repostitoryFactory.GetEventRepository(this._dbContext).SearchFor(eve => eve.ID_Event == idEvent).FirstOrDefault();
             be.Name = templateName;
+            be.BackgroundImage = imageSrc.ToString();
             repo.Insert(be);
             repo.SaveChanges();
+            repo.UpdateWithBackground(be);
 
-            
             return repo.SearchFor(b => b.BadgeSet.ID_Badge == idBadge && b.EventSet.ID_Event == idEvent && b.Name.Equals(templateName)).FirstOrDefault();
         }
 
-        public void InsertInPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize)
+        public void InsertInPosition(BadgeEventSet be, FieldSet f, double posX, double posY, string fontFamily, int fontSize, double layoutTransform)
         {
             PositionSet p = new PositionSet();
             p.BadgeEventSet = be;
@@ -468,6 +469,7 @@ namespace EasyBadgeMVVM.ViewModels
             p.FontFamily = fontFamily;
             p.FontSize = fontSize;
             p.FontStyle = System.Drawing.FontStyle.Regular.ToString();
+            p.AngleRotation = layoutTransform;
 
             var repo = this._repostitoryFactory.GetPositionRepository(this._dbContext);
             repo.Insert(p);
