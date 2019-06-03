@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8596e76b1037447fa065f3128795f166" Name="Diagram1" ZoomLevel="116">
+      <Diagram DiagramId="8596e76b1037447fa065f3128795f166" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="EasyBadge2019Model.BadgeEventSet" Width="1.5" PointX="6" PointY="8.5" IsExpanded="true" />
         <EntityTypeShape EntityType="EasyBadge2019Model.BadgeSet" Width="1.5" PointX="3.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EasyBadge2019Model.EventFieldSet" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
