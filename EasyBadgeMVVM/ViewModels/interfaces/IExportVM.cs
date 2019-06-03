@@ -11,10 +11,22 @@ namespace EasyBadgeMVVM.ViewModels
 {
     public interface IExportVM
     {
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns>List of users in exportDTO</returns>
         List<ExportDTO> GetAllUsersToExport();
+
+        /// <summary>
+        /// Get all users whose badges have been printed
+        /// </summary>
+        /// <returns></returns>
         List<ExportDTO> GetAllRegisteredUserToExport();
     }
 
+    /// <summary>
+    /// Used for export (EventfieldUser for all information about a user | printBadge for all information about printed badge of a user)
+    /// </summary>
     public class ExportDTO
     {
         public EventFieldUserSet EventFieldUserExport { get; set; }

@@ -323,7 +323,6 @@ namespace EasyBadgeMVVM.ViewModels
         {
             foreach(string f in fields)
             {
-                Console.WriteLine($"f : {f}");
                 switch (f)
                 {
                     case "NbrUser":

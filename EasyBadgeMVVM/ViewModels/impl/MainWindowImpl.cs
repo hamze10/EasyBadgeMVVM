@@ -308,12 +308,6 @@ namespace EasyBadgeMVVM.ViewModels
             this._dbEntities.Clear();
         }
 
-        public ObservableCollection<ExportDataDTO> GetExportData()
-        {
-            //TODO Faire query
-            return null;
-        }
-
         public List<EventFieldUserSet> GetEventFieldUserByValues(List<string> values)
         {
             return this._dbEntities.GetEventFieldUserByValues(values);

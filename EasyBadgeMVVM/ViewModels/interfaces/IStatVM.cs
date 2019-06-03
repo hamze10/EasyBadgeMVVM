@@ -16,6 +16,7 @@ namespace EasyBadgeMVVM.ViewModels
         int NbrUserOnline { get; set; }
         int NbrUserOnsite { get; set; }
 
+        /* CHECK DOCUMENTATION OF LIVECHARTS FOR FURTHER INFORMATIONS */
         SeriesCollection SeriesCollection { get; set; }
         int[] Labels { get; set; }
         Func<double, string> XFormatter { get; set; }

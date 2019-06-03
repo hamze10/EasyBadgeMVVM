@@ -10,6 +10,7 @@ namespace EasyBadgeMVVM.ViewModels
         void InsertNewUser(Dictionary<string, string> values);
         EventSet GetEventById(int idEvent);
         void UpdateUser(int idUser, Dictionary<string, string> newValues);
+
         /// <summary>
         /// Determine if the given user match the defined filters/rules.
         /// If that's the case, the UI should display the define color.

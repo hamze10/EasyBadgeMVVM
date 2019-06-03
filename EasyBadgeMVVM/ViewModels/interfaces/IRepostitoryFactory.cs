@@ -6,7 +6,6 @@ namespace EasyBadgeMVVM.ViewModels
 {
     public interface IRepostitoryFactory
     {
-
         EventRepository GetEventRepository(EasyBadgeModelContext model);
         FieldRepository GetFieldRepository(EasyBadgeModelContext model);
         UserRepository GetUserRepository(EasyBadgeModelContext model);
