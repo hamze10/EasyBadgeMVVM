@@ -14,6 +14,10 @@ using Label = System.Windows.Controls.Label;
 using TextBox = System.Windows.Controls.TextBox;
 using Button = System.Windows.Controls.Button;
 using MaterialDesignThemes.Wpf;
+using System.Windows.Forms;
+using System.Windows.Media.Imaging;
+using System.Drawing.Imaging;
+using System.Windows.Interop;
 
 namespace EasyBadgeMVVM.Views
 {
@@ -184,16 +188,18 @@ namespace EasyBadgeMVVM.Views
             this.Close();
 
         }
-
+       
         private void Print_Badge(object sender, RoutedEventArgs e)
         {
-            System.Windows.Forms.PrintPreviewDialog pdi = new System.Windows.Forms.PrintPreviewDialog();
-            pdi.ClientSize = new System.Drawing.Size(800, 600);
-            pdi.DesktopLocation = new System.Drawing.Point(29, 29);
+            PrintPreviewDialog pdi = new PrintPreviewDialog();
+            
+            //Position de la fenêtre de preview
+            //pdi.DesktopLocation = new System.Drawing.Point(0, 0);
+            //var locatrion = pdi.Lo
             pdi.Name = "PrintPreviewDialog1";
 
             BadgeEventSet defaultBadge = this._badgeVM.GetDefaultBadge();
-
+            pdi.ClientSize = new System.Drawing.Size((int)defaultBadge.BadgeSet.Dimension_X, (int)defaultBadge.BadgeSet.Dimension_Y);
             if (defaultBadge == null)
             {
                 System.Windows.MessageBox.Show("Please configure a default print in badge settings");
@@ -204,10 +210,18 @@ namespace EasyBadgeMVVM.Views
             printDocument.DefaultPageSettings.PaperSize = new PaperSize("Template", 
                                                                         Convert.ToInt32(defaultBadge.BadgeSet.Dimension_X * MM_PX), 
                                                                         Convert.ToInt32(defaultBadge.BadgeSet.Dimension_Y * MM_PX));
+             printDocument.OriginAtMargins = true; 
+
+            
 
             printDocument.PrintPage += (sender2, e2) => document_PrintPage(sender2, e2, defaultBadge);
+            RectangleF rec = printDocument.PrinterSettings.DefaultPageSettings.PrintableArea;
+            float rightY = rec.Right;
             pdi.Document = printDocument;
             pdi.Document.BeginPrint += new PrintEventHandler(end_print);
+            //pdi.PrintPreviewControl.Zoom = 1;
+            Margins margins = new Margins(10, 10, 10, 10);
+            printDocument.DefaultPageSettings.Margins = margins;
             pdi.ShowDialog();
             if (isPrinted)
             {
@@ -215,24 +229,21 @@ namespace EasyBadgeMVVM.Views
             }
         }
 
+
+        //Ajoute les informations du client sur le badge
         private void document_PrintPage(object sender, PrintPageEventArgs e, BadgeEventSet defaultBadge)
         {
             //retrieve positions
             //retrieve selected user value
-
-            //String text = "Henry"
-            //Font printFont = new Font("FontFamily", "FontSize (a calculer)", FontStyle.Regular)
-            //e.Graphics.DrawString(text, printfont, Brushes.Black, Position_X, Position_Y)
-
             List<PositionSet> positions = this._badgeVM.GetPositions(defaultBadge.BadgeID_Badge, defaultBadge.EventID_Event, defaultBadge.Name);
-
+            float leftMargin = e.MarginBounds.Left;
             foreach (PositionSet p in positions)
             {
                 string text = this._currentUser.Find(efu => efu.EventFieldSet.FieldSet.Name.Equals(p.FieldSet.Name)).Value;
                 Font printFont = new Font(p.FontFamily, (float) p.FontSize, System.Drawing.FontStyle.Regular);
                 float computedSize = 
                     GetNewFontSize(e.Graphics.MeasureString(text,printFont),
-                                   defaultBadge.BadgeSet.Dimension_Y * MM_PX, 
+                                   defaultBadge.BadgeSet.Dimension_X * MM_PX, 
                                    p.Position_X,
                                    p.Position_Y,
                                    printFont.Size, 
@@ -240,8 +251,12 @@ namespace EasyBadgeMVVM.Views
                                    text, 
                                    printFont);
                 printFont = new Font(p.FontFamily, computedSize, System.Drawing.FontStyle.Regular);
-                e.Graphics.DrawString(text, printFont, Brushes.Black, (float) p.Position_X, (float) p.Position_Y);
-            }            
+                e.Graphics.DrawString(text, printFont, Brushes.Black, (float)p.Position_X, (float)p.Position_Y);
+                //e.Graphics.
+            }
+           
+           
+
         }
 
         private void end_print(object sender, PrintEventArgs e) {
